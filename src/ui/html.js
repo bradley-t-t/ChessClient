@@ -3,7 +3,6 @@ var mainTemplate = `
     <div class="client-header">
         <div class="header-left">
             <span class="client-title">Chess Client</span>
-            <span class="client-author">by Trent</span>
         </div>
         <div class="header-right">
             <div id="thinking-indicator" class="thinking-indicator">
