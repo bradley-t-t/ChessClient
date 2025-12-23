@@ -695,6 +695,13 @@ var mainStyles = `
     gap: 0;
 }
 
+.version-display {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #999999;
+}
+
 @keyframes rotate {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

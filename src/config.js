@@ -1,4 +1,4 @@
-var currentVersion = "1.0.1.1";
+var currentVersion = "1.0.9";
 
 function getRandomTacticalStrength() {
     const strengths = [

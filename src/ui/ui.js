@@ -130,6 +130,11 @@ function setupUI(myVars, myFunctions) {
             myFunctions.updateDetectionScore();
             myFunctions.checkPageStatus();
             
+            var versionEl = document.getElementById("versionText");
+            if (versionEl) {
+                versionEl.textContent = "v" + currentVersion;
+            }
+            
             myVars.loaded = true;
         } catch (error) {
         }
