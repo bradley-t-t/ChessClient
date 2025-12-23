@@ -120,10 +120,23 @@ var mainStyles = `
     background: #fafafa;
     border-bottom: 1px solid #ebebeb;
     cursor: move;
+    position: relative;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
 .minimize-btn {
-    margin-left: auto;
     width: 28px;
     height: 28px;
     border-radius: 6px;
@@ -135,6 +148,7 @@ var mainStyles = `
     align-items: center;
     justify-content: center;
     transition: all 0.15s;
+    flex-shrink: 0;
 }
 
 .minimize-btn:hover {
@@ -158,12 +172,11 @@ var mainStyles = `
     display: none;
     align-items: center;
     gap: 6px;
-    margin-left: auto;
-    margin-right: 8px;
     padding: 4px 10px;
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
     border-radius: 12px;
+    flex-shrink: 0;
 }
 
 .thinking-indicator.active {

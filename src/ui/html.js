@@ -1,17 +1,21 @@
 var mainTemplate = `
 <div class="chess-client">
     <div class="client-header">
-        <span class="client-title">Chess Client</span>
-        <span class="client-author">by Trent</span>
-        <div id="thinking-indicator" class="thinking-indicator">
-            <span class="thinking-spinner"></span>
-            <span class="thinking-text">Thinking</span>
+        <div class="header-left">
+            <span class="client-title">Chess Client</span>
+            <span class="client-author">by Trent</span>
         </div>
-        <button id="minimizeBtn" class="minimize-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14"/>
-            </svg>
-        </button>
+        <div class="header-right">
+            <div id="thinking-indicator" class="thinking-indicator">
+                <span class="thinking-spinner"></span>
+                <span class="thinking-text">Thinking</span>
+            </div>
+            <button id="minimizeBtn" class="minimize-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div id="pageStatus" class="page-status">
