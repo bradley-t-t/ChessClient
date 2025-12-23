@@ -16,10 +16,19 @@
 // @grant       GM_registerMenuCommand
 // @resource    stockfish.js        https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js
 // @require     https://code.jquery.com/jquery-3.6.0.min.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/config.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/variables.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/engine.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/html.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/styles.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/ui.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/events.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/parser.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/utilities.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/main.js
 // @run-at      document-start
 // ==/UserScript==
 (() => {
-    // config.js
     var currentVersion = "1.0.1.1";
     function getRandomTacticalStrength() {
         const strengths = [
