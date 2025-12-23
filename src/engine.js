@@ -21,19 +21,23 @@ function setupEngine(myVars, myFunctions) {
         window.isThinking = false;
         myFunctions.loadChessEngine();
     };
+    myFunctions.getSkillLevel = function() {
+        var depth = myVars.lastValue || 3;
+        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
+        var skillLevel = Math.floor((depth / 21) * 20);
+        skillLevel = Math.max(0, skillLevel - Math.floor(blunderRate * 10));
+        return Math.max(0, Math.min(20, skillLevel));
+    };
     myFunctions.runChessEngine = function(depth) {
-        var adjustedDepth = myFunctions.getAdjustedDepth();
         var fen = window.board.game.getFEN();
-        var positionType = myFunctions.analyzePositionType(fen);
+        var skillLevel = myFunctions.getSkillLevel();
+        engine.engine.postMessage(`setoption name Skill Level value ${skillLevel}`);
         engine.engine.postMessage(`position fen ${fen}`);
         window.isThinking = true;
         myFunctions.spinner();
-        if (depth >= 15) {
-            engine.engine.postMessage(`setoption name MultiPV value 5`);
-        } else {
-            engine.engine.postMessage(`setoption name MultiPV value 1`);
-        }
-        engine.engine.postMessage(`go depth ${adjustedDepth}`);
+        engine.engine.postMessage(`setoption name MultiPV value 1`);
+        var searchDepth = Math.min(depth, 15);
+        engine.engine.postMessage(`go depth ${searchDepth}`);
         myVars.lastValue = depth;
     };
     myFunctions.autoRun = function(lstValue) {

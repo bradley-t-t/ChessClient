@@ -220,18 +220,21 @@ function setupUI(myVars, myFunctions) {
         myFunctions.updateEloEstimate();
     };
     myFunctions.updateEloEstimate = function() {
-        var elo = 800;
+        var depth = myVars.lastValue || 3;
+        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
         
-        var depth = myVars.lastValue || 11;
-        elo += depth * 80;
+        var skillLevel = Math.floor((depth / 21) * 20);
+        skillLevel = Math.max(0, skillLevel - Math.floor(blunderRate * 10));
+        skillLevel = Math.max(0, Math.min(20, skillLevel));
         
-        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.05;
-        elo -= blunderRate * 1500;
+        var eloBySkill = {
+            0: 400, 1: 500, 2: 600, 3: 700, 4: 800,
+            5: 900, 6: 1000, 7: 1100, 8: 1200, 9: 1300,
+            10: 1400, 11: 1500, 12: 1600, 13: 1700, 14: 1800,
+            15: 1900, 16: 2000, 17: 2200, 18: 2400, 19: 2600, 20: 2800
+        };
         
-        var playStyle = myVars.playStyle || { tactical: 0.5, positional: 0.5 };
-        var tacticalBonus = (playStyle.tactical - 0.2) * 300;
-        var positionalBonus = (playStyle.positional - 0.2) * 200;
-        elo += tacticalBonus + positionalBonus;
+        var elo = eloBySkill[skillLevel] || 1000;
         
         if (myVars.useBestMove) {
             elo += 200;

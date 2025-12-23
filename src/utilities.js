@@ -290,7 +290,7 @@ function setupUtilities(myVars) {
         var endTime = Date.now() + naturalDelay;
         var timer = setInterval(() => {
             if (Date.now() >= endTime) {
-                myFunctions.autoRun(myFunctions.getAdjustedDepth());
+                myFunctions.autoRun(myVars.lastValue);
                 window.canGo = true;
                 clearInterval(timer);
             }
@@ -409,10 +409,10 @@ function setupUtilities(myVars) {
         try {
             myVars.autoMove = GM_getValue("autoMove", false);
             myVars.useBestMove = GM_getValue("useBestMove", false);
-            myVars.lastValue = GM_getValue("depthValue", 11);
+            myVars.lastValue = GM_getValue("depthValue", 3);
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.humanMoveColor = GM_getValue("humanMoveColor", "#c9a227");
-            myVars.blunderRate = GM_getValue("blunderRate", 0.05);
+            myVars.blunderRate = GM_getValue("blunderRate", 0.7);
             myVars.adaptToRating = GM_getValue("adaptToRating", true);
             myVars.useOpeningBook = GM_getValue("useOpeningBook", true);
             myVars.preferredOpenings = GM_getValue("preferredOpenings", ["e4", "d4", "c4", "Nf3"]);

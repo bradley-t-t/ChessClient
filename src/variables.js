@@ -5,12 +5,13 @@ function initializeVariables() {
         delay: 0.1,
         loaded: false,
         onGamePage: false,
-        lastValue: 11,
+        lastValue: 3,
+        blunderRate: 0.7,
         playStyle: {
-            aggressive: Math.random() * 0.5 + 0.3,
-            defensive: Math.random() * 0.5 + 0.3,
-            tactical: Math.random() * 0.6 + 0.2,
-            positional: Math.random() * 0.6 + 0.2
+            aggressive: 0.4,
+            defensive: 0.4,
+            tactical: 0.3,
+            positional: 0.3
         },
         preferredOpenings: [
             "e4",
