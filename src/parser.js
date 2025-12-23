@@ -1,158 +1,86 @@
 function setupParser(myVars, myFunctions) {
+    var multiPvMoves = [];
+    
     myFunctions.parser = function(e) {
-        if (e.data.includes("bestmove")) {
-            const bestMove = e.data.split(" ")[1];
-            let alternativeMoves = [bestMove];
+        if (e.data.includes(" pv ") && e.data.includes("multipv")) {
             try {
-                if (e.data.includes("pv")) {
-                    const lines = e.data.split("\n").filter((line) => line.includes(" pv ")).map((line) => {
-                        const pvIndex = line.indexOf(" pv ");
-                        return line.substring(pvIndex + 4).split(" ")[0];
-                    });
-                    if (lines.length > 1) {
-                        alternativeMoves = [...new Set(lines)];
+                var pvMatch = e.data.match(/multipv (\d+)/);
+                var moveMatch = e.data.match(/ pv ([a-h][1-8][a-h][1-8][qrbn]?)/);
+                var scoreMatch = e.data.match(/score cp (-?\d+)/);
+                var mateMatch = e.data.match(/score mate (-?\d+)/);
+                
+                if (pvMatch && moveMatch) {
+                    var pvNum = parseInt(pvMatch[1]);
+                    var move = moveMatch[1];
+                    var score = 0;
+                    
+                    if (mateMatch) {
+                        score = parseInt(mateMatch[1]) > 0 ? 10000 : -10000;
+                    } else if (scoreMatch) {
+                        score = parseInt(scoreMatch[1]);
                     }
+                    
+                    multiPvMoves[pvNum - 1] = { move: move, score: score };
                 }
-            } catch (error) {
+            } catch (err) {
+            }
+        }
+        
+        if (e.data.includes("bestmove")) {
+            var bestMove = e.data.split(" ")[1];
+            
+            var validMoves = multiPvMoves.filter(function(m) { return m && m.move; });
+            
+            if (validMoves.length === 0) {
+                validMoves = [{ move: bestMove, score: 0 }];
             }
             
-            let humanMove = myFunctions.calculateHumanMove(bestMove, alternativeMoves, e.data);
-            myFunctions.displayBothMoves(bestMove, humanMove);
+            var selectedMove = myFunctions.selectMoveBySkill(validMoves, bestMove);
+            
+            myFunctions.displayBothMoves(bestMove, selectedMove);
             window.isThinking = false;
             myFunctions.spinner();
+            
+            multiPvMoves = [];
         }
     };
-    myFunctions.calculateHumanMove = function(bestMove, alternativeMoves, engineData) {
-        try {
-            const legalMoves = window.board.game.getLegalMoves();
-            if (!legalMoves || legalMoves.length <= 1) {
-                return bestMove;
-            }
-            
-            const blunderRate = myVars.blunderRate !== void 0 ? myVars.blunderRate : 0.2;
-            const variationChance = Math.min(0.7, blunderRate + 0.3);
-            
-            if (Math.random() > variationChance) {
-                return bestMove;
-            }
-            
-            const bestFrom = bestMove.substring(0, 2);
-            const bestTo = bestMove.substring(2, 4);
-            
-            let candidateMoves = [];
-            
-            for (let i = 0; i < legalMoves.length; i++) {
-                const move = legalMoves[i];
-                const moveStr = move.from + move.to;
-                if (moveStr === bestMove) continue;
-                
-                let score = 0;
-                
-                if (move.from === bestFrom) {
-                    score += 3;
-                }
-                
-                if (move.to === bestTo) {
-                    score += 2;
-                }
-                
-                if (move.captured) {
-                    score += 2;
-                }
-                
-                if (move.san && (move.san.includes("+") || move.san.includes("#"))) {
-                    score += 3;
-                }
-                
-                const fromFile = move.from.charCodeAt(0) - 97;
-                const toFile = move.to.charCodeAt(0) - 97;
-                if (toFile >= 2 && toFile <= 5) {
-                    score += 1;
-                }
-                
-                candidateMoves.push({ move: moveStr, score: score });
-            }
-            
-            if (candidateMoves.length === 0) {
-                return bestMove;
-            }
-            
-            candidateMoves.sort((a, b) => b.score - a.score);
-            
-            const topMoves = candidateMoves.slice(0, Math.min(5, candidateMoves.length));
-            const weights = topMoves.map((m, i) => Math.pow(0.6, i));
-            const totalWeight = weights.reduce((a, b) => a + b, 0);
-            
-            let random = Math.random() * totalWeight;
-            for (let i = 0; i < topMoves.length; i++) {
-                random -= weights[i];
-                if (random <= 0) {
-                    return topMoves[i].move;
-                }
-            }
-            
-            return topMoves[0].move;
-        } catch (e) {
+    
+    myFunctions.selectMoveBySkill = function(moves, bestMove) {
+        var depth = myVars.lastValue || 3;
+        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
+        
+        var skillFactor = (depth / 21) * (1 - blunderRate);
+        
+        if (moves.length <= 1 || Math.random() < skillFactor) {
             return bestMove;
         }
-    };
-    myFunctions.getBlunderProbability = function() {
-        const userBlunderRate = myVars.blunderRate !== void 0 ? myVars.blunderRate : 0.05;
-        const gamePhase = myFunctions.estimateGamePhase();
-        const timeRemaining = myFunctions.estimateTimeRemaining();
-        const complexity = myFunctions.estimatePositionComplexity();
-        let baseProb = userBlunderRate;
-        if (timeRemaining < 30) {
-            baseProb += 0.1 * (1 - timeRemaining / 30);
-        }
-        if (complexity > 0.6) {
-            baseProb += 0.05 * (complexity - 0.6) * 2;
-        }
-        if (gamePhase > 30) {
-            baseProb += 0.03 * ((gamePhase - 30) / 10);
-        }
-        return Math.min(0.4, baseProb * (0.7 + Math.random() * 0.6));
-    };
-    myFunctions.generateHumanLikeMove = function(bestMove, engineData) {
-        if (engineData.includes("pv") && Math.random() < 0.4) {
-            try {
-                const lines = engineData.split("\n").filter((line) => line.includes(" pv ")).map((line) => {
-                    const pvIndex = line.indexOf(" pv ");
-                    return line.substring(pvIndex + 4).split(" ")[0];
-                });
-                if (lines.length > 1) {
-                    const moveIndex = Math.floor(Math.pow(Math.random(), 2.5) * Math.min(lines.length, 4));
-                    return lines[moveIndex] || bestMove;
-                }
-            } catch (e) {
+        
+        var validMoves = moves.slice(0, Math.min(5, moves.length));
+        
+        var weights = [];
+        for (var i = 0; i < validMoves.length; i++) {
+            if (i === 0) {
+                weights.push(skillFactor * 10);
+            } else {
+                weights.push((1 - skillFactor) * (5 - i));
             }
         }
-        if (Math.random() < 0.15) {
-            const fromSquare = bestMove.substring(0, 2);
-            const toSquare = bestMove.substring(2, 4);
-            if (Math.random() < 0.7) {
-                const files = "abcdefgh";
-                const ranks = "12345678";
-                const fromFile = fromSquare.charAt(0);
-                const fromRank = fromSquare.charAt(1);
-                const toFile = toSquare.charAt(0);
-                const toRank = toSquare.charAt(1);
-                const fileDiff = files.indexOf(toFile) - files.indexOf(fromFile);
-                const rankDiff = ranks.indexOf(toRank) - ranks.indexOf(fromRank);
-                if (Math.abs(fileDiff) > 1 || Math.abs(rankDiff) > 1) {
-                    const newToFile = files[files.indexOf(fromFile) + (fileDiff > 0 ? Math.max(1, fileDiff - 1) : Math.min(-1, fileDiff + 1))];
-                    const newToRank = ranks[ranks.indexOf(fromRank) + (rankDiff > 0 ? Math.max(1, rankDiff - 1) : Math.min(-1, rankDiff + 1))];
-                    if (newToFile && newToRank) {
-                        const alternativeMove = fromSquare + newToFile + newToRank;
-                        for (let each = 0; each < window.board.game.getLegalMoves().length; each++) {
-                            if (window.board.game.getLegalMoves()[each].from === fromSquare && window.board.game.getLegalMoves()[each].to === newToFile + newToRank) {
-                                return alternativeMove;
-                            }
-                        }
-                    }
-                }
+        
+        var totalWeight = 0;
+        for (var j = 0; j < weights.length; j++) {
+            totalWeight += weights[j];
+        }
+        
+        var random = Math.random() * totalWeight;
+        var cumulative = 0;
+        
+        for (var k = 0; k < validMoves.length; k++) {
+            cumulative += weights[k];
+            if (random <= cumulative) {
+                return validMoves[k].move;
             }
         }
+        
         return bestMove;
     };
 }

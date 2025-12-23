@@ -223,24 +223,15 @@ function setupUI(myVars, myFunctions) {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
         
-        var skillLevel = Math.floor((depth / 21) * 20);
-        skillLevel = Math.max(0, skillLevel - Math.floor(blunderRate * 10));
-        skillLevel = Math.max(0, Math.min(20, skillLevel));
+        var skillFactor = (depth / 21) * (1 - blunderRate);
         
-        var eloBySkill = {
-            0: 400, 1: 500, 2: 600, 3: 700, 4: 800,
-            5: 900, 6: 1000, 7: 1100, 8: 1200, 9: 1300,
-            10: 1400, 11: 1500, 12: 1600, 13: 1700, 14: 1800,
-            15: 1900, 16: 2000, 17: 2200, 18: 2400, 19: 2600, 20: 2800
-        };
-        
-        var elo = eloBySkill[skillLevel] || 1000;
+        var elo = Math.round(400 + (skillFactor * 2400));
         
         if (myVars.useBestMove) {
-            elo += 200;
+            elo = 2800;
         }
         
-        elo = Math.max(400, Math.min(3200, Math.round(elo)));
+        elo = Math.max(400, Math.min(3200, elo));
         
         var eloEl = document.getElementById("eloValue");
         var barEl = document.getElementById("eloBarFill");
