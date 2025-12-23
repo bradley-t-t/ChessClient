@@ -52,7 +52,6 @@ function setupUtilities(myVars) {
                 bk = "";
                 bq = "";
                 stop_b = 1;
-                console.log("debug secb");
             }
         } else {
             bq = "";
@@ -76,14 +75,12 @@ function setupUtilities(myVars) {
                 if (move.find(".white.node:contains('xa8')").length > 0) {
                     bq = "";
                     s_br = 1;
-                    console.log("debug b castle_r");
                 }
             }
             if (s_br2 == 0) {
                 if (move.find(".white.node:contains('xh8')").length > 0) {
                     bk = "";
                     s_br2 = 1;
-                    console.log("debug b castle_l");
                 }
             }
         }
@@ -92,7 +89,6 @@ function setupUtilities(myVars) {
                 wk = "";
                 wq = "";
                 stop_w = 1;
-                console.log("debug secw");
             }
         } else {
             wq = "";
@@ -116,14 +112,12 @@ function setupUtilities(myVars) {
                 if (move.find(".black.node:contains('xa1')").length > 0) {
                     wq = "";
                     s_wr = 1;
-                    console.log("debug w castle_l");
                 }
             }
             if (s_wr2 == 0) {
                 if (move.find(".black.node:contains('xh1')").length > 0) {
                     wk = "";
                     s_wr2 = 1;
-                    console.log("debug w castle_r");
                 }
             }
         }
@@ -246,10 +240,8 @@ function setupUtilities(myVars) {
         var res1 = response.substring(0, 2);
         var res2 = response.substring(2, 4);
         if (myVars.autoMove === true) {
-            console.log(`Auto move enabled, moving from ${res1} to ${res2}`);
             myFunctions.movePiece(res1, res2);
         } else {
-            console.log(`Auto move disabled, highlighting ${res1} to ${res2}`);
         }
         window.isThinking = false;
         myFunctions.spinner();
@@ -269,7 +261,6 @@ function setupUtilities(myVars) {
             }
         }
         if (!isLegalMove) {
-            console.log(`Attempted illegal move: ${from} to ${to}`);
             return;
         }
         setTimeout(() => {
@@ -280,7 +271,6 @@ function setupUtilities(myVars) {
                     animate: true,
                     userGenerated: true
                 });
-                console.log(`Successfully moved from ${from} to ${to}`);
             } catch (error) {
                 console.error("Error making move:", error);
             }
@@ -382,7 +372,6 @@ function setupUtilities(myVars) {
                         if (!isNaN(minutes) && !isNaN(seconds)) {
                             remainingTime = minutes * 60 + seconds;
                         } else {
-                            console.log("Error parsing time:", timeText);
                         }
                     }
                 } else {
@@ -390,16 +379,12 @@ function setupUtilities(myVars) {
                     if (!isNaN(seconds)) {
                         remainingTime = seconds;
                     } else {
-                        console.log("Error parsing time:", timeText);
                     }
                 }
             } else {
-                console.log("Clock element not found with selector '.clock-component.clock-bottom'");
             }
         } catch (e) {
-            console.log("Error getting time remaining:", e);
         }
-        console.log("Remaining time:", remainingTime);
         return remainingTime;
     };
     myFunctions.estimatePositionComplexity = function() {
@@ -421,7 +406,6 @@ function setupUtilities(myVars) {
             GM_setValue("preferredOpenings", myVars.preferredOpenings);
             GM_setValue("randomizeTiming", myVars.randomizeTiming);
             GM_setValue("mouseMovementRealism", myVars.mouseMovementRealism);
-            console.log("Settings saved successfully");
         } catch (error) {
             console.error("Error saving settings:", error);
         }
@@ -443,7 +427,6 @@ function setupUtilities(myVars) {
             if (savedPlayStyle) {
                 myVars.playStyle = savedPlayStyle;
             }
-            console.log("Settings loaded successfully");
         } catch (error) {
             console.error("Error loading settings:", error);
         }

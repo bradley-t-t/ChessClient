@@ -122,7 +122,6 @@ function setupUI(myVars, myFunctions) {
             
             myVars.loaded = true;
         } catch (error) {
-            console.log(error);
         }
     };
     myFunctions.checkPageStatus = function() {
@@ -343,7 +342,6 @@ function setupUI(myVars, myFunctions) {
         if (myVars2.preferredOpenings && myVars2.preferredOpenings.length === 1) {
             $("#preferredOpeningSelect").val(myVars2.preferredOpenings[0]);
         }
-        console.log("Settings applied to UI");
     }
     return myFunctions;
 }

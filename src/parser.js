@@ -14,7 +14,6 @@ function setupParser(myVars, myFunctions) {
                     }
                 }
             } catch (error) {
-                console.log("Error extracting alternative moves", error);
             }
             
             let humanMove = myFunctions.calculateHumanMove(bestMove, alternativeMoves, e.data);
@@ -94,7 +93,6 @@ function setupParser(myVars, myFunctions) {
             
             return topMoves[0].move;
         } catch (e) {
-            console.log("Error calculating human move:", e);
             return bestMove;
         }
     };
@@ -127,7 +125,6 @@ function setupParser(myVars, myFunctions) {
                     return lines[moveIndex] || bestMove;
                 }
             } catch (e) {
-                console.log("Error extracting alternative moves", e);
             }
         }
         if (Math.random() < 0.15) {

@@ -13,7 +13,6 @@ function main() {
     document.myFunctions = myFunctions;
     setupUI(myVars, myFunctions, engine);
     setupEventHandlers(myVars, myFunctions, engine);
-    console.log("Chess Client by Trent initialized");
 }
 
 window.addEventListener("load", (event) => {
