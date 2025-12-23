@@ -37,7 +37,7 @@ function setupParser(myVars, myFunctions) {
             
             var selectedMove = myFunctions.selectMoveBySkill(validMoves, bestMove);
             
-            myFunctions.displayBothMoves(bestMove, selectedMove);
+            myFunctions.displayRecommendedMove(selectedMove);
             window.isThinking = false;
             myFunctions.spinner();
             

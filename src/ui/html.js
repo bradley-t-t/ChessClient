@@ -58,13 +58,6 @@ var mainTemplate = `
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-                <div class="toggle-row" id="useBestMoveRow" style="opacity: 0.5; pointer-events: none;">
-                    <span class="toggle-label">Use Best Move</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="useBestMove" name="useBestMove" class="toggle-input" value="false" disabled>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
             </div>
 
             <div class="setting-group">
@@ -136,12 +129,8 @@ var mainTemplate = `
                     </label>
                 </div>
                 <div class="input-row">
-                    <label for="bestMoveColor">Best Move</label>
+                    <label for="bestMoveColor">Recommended Move</label>
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
-                </div>
-                <div class="input-row">
-                    <label for="humanMoveColor">Human Move</label>
-                    <input type="color" id="humanMoveColor" value="#c9a227" class="color-picker">
                 </div>
                 <div class="input-row">
                     <label for="preferredOpeningSelect">Opening</label>

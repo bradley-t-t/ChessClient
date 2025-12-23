@@ -49,23 +49,10 @@ function setupStyleEventHandlers(myVars, myFunctions) {
     });
     $(document).on("change", "#autoMove", function() {
         myVars.autoMove = $(this).prop("checked");
-        var useBestMoveRow = document.getElementById("useBestMoveRow");
-        var useBestMoveInput = document.getElementById("useBestMove");
-        if (myVars.autoMove) {
-            useBestMoveRow.style.opacity = "1";
-            useBestMoveRow.style.pointerEvents = "auto";
-            useBestMoveInput.disabled = false;
-        } else {
-            useBestMoveRow.style.opacity = "0.5";
-            useBestMoveRow.style.pointerEvents = "none";
-            useBestMoveInput.disabled = true;
-            useBestMoveInput.checked = false;
-            myVars.useBestMove = false;
-        }
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("change", "#useBestMove, #adaptToRating, #useOpeningBook, #randomizeTiming", function() {
+    $(document).on("change", "#adaptToRating, #useOpeningBook, #randomizeTiming", function() {
         const id = $(this).attr("id");
         myVars[id] = $(this).prop("checked");
         myFunctions.saveSettings();
@@ -73,10 +60,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
     });
     $(document).on("input", "#bestMoveColor", function() {
         myVars.bestMoveColor = $(this).val();
-        myFunctions.saveSettings();
-    });
-    $(document).on("input", "#humanMoveColor", function() {
-        myVars.humanMoveColor = $(this).val();
         myFunctions.saveSettings();
     });
 }

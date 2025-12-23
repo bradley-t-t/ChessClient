@@ -130,37 +130,19 @@ function setupUtilities(myVars) {
         }
         return str2;
     };
-    myFunctions.displayBothMoves = function(bestMove, humanMove) {
+    myFunctions.displayRecommendedMove = function(move) {
         myFunctions.clearHighlights();
         
-        var bestFrom = bestMove.substring(0, 2);
-        var bestTo = bestMove.substring(2, 4);
-        var humanFrom = humanMove.substring(0, 2);
-        var humanTo = humanMove.substring(2, 4);
+        var fromSquare = move.substring(0, 2);
+        var toSquare = move.substring(2, 4);
         
-        var bestColor = myVars.bestMoveColor || "#5b8c5a";
-        var humanColor = myVars.humanMoveColor || "#c9a227";
+        var moveColor = myVars.bestMoveColor || "#5b8c5a";
         
-        if (bestFrom === humanFrom) {
-            myFunctions.highlightSplitSquare(bestFrom, bestColor, humanColor, "from");
-        } else {
-            myFunctions.highlightSingleSquare(bestFrom, bestColor, 0.5);
-            myFunctions.highlightSingleSquare(humanFrom, humanColor, 0.5);
-        }
-        
-        if (bestTo === humanTo) {
-            myFunctions.highlightSplitSquare(bestTo, bestColor, humanColor, "to");
-        } else {
-            myFunctions.highlightSingleSquare(bestTo, bestColor, 0.7);
-            myFunctions.highlightSingleSquare(humanTo, humanColor, 0.7);
-        }
+        myFunctions.highlightSingleSquare(fromSquare, moveColor, 0.5);
+        myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
         
         if (myVars.autoMove === true) {
-            if (myVars.useBestMove) {
-                myFunctions.movePiece(bestFrom, bestTo);
-            } else {
-                myFunctions.movePiece(humanFrom, humanTo);
-            }
+            myFunctions.movePiece(fromSquare, toSquare);
         }
     };
     myFunctions.highlightSingleSquare = function(square, color, opacity) {
@@ -388,12 +370,10 @@ function setupUtilities(myVars) {
     myFunctions.saveSettings = function() {
         try {
             GM_setValue("autoMove", myVars.autoMove);
-            GM_setValue("useBestMove", myVars.useBestMove);
             GM_setValue("timeDelayMin", $("#timeDelayMin").val());
             GM_setValue("timeDelayMax", $("#timeDelayMax").val());
             GM_setValue("depthValue", myVars.lastValue);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
-            GM_setValue("humanMoveColor", myVars.humanMoveColor);
             GM_setValue("playStyle", myVars.playStyle);
             GM_setValue("blunderRate", myVars.blunderRate);
             GM_setValue("adaptToRating", myVars.adaptToRating);
@@ -402,16 +382,13 @@ function setupUtilities(myVars) {
             GM_setValue("randomizeTiming", myVars.randomizeTiming);
             GM_setValue("mouseMovementRealism", myVars.mouseMovementRealism);
         } catch (error) {
-            console.error("Error saving settings:", error);
         }
     };
     myFunctions.loadSettings = function() {
         try {
             myVars.autoMove = GM_getValue("autoMove", false);
-            myVars.useBestMove = GM_getValue("useBestMove", false);
             myVars.lastValue = GM_getValue("depthValue", 3);
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
-            myVars.humanMoveColor = GM_getValue("humanMoveColor", "#c9a227");
             myVars.blunderRate = GM_getValue("blunderRate", 0.7);
             myVars.adaptToRating = GM_getValue("adaptToRating", true);
             myVars.useOpeningBook = GM_getValue("useOpeningBook", true);
@@ -423,7 +400,6 @@ function setupUtilities(myVars) {
                 myVars.playStyle = savedPlayStyle;
             }
         } catch (error) {
-            console.error("Error loading settings:", error);
         }
     };
     return myFunctions;

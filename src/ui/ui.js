@@ -232,11 +232,7 @@ function setupUI(myVars, myFunctions) {
         
         var elo = Math.round(400 + (skillFactor * 2400));
         
-        if (myVars.useBestMove) {
-            elo = 2800;
-        }
-        
-        elo = Math.max(400, Math.min(3200, elo));
+        elo = Math.max(400, Math.min(2800, elo));
         
         var eloEl = document.getElementById("eloValue");
         var barEl = document.getElementById("eloBarFill");
@@ -296,22 +292,9 @@ function setupUI(myVars, myFunctions) {
     };
     function applySettingsToUI(myVars2) {
         $("#autoMove").prop("checked", myVars2.autoMove);
-        $("#useBestMove").prop("checked", myVars2.useBestMove);
         $("#adaptToRating").prop("checked", myVars2.adaptToRating !== void 0 ? myVars2.adaptToRating : true);
         $("#useOpeningBook").prop("checked", myVars2.useOpeningBook !== void 0 ? myVars2.useOpeningBook : true);
         $("#randomizeTiming").prop("checked", myVars2.randomizeTiming !== void 0 ? myVars2.randomizeTiming : true);
-        
-        var useBestMoveRow = document.getElementById("useBestMoveRow");
-        var useBestMoveInput = document.getElementById("useBestMove");
-        if (myVars2.autoMove) {
-            useBestMoveRow.style.opacity = "1";
-            useBestMoveRow.style.pointerEvents = "auto";
-            useBestMoveInput.disabled = false;
-        } else {
-            useBestMoveRow.style.opacity = "0.5";
-            useBestMoveRow.style.pointerEvents = "none";
-            useBestMoveInput.disabled = true;
-        }
         
         $("#depthSlider").val(myVars2.lastValue);
         $("#depthValue").text(myVars2.lastValue);
@@ -320,9 +303,6 @@ function setupUI(myVars, myFunctions) {
         $("#timeDelayMax").val(GM_getValue("timeDelayMax", 1));
         if (myVars2.bestMoveColor) {
             $("#bestMoveColor").val(myVars2.bestMoveColor);
-        }
-        if (myVars2.humanMoveColor) {
-            $("#humanMoveColor").val(myVars2.humanMoveColor);
         }
         if (myVars2.playStyle) {
             const aggressiveValue = Math.round((myVars2.playStyle.aggressive - 0.3) / 0.5 * 10);
