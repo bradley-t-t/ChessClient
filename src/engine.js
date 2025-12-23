@@ -36,8 +36,7 @@ function setupEngine(myVars, myFunctions) {
         window.isThinking = true;
         myFunctions.spinner();
         engine.engine.postMessage(`setoption name MultiPV value 1`);
-        var searchDepth = Math.min(depth, 15);
-        engine.engine.postMessage(`go depth ${searchDepth}`);
+        engine.engine.postMessage(`go depth ${depth}`);
         myVars.lastValue = depth;
     };
     myFunctions.autoRun = function(lstValue) {
