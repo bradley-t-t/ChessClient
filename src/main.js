@@ -1,6 +1,7 @@
 window.isThinking = false;
 window.canGo = true;
 window.myTurn = false;
+window.wasPreviouslyMyTurn = false;
 window.board = null;
 
 function main() {
@@ -35,11 +36,18 @@ var waitForChessBoard = setInterval(() => {
         myVars.delay = Math.random() * (maxDel - minDel) + minDel;
         myVars.isThinking = window.isThinking;
         myFunctions.spinner();
+        
+        var wasMyTurn = window.myTurn;
         if (window.board && window.board.game && window.board.game.getTurn() == window.board.game.getPlayingAs()) {
             window.myTurn = true;
         } else {
             window.myTurn = false;
         }
+        
+        if (wasMyTurn && !window.myTurn) {
+            myFunctions.clearHighlights(true);
+        }
+        
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
     } else {
         myFunctions.loadEx();

@@ -84,9 +84,19 @@ function setupUI(myVars, myFunctions) {
             }, 500);
         }, 2500);
     };
-    myFunctions.clearHighlights = function() {
+    myFunctions.clearHighlights = function(withFade) {
         var highlights = document.querySelectorAll(".chess-client-highlight");
-        highlights.forEach(function(el) { el.remove(); });
+        if (withFade) {
+            highlights.forEach(function(el) {
+                el.style.transition = "opacity 0.4s ease";
+                el.style.opacity = "0";
+                setTimeout(function() {
+                    if (el.parentNode) el.remove();
+                }, 400);
+            });
+        } else {
+            highlights.forEach(function(el) { el.remove(); });
+        }
     };
     myFunctions.loadEx = function() {
         try {
