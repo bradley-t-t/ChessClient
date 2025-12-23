@@ -297,25 +297,20 @@ function setupUtilities(myVars) {
         }, 10);
     };
     myFunctions.getAdjustedDepth = function() {
+        const userDepth = myVars.lastValue || 11;
         const timeRemaining = myFunctions.estimateTimeRemaining();
-        const gamePhase = myFunctions.estimateGamePhase();
-        const positionType = myFunctions.analyzePositionType(window.board.game.getFEN());
-        const isPositionCritical = myFunctions.isPositionCriticalNow();
-        let baseDepth = myVars.lastValue;
+        
+        let depth = userDepth;
+        
         if (timeRemaining < 10) {
-            return Math.floor(Math.random() * 3) + 1;
+            depth = Math.min(userDepth, Math.floor(Math.random() * 3) + 1);
         } else if (timeRemaining < 30) {
-            return Math.floor(Math.random() * 4) + 4;
+            depth = Math.min(userDepth, Math.floor(Math.random() * 4) + 4);
         } else if (timeRemaining < 60) {
-            return Math.floor(Math.random() * 7) + 6;
-        } else if (timeRemaining < 120) {
-            return Math.floor(Math.random() * 7) + 9;
-        } else {
-            if (!isPositionCritical && Math.random() < 0.07) {
-                return Math.floor(Math.random() * 4) + 2;
-            }
-            return Math.floor(Math.random() * 9) + 11;
+            depth = Math.min(userDepth, Math.floor(Math.random() * 5) + 5);
         }
+        
+        return depth;
     };
     myFunctions.analyzePositionType = function(fen) {
         const piecesCount = fen.split(" ")[0].match(/[pnbrqkPNBRQK]/g).length;
