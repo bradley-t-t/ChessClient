@@ -254,7 +254,7 @@ function setupUtilities(myVars) {
         }
         var depthEl = document.getElementById("currentDepthValue");
         if (depthEl) {
-            depthEl.textContent = "-";
+            depthEl.textContent = "0%";
         }
 
         window.moveInProgress = true;

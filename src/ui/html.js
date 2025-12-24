@@ -115,7 +115,7 @@ var mainTemplate = `
                 <div class="depth-bar-container">
                     <div id="depthBarFill" class="depth-bar-fill"></div>
                 </div>
-                <span id="currentDepthValue" class="depth-value">-</span>
+                <span id="currentDepthValue" class="depth-value">0%</span>
             </div>
         </div>
 

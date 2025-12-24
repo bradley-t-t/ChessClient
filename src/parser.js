@@ -39,12 +39,29 @@ function setupParser(myVars, myFunctions) {
 
                 var depthEl = document.getElementById("currentDepthValue");
                 var barEl = document.getElementById("depthBarFill");
-                if (depthEl) {
-                    depthEl.textContent = maxDepth;
-                }
                 if (barEl && myFunctions.targetDepth > 0) {
-                    var percentage = Math.min(100, maxDepth / myFunctions.targetDepth * 100);
-                    barEl.style.width = percentage + "%";
+                    var targetPercentage = Math.min(100, Math.max(1, maxDepth / myFunctions.targetDepth * 100));
+                    var currentWidth = parseFloat(barEl.style.width) || 0;
+                    
+                    if (targetPercentage > currentWidth) {
+                        var step = (targetPercentage - currentWidth) / 10;
+                        var animateBar = function(current) {
+                            if (current < targetPercentage) {
+                                current = Math.min(current + step, targetPercentage);
+                                barEl.style.width = current + "%";
+                                if (depthEl) {
+                                    depthEl.textContent = Math.round(current) + "%";
+                                }
+                                requestAnimationFrame(function() { animateBar(current); });
+                            } else {
+                                barEl.style.width = targetPercentage + "%";
+                                if (depthEl) {
+                                    depthEl.textContent = Math.round(targetPercentage) + "%";
+                                }
+                            }
+                        };
+                        animateBar(currentWidth);
+                    }
                 }
 
                 var targetDepthLocal = myVars.lastValue || 11;

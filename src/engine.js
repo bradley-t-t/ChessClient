@@ -28,10 +28,21 @@ function setupEngine(myVars, myFunctions) {
 
         var reloadBtn = document.getElementById("relEngBut");
         if (reloadBtn) {
-            reloadBtn.classList.add("reloading");
+            var originalText = reloadBtn.textContent;
+            reloadBtn.disabled = true;
+            var dotCount = 0;
+            
+            var dotInterval = setInterval(function() {
+                dotCount = (dotCount % 3) + 1;
+                var dots = '.'.repeat(dotCount);
+                reloadBtn.textContent = 'Reloading' + dots;
+            }, 500);
+            
             setTimeout(function () {
-                reloadBtn.classList.remove("reloading");
-            }, 600);
+                clearInterval(dotInterval);
+                reloadBtn.textContent = originalText;
+                reloadBtn.disabled = false;
+            }, 2000);
         }
 
         $("#thinking-indicator").addClass("reloading");
@@ -91,7 +102,11 @@ function setupEngine(myVars, myFunctions) {
 
         var depthEl = document.getElementById("currentDepthValue");
         if (depthEl) {
-            depthEl.textContent = "-";
+            depthEl.textContent = "0%";
+        }
+        var barEl = document.getElementById("depthBarFill");
+        if (barEl) {
+            barEl.style.width = "0%";
         }
 
         if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);
