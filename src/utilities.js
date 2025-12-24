@@ -291,11 +291,10 @@ function setupUtilities(myVars) {
         if (gamePhase < 10) {
             depth = Math.min(depth, 15);
         } else if (gamePhase < 15) {
-            // Gradually and unpredictably increase depth from move 10 to 15
-            let progress = (gamePhase - 9) / 6; // 0 at move 9, 1 at move 15
-            let randomFactor = 0.7 + Math.random() * 0.6; // 0.7 to 1.3 for unpredictability
-            let targetDepth = 15 + Math.floor((userDepth - 15) * progress * randomFactor);
-            depth = Math.min(depth, Math.max(15, targetDepth));
+            // Gradually increase depth from move 10 to 14
+            let progress = (gamePhase - 9) / 5; // 0.2 at move 10, 1.0 at move 14
+            let targetDepth = 15 + Math.floor((userDepth - 15) * progress);
+            depth = Math.min(depth, targetDepth);
         }
         // After 15 moves, use full depth
 
