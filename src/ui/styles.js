@@ -772,13 +772,6 @@ var mainStyles = `
     padding: 10px 14px;
 }
 
-.version-display {
-    text-align: center;
-    margin-top: 8px;
-    font-size: 10px;
-    color: #999999;
-}
-
 @keyframes rotate {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -819,9 +812,11 @@ var mainStyles = `
 
 .version-display {
     text-align: center;
-    margin-top: 12px;
-    font-size: 11px;
+    padding: 10px 14px;
+    font-size: 10px;
     color: #999999;
+    background: #fafafa;
+    border-top: 1px solid #e5e5e5;
 }
 
 @keyframes rotate {

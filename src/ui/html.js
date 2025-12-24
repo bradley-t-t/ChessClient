@@ -123,10 +123,11 @@ var mainTemplate = `
             <button type="button" id="relEngBut" class="btn-primary" onclick="document.myFunctions.reloadChessEngine()">
                 Reload Engine
             </button>
-            <div class="version-display">
-                <span id="versionText"></span>
-            </div>
         </div>
+    </div>
+    
+    <div class="version-display">
+        <span id="versionText"></span>
     </div>
 </div>`;
 
