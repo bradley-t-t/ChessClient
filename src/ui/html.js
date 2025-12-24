@@ -189,26 +189,6 @@ var advancedSettingsTemplate = `
         </label>
     </div>
 
-    <div class="slider-group">
-        <div class="slider-header">
-            <span>Mouse Realism</span>
-            <span id="mouseMovementSliderValue">7</span>
-        </div>
-        <input type="range" id="mouseMovementSlider" min="1" max="10" value="7" class="slider">
-    </div>
-
-    <div class="input-row">
-        <label for="playingProfileSelect">Profile</label>
-        <select id="playingProfileSelect" class="select-field">
-            <option value="custom">Custom</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-            <option value="expert">Expert</option>
-            <option value="master">Master</option>
-        </select>
-    </div>
-
     <button type="button" id="resetDefaults" class="btn-reset">Reset to Defaults</button>
 </div>
 `;

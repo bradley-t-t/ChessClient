@@ -188,10 +188,6 @@ function setupUI(myVars, myFunctions) {
         if (myVars.randomizeTiming === true) score -= 1;
         else if (myVars.randomizeTiming === false) score += 1;
         
-        var mouseRealism = myVars.mouseMovementRealism !== undefined ? myVars.mouseMovementRealism : 0.7;
-        if (mouseRealism >= 0.8) score -= 1;
-        else if (mouseRealism <= 0.3) score += 1;
-        
         if (myVars.autoMove === true) score += 2;
         
         var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
