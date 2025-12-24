@@ -50,7 +50,7 @@ function setupParser(myVars, myFunctions) {
 
         // Display intermediate results for depths >= 3 and different from last displayed
         var targetDepthLocal = myVars.lastValue || 11;
-        if (myVars.autoMove && depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
+        if (depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
           var validMoves = multiPvMoves.filter(function (m) {
             return m && m.move;
           });
