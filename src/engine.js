@@ -64,6 +64,9 @@ function setupEngine(myVars, myFunctions) {
         var adjustedDepth = myFunctions.getAdjustedDepth();
         console.log("Running Stockfish 10 with Skill Level: " + skillLevel + " (ELO: " + estimatedElo + "), Requested Depth: " + depth + ", Adjusted Depth: " + adjustedDepth);
 
+        // Set target depth for progress bar
+        myFunctions.targetDepth = adjustedDepth;
+
         engine.engine.postMessage("setoption name Skill Level value " + skillLevel);
         engine.engine.postMessage("position fen " + fen);
         window.isThinking = true;

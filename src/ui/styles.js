@@ -659,8 +659,8 @@ var mainStyles = `
 .current-depth {
     margin-top: 6px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .depth-label {
@@ -669,10 +669,25 @@ var mainStyles = `
     font-weight: 500;
 }
 
+.depth-bar-container {
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.depth-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    background: #3b82f6;
+}
+
 .depth-value {
-    font-size: 12px;
+    font-size: 10px;
     color: #1a1a1a;
     font-weight: 600;
+    align-self: flex-end;
 }
 
 .btn-primary {

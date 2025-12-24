@@ -3,6 +3,7 @@ function setupParser(myVars, myFunctions) {
     var currentDepth = 0;
     var lastDisplayedDepth = 0;
     var maxDepth = 0;
+    var targetDepth = 0;
 
     myFunctions.parser = function (e) {
         if (e.data.includes(" pv ") && e.data.includes("multipv")) {
@@ -28,15 +29,20 @@ function setupParser(myVars, myFunctions) {
                 maxDepth = Math.max(maxDepth, depth);
                 multiPvMoves[pvNum - 1] = {move: move, score: score};
 
-                // Update current depth display
+                // Update current depth display and progress bar
                 var depthEl = document.getElementById("currentDepthValue");
+                var barEl = document.getElementById("depthBarFill");
                 if (depthEl) {
                     depthEl.textContent = maxDepth;
                 }
+                if (barEl && myFunctions.targetDepth > 0) {
+                    var percentage = Math.min(100, (maxDepth / myFunctions.targetDepth) * 100);
+                    barEl.style.width = percentage + "%";
+                }
 
                 // Display intermediate results for depths >= 3 and different from last displayed
-                var targetDepth = myVars.lastValue || 11;
-                if (depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepth) {
+                var targetDepthLocal = myVars.lastValue || 11;
+                if (depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
                     var validMoves = multiPvMoves.filter(function (m) {
                         return m && m.move;
                     });
@@ -83,7 +89,8 @@ function setupParser(myVars, myFunctions) {
             multiPvMoves = [];
             currentDepth = 0;
             lastDisplayedDepth = 0;
-            maxDepth = 0; // Reset max depth for next analysis
+            maxDepth = 0;
+            targetDepth = 0; // Reset target depth
         }
     };
 
