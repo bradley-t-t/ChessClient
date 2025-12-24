@@ -1,92 +1,102 @@
-window.isThinking = false;
-window.canGo = true;
-window.myTurn = false;
-window.wasPreviouslyMyTurn = false;
-window.board = null;
-window.lastAnalyzedFen = null;
-window.lastAnalysisStartTime = null;
-window.watchdogChecks = 0;
+const GameLoop = {
+    vars: null,
+    functions: null,
+    engine: null,
 
-function main() {
-    const myVars = initializeVariables();
-    const myFunctions = setupUtilities(myVars);
-    myFunctions.loadSettings();
-    const engine = setupEngine(myVars, myFunctions);
-    document.engine = engine;
-    document.myVars = myVars;
-    document.myFunctions = myFunctions;
-    setupUI(myVars, myFunctions, engine);
-    setupEventHandlers(myVars, myFunctions, engine);
-}
+    init() {
+        this.vars = initializeVariables();
+        this.functions = setupUtilities(this.vars);
+        this.functions.loadSettings();
+        this.engine = setupEngine(this.vars, this.functions);
+        
+        document.engine = this.engine;
+        document.myVars = this.vars;
+        document.myFunctions = this.functions;
+        
+        setupUI(this.vars, this.functions, this.engine);
+        setupEventHandlers(this.vars, this.functions, this.engine);
+    },
 
-window.addEventListener("load", (event) => {
-    main();
-});
+    checkTurnChange() {
+        const board = DOMHelpers.getBoard();
+        const wasPlayerTurn = AppState.isPlayerTurn;
+        
+        AppState.isPlayerTurn = DOMHelpers.isPlayerTurn(board);
+        
+        if (wasPlayerTurn && !AppState.isPlayerTurn) {
+            this.functions.clearHighlights(true);
+            AppState.lastAnalyzedFen = null;
+            AppState.resetProgress();
+        }
+    },
 
-var waitForChessBoard = setInterval(() => {
-    if (!document.myVars || !document.myFunctions) return;
-    const myVars = document.myVars;
-    const myFunctions = document.myFunctions;
-    if (myVars.loaded) {
-        window.board = $("chess-board")[0] || $("wc-chess-board")[0];
-        myFunctions.checkPageStatus();
-
-        if (!myVars.onGamePage) return;
-
-        myVars.autoMove = $("#autoMove")[0].checked;
-
-        var wasMyTurn = window.myTurn;
-        if (window.board && window.board.game && window.board.game.getTurn() == window.board.game.getPlayingAs()) {
-            window.myTurn = true;
-        } else {
-            window.myTurn = false;
-            window.canGo = true;
+    tryAnalyze() {
+        if (!this.vars.onGamePage || !AppState.canAnalyze || AppState.thinking || !AppState.isPlayerTurn) {
+            return;
         }
 
-        if (wasMyTurn && !window.myTurn) {
-            myFunctions.clearHighlights(true);
-            window.lastAnalyzedFen = null;
+        const board = DOMHelpers.getBoard();
+        const currentFen = DOMHelpers.getCurrentFEN(board);
+        
+        if (currentFen && currentFen !== AppState.lastAnalyzedFen) {
+            AppState.lastAnalyzedFen = currentFen;
+            AppState.startAnalysis();
+            this.functions.autoRun(this.vars.lastValue);
+        }
+    },
+
+    checkWatchdog() {
+        if (!this.vars.onGamePage || !AppState.isPlayerTurn || AppState.canAnalyze) {
+            AppState.watchdogChecks = 0;
+            return;
+        }
+
+        AppState.watchdogChecks++;
+        
+        if (AppState.watchdogChecks > CONSTANTS.TIMING.WATCHDOG_CHECK_THRESHOLD && 
+            AppState.lastAnalysisStartTime) {
+            const elapsed = Date.now() - AppState.lastAnalysisStartTime;
             
-            var barEl = document.getElementById("depthBarFill");
-            if (barEl) {
-                barEl.style.width = "0%";
+            if (elapsed > CONSTANTS.TIMING.WATCHDOG_TIMEOUT && !AppState.thinking) {
+                console.log("Watchdog: Detected hung state, resetting...");
+                AppState.reset();
             }
-            var depthEl = document.getElementById("currentDepthValue");
-            if (depthEl) {
-                depthEl.textContent = "0%";
+        }
+    },
+
+    tick() {
+        if (!this.vars || !this.functions) return;
+
+        if (this.vars.loaded) {
+            AppState.board = DOMHelpers.getBoard();
+            this.functions.checkPageStatus();
+
+            if (!this.vars.onGamePage) return;
+
+            const autoMoveCheckbox = DOMHelpers.getElement(CONSTANTS.SELECTORS.AUTO_MOVE);
+            if (autoMoveCheckbox) {
+                this.vars.autoMove = autoMoveCheckbox.checked;
             }
+
+            this.checkTurnChange();
+            
+            const depthText = DOMHelpers.getElement(CONSTANTS.SELECTORS.DEPTH_TEXT);
+            if (depthText) {
+                depthText.innerHTML = `Current Depth: <strong>${this.vars.lastValue}</strong>`;
+            }
+        } else {
+            this.functions.loadEx();
         }
 
-        $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
-    } else {
-        myFunctions.loadEx();
-    }
-    if (!document.engine.engine) {
-        myFunctions.loadChessEngine();
-    }
-    if (myVars.onGamePage && window.canGo == true && window.isThinking == false && window.myTurn) {
-        var currentFen = window.board.game.getFEN();
-        if (currentFen !== window.lastAnalyzedFen) {
-            window.canGo = false;
-            window.lastAnalyzedFen = currentFen;
-            window.lastAnalysisStartTime = Date.now();
-            window.watchdogChecks = 0;
-            myFunctions.autoRun(myVars.lastValue);
+        if (!this.engine.engine) {
+            this.functions.loadChessEngine();
         }
+
+        this.tryAnalyze();
+        this.checkWatchdog();
     }
-    
-    if (myVars.onGamePage && window.myTurn && !window.canGo) {
-        window.watchdogChecks++;
-        if (window.watchdogChecks > 300 && window.lastAnalysisStartTime) {
-            var timeSinceStart = Date.now() - window.lastAnalysisStartTime;
-            if (timeSinceStart > 30000 && !window.isThinking) {
-                console.log("Watchdog: Detected hung state, resetting...");
-                window.canGo = true;
-                window.lastAnalyzedFen = null;
-                window.watchdogChecks = 0;
-            }
-        }
-    } else {
-        window.watchdogChecks = 0;
-    }
-}, 100);
+};
+
+window.addEventListener("load", () => GameLoop.init());
+
+setInterval(() => GameLoop.tick(), CONSTANTS.TIMING.MAIN_LOOP_INTERVAL);
