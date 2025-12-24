@@ -596,10 +596,12 @@ var mainStyles = `
     color: #666666;
     text-transform: uppercase;
     letter-spacing: 0.8px;
+    display: block;
+    margin-bottom: 6px;
 }
 
 .score-value {
-    font-size: 18px;
+    font-size: 11px;
     font-weight: 700;
     color: #1a1a1a;
     line-height: 1;
@@ -633,10 +635,16 @@ var mainStyles = `
     background: #ef4444;
 }
 
+.score-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .score-description {
-    font-size: 10px;
+    font-size: 11px;
     color: #888888;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .elo-estimate {
@@ -658,10 +666,12 @@ var mainStyles = `
     color: #666666;
     text-transform: uppercase;
     letter-spacing: 0.8px;
+    display: block;
+    margin-bottom: 6px;
 }
 
 .elo-value {
-    font-size: 18px;
+    font-size: 11px;
     font-weight: 700;
     color: #1a1a1a;
     line-height: 1;
@@ -683,10 +693,16 @@ var mainStyles = `
     width: 0%;
 }
 
+.elo-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .elo-description {
-    font-size: 10px;
+    font-size: 11px;
     color: #888888;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .current-depth {
@@ -716,7 +732,7 @@ var mainStyles = `
 .depth-bar-fill {
     height: 100%;
     border-radius: 2px;
-    background: #89b4fa;
+    background: #10b981;
     width: 0%;
 }
 

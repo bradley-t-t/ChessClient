@@ -91,23 +91,24 @@ var mainTemplate = `
         </div>
 
         <div class="detection-score">
-            <div class="score-header">
-                <span class="score-label">Detection Risk</span>
-                <span id="detectionScore" class="score-value">5</span>
-            </div>
+            <span class="score-label">Detection Risk</span>
             <div class="score-bar">
                 <div id="scoreBarFill" class="score-bar-fill" style="width: 50%;"></div>
             </div>
-            <span id="scoreDescription" class="score-description">Moderate</span>
+            <div class="score-footer">
+                <span id="scoreDescription" class="score-description">Moderate</span>
+                <span id="detectionScore" class="score-value">5</span>
+            </div>
         </div>
 
         <div class="elo-estimate">
-            <div class="elo-header">
-                <span class="elo-label">Estimated ELO</span>
-                <span id="eloValue" class="elo-value">1500</span>
-            </div>
+            <span class="elo-label">Estimated ELO</span>
             <div class="elo-bar">
                 <div id="eloBarFill" class="elo-bar-fill" style="width: 50%;"></div>
+            </div>
+            <div class="elo-footer">
+                <span id="eloDescription" class="elo-description">Intermediate</span>
+                <span id="eloValue" class="elo-value">1500</span>
             </div>
             <span id="eloDescription" class="elo-description">Intermediate</span>
             <div class="current-depth">
