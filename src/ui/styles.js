@@ -74,6 +74,65 @@ var mainStyles = `
     animation: none;
 }
 
+.positional-meter {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 300px;
+    background: #2a2a2a;
+    border: 2px solid #444;
+    border-radius: 8px;
+    z-index: 999998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.meter-bar {
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 50%, #2a2a2a 50%, #000000 100%);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #555;
+}
+
+.meter-fill {
+    position: absolute;
+    width: 100%;
+    transition: height 0.3s ease, top 0.3s ease;
+}
+
+.meter-fill.white-advantage {
+    background: rgba(255, 255, 255, 0.4);
+    bottom: 50%;
+    height: 0%;
+}
+
+.meter-fill.black-advantage {
+    background: rgba(0, 0, 0, 0.4);
+    top: 50%;
+    height: 0%;
+}
+
+.meter-value {
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 6px;
+    border-radius: 4px;
+    min-width: 40px;
+}
+
 .minimized-tab {
     position: fixed;
     top: 20px;

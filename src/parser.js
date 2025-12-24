@@ -25,6 +25,10 @@ function setupParser(myVars, myFunctions) {
                 } else if (scoreMatch) {
                     score = parseInt(scoreMatch[1]);
                 }
+                
+                if (myFunctions.updatePositionalMeter) {
+                    myFunctions.updatePositionalMeter(score);
+                }
 
                 currentDepth = depth;
                 maxDepth = Math.max(maxDepth, depth);

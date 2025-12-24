@@ -18,6 +18,36 @@ function setupUI(myVars, myFunctions) {
             $("#thinking-indicator").removeClass("active");
         }
     };
+    
+    myFunctions.updatePositionalMeter = function (score) {
+        var meterValue = document.getElementById("meterValue");
+        var whiteFill = document.getElementById("meterFillWhite");
+        var blackFill = document.getElementById("meterFillBlack");
+        
+        if (!meterValue || !whiteFill || !blackFill) return;
+        
+        var evaluation = score / 100;
+        var cappedEval = Math.max(-10, Math.min(10, evaluation));
+        var percentage = Math.min(50, Math.abs(cappedEval) * 5);
+        
+        if (cappedEval > 0) {
+            whiteFill.style.height = percentage + "%";
+            blackFill.style.height = "0%";
+            meterValue.textContent = "+" + Math.abs(evaluation).toFixed(1);
+            meterValue.style.color = "#ffffff";
+        } else if (cappedEval < 0) {
+            blackFill.style.height = percentage + "%";
+            whiteFill.style.height = "0%";
+            meterValue.textContent = "-" + Math.abs(evaluation).toFixed(1);
+            meterValue.style.color = "#ffffff";
+        } else {
+            whiteFill.style.height = "0%";
+            blackFill.style.height = "0%";
+            meterValue.textContent = "0.0";
+            meterValue.style.color = "#ffffff";
+        }
+    };
+    
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
         var board = $("chess-board")[0] || $("wc-chess-board")[0];
         if (!board) return;
