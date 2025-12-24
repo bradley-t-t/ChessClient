@@ -89,14 +89,17 @@ function setupEngine(myVars, myFunctions) {
         if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);
         if (engine.reloadTimeout) clearTimeout(engine.reloadTimeout);
 
+        var timeout = myVars.lastValue > 10 ? 600000 : 180000;
+
         engine.thinkingTimeout = setTimeout(function () {
+            if (engine.analysisComplete) return;
             myFunctions.reloadChessEngine();
 
             engine.reloadTimeout = setTimeout(function () {
                 window.isThinking = false;
                 myFunctions.spinner();
             }, 180000);
-        }, 180000);
+        }, timeout);
     };
 
     myFunctions.autoRun = function (lstValue) {
