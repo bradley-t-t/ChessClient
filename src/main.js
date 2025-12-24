@@ -145,11 +145,11 @@ setInterval(() => {
     
     if (actuallyMyTurn && !window.canGo && !window.isThinking) {
         const timeSinceStart = window.lastAnalysisStartTime ? Date.now() - window.lastAnalysisStartTime : 0;
-        if (timeSinceStart > 2000) {
+        if (timeSinceStart > 1000) {
             console.log("Turn verification: Stuck waiting, forcing reset");
             myFunctions.stopEngine();
             window.canGo = true;
             window.lastAnalyzedFen = null;
         }
     }
-}, 500);
+}, 250);
