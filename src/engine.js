@@ -38,14 +38,12 @@ function setupEngine(myVars, myFunctions) {
         
         engine.engine.postMessage("setoption name UCI_LimitStrength value true");
         engine.engine.postMessage("setoption name UCI_Elo value " + estimatedElo);
-        engine.engine.postMessage("setoption name Skill Level value " + Math.floor((estimatedElo - 400) / 120));
         
         console.log("Running engine with UCI_Elo: " + estimatedElo + ", Depth: " + depth);
         
         engine.engine.postMessage("position fen " + fen);
         window.isThinking = true;
         myFunctions.spinner();
-        engine.engine.postMessage("setoption name MultiPV value 1");
         engine.engine.postMessage("go depth " + depth);
         myVars.lastValue = depth;
     };
