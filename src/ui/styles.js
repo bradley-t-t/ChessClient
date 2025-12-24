@@ -768,8 +768,8 @@ var mainStyles = `
 }
 
 .current-depth {
-    margin-top: 8px;
-    padding-top: 8px;
+    padding: 10px 14px;
+    background: #fafafa;
     border-top: 1px solid #e5e5e5;
     display: flex;
     flex-direction: column;
@@ -778,10 +778,12 @@ var mainStyles = `
 
 .depth-label {
     font-size: 9px;
+    font-weight: 700;
     color: #666666;
-    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    display: block;
+    margin-bottom: 6px;
 }
 
 .depth-bar-container {

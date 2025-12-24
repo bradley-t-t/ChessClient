@@ -29,14 +29,28 @@ function setupUI(myVars, myFunctions) {
             return;
         }
         
+        var playingAs = 1;
+        if (window.board && window.board.game && window.board.game.getPlayingAs) {
+            try {
+                playingAs = window.board.game.getPlayingAs();
+            } catch (e) {
+                playingAs = 1;
+            }
+        }
+        
         var evaluation = score / 100;
+        
+        if (playingAs === 2) {
+            evaluation = -evaluation;
+        }
+        
         var cappedEval = Math.max(-10, Math.min(10, evaluation));
         
         var whitePercentage = 50 + (cappedEval * 5);
         whitePercentage = Math.max(0, Math.min(100, whitePercentage));
         var blackPercentage = 100 - whitePercentage;
         
-        console.log("Meter Update - Score:", score, "Eval:", evaluation, "White:", whitePercentage + "%", "Black:", blackPercentage + "%");
+        console.log("Meter Update - Score:", score, "Playing as:", playingAs === 2 ? "Black" : "White", "Eval:", evaluation, "White:", whitePercentage + "%", "Black:", blackPercentage + "%");
         
         blackFill.style.height = blackPercentage + "%";
         whiteFill.style.height = whitePercentage + "%";
