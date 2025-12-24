@@ -106,3 +106,50 @@ setInterval(() => {
         window.watchdogChecks = 0;
     }
 }, 100);
+
+setInterval(() => {
+    if (!document.myVars || !document.myFunctions || !window.board) return;
+    
+    const myVars = document.myVars;
+    const myFunctions = document.myFunctions;
+    
+    if (!myVars.onGamePage || !window.board.game) return;
+    
+    const actuallyMyTurn = window.board.game.getTurn() === window.board.game.getPlayingAs();
+    
+    if (actuallyMyTurn !== window.myTurn) {
+        console.log("Turn verification: Correcting turn state mismatch");
+        window.myTurn = actuallyMyTurn;
+        
+        if (!actuallyMyTurn) {
+            console.log("Turn verification: Stopping engine - not our turn");
+            if (window.isThinking) {
+                myFunctions.stopEngine();
+            }
+            window.canGo = true;
+            window.isThinking = false;
+            window.lastAnalyzedFen = null;
+            myFunctions.clearHighlights(true);
+            
+            const barEl = document.getElementById("depthBarFill");
+            if (barEl) barEl.style.width = "0%";
+            const depthEl = document.getElementById("currentDepthValue");
+            if (depthEl) depthEl.textContent = "0%";
+        } else {
+            console.log("Turn verification: It's our turn - resetting for fresh analysis");
+            window.canGo = true;
+            window.lastAnalyzedFen = null;
+            window.isThinking = false;
+        }
+    }
+    
+    if (actuallyMyTurn && !window.canGo && !window.isThinking) {
+        const timeSinceStart = window.lastAnalysisStartTime ? Date.now() - window.lastAnalysisStartTime : 0;
+        if (timeSinceStart > 5000) {
+            console.log("Turn verification: Stuck waiting, forcing reset");
+            myFunctions.stopEngine();
+            window.canGo = true;
+            window.lastAnalyzedFen = null;
+        }
+    }
+}, 1000);
