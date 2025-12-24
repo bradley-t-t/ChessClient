@@ -1,5 +1,5 @@
 function setupUIEventHandlers(myVars, myFunctions) {
-    $(document).on("input", "#depthSlider", function() {
+    $(document).on("input", "#depthSlider", function () {
         const depth = parseInt($(this).val());
         $("#depthValue").text(depth);
         myVars.lastValue = depth;
@@ -7,21 +7,21 @@ function setupUIEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("click", "#decreaseDepth", function() {
+    $(document).on("click", "#decreaseDepth", function () {
         const currentDepth = parseInt($("#depthSlider").val());
         if (currentDepth > 1) {
             const newDepth = currentDepth - 1;
             $("#depthSlider").val(newDepth).trigger("input");
         }
     });
-    $(document).on("click", "#increaseDepth", function() {
+    $(document).on("click", "#increaseDepth", function () {
         const currentDepth = parseInt($("#depthSlider").val());
         if (currentDepth < 26) {
             const newDepth = currentDepth + 1;
             $("#depthSlider").val(newDepth).trigger("input");
         }
     });
-    $(document).on("click", ".tab-btn", function() {
+    $(document).on("click", ".tab-btn", function () {
         $(".tab-btn").removeClass("active");
         $(this).addClass("active");
         const tabId = $(this).data("tab");
@@ -31,7 +31,7 @@ function setupUIEventHandlers(myVars, myFunctions) {
 }
 
 function setupStyleEventHandlers(myVars, myFunctions) {
-    $(document).on("input", "#aggressiveSlider, #defensiveSlider, #tacticalSlider, #positionalSlider, #blunderRateSlider", function() {
+    $(document).on("input", "#aggressiveSlider, #defensiveSlider, #tacticalSlider, #positionalSlider, #blunderRateSlider", function () {
         const value = $(this).val();
         const styleType = this.id.replace("Slider", "");
         $(`#${styleType}Value`).text(value);
@@ -47,25 +47,25 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("change", "#autoMove", function() {
+    $(document).on("change", "#autoMove", function () {
         myVars.autoMove = $(this).prop("checked");
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("change", "#adaptToRating, #useOpeningBook, #randomizeTiming", function() {
+    $(document).on("change", "#adaptToRating, #useOpeningBook, #randomizeTiming", function () {
         const id = $(this).attr("id");
         myVars[id] = $(this).prop("checked");
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("input", "#bestMoveColor", function() {
+    $(document).on("input", "#bestMoveColor", function () {
         myVars.bestMoveColor = $(this).val();
         myFunctions.saveSettings();
     });
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
-    $(document).on("change", "#preferredOpeningSelect", function() {
+    $(document).on("change", "#preferredOpeningSelect", function () {
         const selectedOpening = $(this).val();
         if (selectedOpening === "random") {
             myVars.preferredOpenings = ["e4", "d4", "c4", "Nf3"].sort(() => Math.random() - 0.5);
@@ -74,14 +74,14 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         }
         myFunctions.saveSettings();
     });
-    $(document).on("change", "#timeDelayMin, #timeDelayMax", function() {
+    $(document).on("change", "#timeDelayMin, #timeDelayMax", function () {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
 }
 
 function setupEventHandlers(myVars, myFunctions, engine) {
-    $(document).ready(function() {
+    $(document).ready(function () {
         setupUIEventHandlers(myVars, myFunctions);
         setupStyleEventHandlers(myVars, myFunctions);
         setupAdvancedEventHandlers(myVars, myFunctions);

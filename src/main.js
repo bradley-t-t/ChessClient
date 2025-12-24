@@ -28,27 +28,27 @@ var waitForChessBoard = setInterval(() => {
     if (myVars.loaded) {
         window.board = $("chess-board")[0] || $("wc-chess-board")[0];
         myFunctions.checkPageStatus();
-        
+
         if (!myVars.onGamePage) return;
-        
+
         myVars.autoMove = $("#autoMove")[0].checked;
         let minDel = parseFloat($("#timeDelayMin")[0].value);
         let maxDel = parseFloat($("#timeDelayMax")[0].value);
         myVars.delay = Math.random() * (maxDel - minDel) + minDel;
         myVars.isThinking = window.isThinking;
         myFunctions.spinner();
-        
+
         var wasMyTurn = window.myTurn;
         if (window.board && window.board.game && window.board.game.getTurn() == window.board.game.getPlayingAs()) {
             window.myTurn = true;
         } else {
             window.myTurn = false;
         }
-        
+
         if (wasMyTurn && !window.myTurn) {
             myFunctions.clearHighlights(true);
         }
-        
+
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
     } else {
         myFunctions.loadEx();

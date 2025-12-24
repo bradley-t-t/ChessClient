@@ -4,16 +4,18 @@ function setupUtilities(myVars) {
     let s_br = s_br2 = s_wr = s_wr2 = 0;
     let obs = "";
     setupParser(myVars, myFunctions);
-    myFunctions.rescan = function(lev) {
-        var ari = $("chess-board").find(".piece").map(function() {
+    myFunctions.rescan = function (lev) {
+        var ari = $("chess-board").find(".piece").map(function () {
             return this.className;
         }).get();
         jack = ari.map((f) => f.substring(f.indexOf(" ") + 1));
+
         function removeWord(arr, word) {
             for (var i2 = 0; i2 < arr.length; i2++) {
                 arr[i2] = arr[i2].replace(word, "");
             }
         }
+
         removeWord(ari, "square-");
         jack = ari.map((f) => f.substring(f.indexOf(" ") + 1));
         for (var i = 0; i < jack.length; i++) {
@@ -130,94 +132,94 @@ function setupUtilities(myVars) {
         }
         return str2;
     };
-    myFunctions.displayRecommendedMove = function(move) {
+    myFunctions.displayRecommendedMove = function (move) {
         myFunctions.clearHighlights();
-        
+
         var fromSquare = move.substring(0, 2);
         var toSquare = move.substring(2, 4);
-        
+
         var moveColor = myVars.bestMoveColor || "#5b8c5a";
-        
+
         myFunctions.highlightSingleSquare(fromSquare, moveColor, 0.5);
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
-        
+
         if (myVars.autoMove === true) {
             myFunctions.movePiece(fromSquare, toSquare);
         }
     };
-    myFunctions.highlightSingleSquare = function(square, color, opacity) {
+    myFunctions.highlightSingleSquare = function (square, color, opacity) {
         var board = $("chess-board")[0] || $("wc-chess-board")[0];
         if (!board) return;
-        
+
         var squareNum = square.replace(/^a/, "1").replace(/^b/, "2").replace(/^c/, "3").replace(/^d/, "4").replace(/^e/, "5").replace(/^f/, "6").replace(/^g/, "7").replace(/^h/, "8");
-        
+
         var highlight = document.createElement("div");
         highlight.className = "chess-client-highlight";
         highlight.setAttribute("data-square", squareNum);
         highlight.style.cssText = "position: absolute; background: " + color + "; opacity: " + opacity + "; pointer-events: none; z-index: 100; border-radius: 4px;";
-        
+
         var boardRect = board.getBoundingClientRect();
         var squareSize = boardRect.width / 8;
-        
+
         var isFlipped = board.classList.contains("flipped") || $(board).find(".board").hasClass("flipped") || board.getAttribute("orientation") === "black";
-        
+
         var file = parseInt(squareNum[0]) - 1;
         var rank = 8 - parseInt(squareNum[1]);
-        
+
         if (isFlipped) {
             file = 7 - file;
             rank = 7 - rank;
         }
-        
+
         highlight.style.width = squareSize + "px";
         highlight.style.height = squareSize + "px";
         highlight.style.left = (file * squareSize) + "px";
         highlight.style.top = (rank * squareSize) + "px";
-        
+
         var boardElement = $(board).find(".board")[0] || board;
         if (boardElement) {
             boardElement.style.position = "relative";
             boardElement.appendChild(highlight);
         }
     };
-    myFunctions.highlightSplitSquare = function(square, color1, color2, type) {
+    myFunctions.highlightSplitSquare = function (square, color1, color2, type) {
         var board = $("chess-board")[0] || $("wc-chess-board")[0];
         if (!board) return;
-        
+
         var squareNum = square.replace(/^a/, "1").replace(/^b/, "2").replace(/^c/, "3").replace(/^d/, "4").replace(/^e/, "5").replace(/^f/, "6").replace(/^g/, "7").replace(/^h/, "8");
-        
+
         var highlight = document.createElement("div");
         highlight.className = "chess-client-highlight split-square";
         highlight.setAttribute("data-square", squareNum);
-        
+
         var opacity = type === "to" ? 0.7 : 0.5;
         highlight.style.cssText = "position: absolute; pointer-events: none; z-index: 100; border-radius: 4px; overflow: hidden; opacity: " + opacity + "; background: linear-gradient(135deg, " + color1 + " 50%, " + color2 + " 50%);";
-        
+
         var boardRect = board.getBoundingClientRect();
         var squareSize = boardRect.width / 8;
-        
+
         var isFlipped = board.classList.contains("flipped") || $(board).find(".board").hasClass("flipped") || board.getAttribute("orientation") === "black";
-        
+
         var file = parseInt(squareNum[0]) - 1;
         var rank = 8 - parseInt(squareNum[1]);
-        
+
         if (isFlipped) {
             file = 7 - file;
             rank = 7 - rank;
         }
-        
+
         highlight.style.width = squareSize + "px";
         highlight.style.height = squareSize + "px";
         highlight.style.left = (file * squareSize) + "px";
         highlight.style.top = (rank * squareSize) + "px";
-        
+
         var boardElement = $(board).find(".board")[0] || board;
         if (boardElement) {
             boardElement.style.position = "relative";
             boardElement.appendChild(highlight);
         }
     };
-    myFunctions.color = function(dat) {
+    myFunctions.color = function (dat) {
         response = dat;
         var res1 = response.substring(0, 2);
         var res2 = response.substring(2, 4);
@@ -227,12 +229,12 @@ function setupUtilities(myVars) {
         }
         window.isThinking = false;
         myFunctions.spinner();
-        
+
         myFunctions.clearHighlights();
         myFunctions.highlightSingleSquare(res1, myVars.bestMoveColor || "#5b8c5a", 0.5);
         myFunctions.highlightSingleSquare(res2, myVars.bestMoveColor || "#5b8c5a", 0.7);
     };
-    myFunctions.movePiece = function(from, to) {
+    myFunctions.movePiece = function (from, to) {
         let isLegalMove = false;
         let moveObject = null;
         for (let each = 0; each < window.board.game.getLegalMoves().length; each++) {
@@ -258,7 +260,7 @@ function setupUtilities(myVars) {
             }
         }, 100 + Math.random() * 300);
     };
-    myFunctions.other = function(delay) {
+    myFunctions.other = function (delay) {
         const gamePhase = myFunctions.estimateGamePhase();
         const positionComplexity = myFunctions.estimatePositionComplexity();
         let naturalDelay = delay;
@@ -278,12 +280,12 @@ function setupUtilities(myVars) {
             }
         }, 10);
     };
-    myFunctions.getAdjustedDepth = function() {
+    myFunctions.getAdjustedDepth = function () {
         const userDepth = myVars.lastValue || 11;
         const timeRemaining = myFunctions.estimateTimeRemaining();
-        
+
         let depth = userDepth;
-        
+
         if (timeRemaining < 10) {
             depth = Math.min(userDepth, Math.floor(Math.random() * 3) + 1);
         } else if (timeRemaining < 30) {
@@ -291,16 +293,16 @@ function setupUtilities(myVars) {
         } else if (timeRemaining < 60) {
             depth = Math.min(userDepth, Math.floor(Math.random() * 5) + 5);
         }
-        
+
         return depth;
     };
-    myFunctions.analyzePositionType = function(fen) {
+    myFunctions.analyzePositionType = function (fen) {
         const piecesCount = fen.split(" ")[0].match(/[pnbrqkPNBRQK]/g).length;
         if (piecesCount > 25) return "opening";
         if (piecesCount < 12) return "endgame";
         return "middlegame";
     };
-    myFunctions.isPositionCriticalNow = function() {
+    myFunctions.isPositionCriticalNow = function () {
         try {
             const inCheck = window.board.game.inCheck();
             const fen = window.board.game.getFEN();
@@ -312,7 +314,7 @@ function setupUtilities(myVars) {
             return false;
         }
     };
-    myFunctions.countMaterial = function(fen, isWhite) {
+    myFunctions.countMaterial = function (fen, isWhite) {
         const position = fen.split(" ")[0];
         let material = 0;
         const pieces = isWhite ? "PNBRQK" : "pnbrqk";
@@ -327,7 +329,7 @@ function setupUtilities(myVars) {
         }
         return material;
     };
-    myFunctions.estimateGamePhase = function() {
+    myFunctions.estimateGamePhase = function () {
         try {
             const moveList = $("vertical-move-list").children().length;
             return moveList / 2;
@@ -335,7 +337,7 @@ function setupUtilities(myVars) {
             return 15;
         }
     };
-    myFunctions.estimateTimeRemaining = function() {
+    myFunctions.estimateTimeRemaining = function () {
         let remainingTime = 600;
         try {
             const clockEl = document.querySelector(".clock-component.clock-bottom");
@@ -364,10 +366,10 @@ function setupUtilities(myVars) {
         }
         return remainingTime;
     };
-    myFunctions.estimatePositionComplexity = function() {
+    myFunctions.estimatePositionComplexity = function () {
         return Math.random() * 0.8 + 0.2;
     };
-    myFunctions.saveSettings = function() {
+    myFunctions.saveSettings = function () {
         try {
             GM_setValue("autoMove", myVars.autoMove);
             GM_setValue("timeDelayMin", $("#timeDelayMin").val());
@@ -384,7 +386,7 @@ function setupUtilities(myVars) {
         } catch (error) {
         }
     };
-    myFunctions.loadSettings = function() {
+    myFunctions.loadSettings = function () {
         try {
             myVars.autoMove = GM_getValue("autoMove", false);
             myVars.lastValue = GM_getValue("depthValue", 3);
