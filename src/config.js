@@ -1,1 +1,0 @@
-var currentVersion = "1.9.0";

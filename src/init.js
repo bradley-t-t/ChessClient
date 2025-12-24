@@ -1,3 +1,5 @@
+var currentVersion = "1.9.1";
+
 function initializeVariables() {
     const myVars = {
         delay: 0.1,
