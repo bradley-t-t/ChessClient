@@ -42,17 +42,26 @@ setInterval(() => {
         } else {
             window.myTurn = false;
             window.canGo = true;
+            window.isThinking = false;
         }
 
         if (wasMyTurn && !window.myTurn) {
             myFunctions.clearHighlights(true);
             window.lastAnalyzedFen = null;
+            window.isThinking = false;
+            window.canGo = true;
             
             const barEl = document.getElementById("depthBarFill");
             if (barEl) barEl.style.width = "0%";
             
             const depthEl = document.getElementById("currentDepthValue");
             if (depthEl) depthEl.textContent = "0%";
+        }
+        
+        if (!wasMyTurn && window.myTurn) {
+            window.canGo = true;
+            window.lastAnalyzedFen = null;
+            window.isThinking = false;
         }
 
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
@@ -77,13 +86,14 @@ setInterval(() => {
     
     if (myVars.onGamePage && window.myTurn && !window.canGo) {
         window.watchdogChecks++;
-        if (window.watchdogChecks > 300 && window.lastAnalysisStartTime) {
+        if (window.watchdogChecks > 100 && window.lastAnalysisStartTime) {
             const timeSinceStart = Date.now() - window.lastAnalysisStartTime;
-            if (timeSinceStart > 30000 && !window.isThinking) {
+            if (timeSinceStart > 10000 && !window.isThinking) {
                 console.log("Watchdog: Detected hung state, resetting...");
                 window.canGo = true;
                 window.lastAnalyzedFen = null;
                 window.watchdogChecks = 0;
+                window.isThinking = false;
             }
         }
     } else {
