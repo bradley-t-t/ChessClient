@@ -283,7 +283,6 @@ function setupUtilities(myVars) {
     };
     myFunctions.getAdjustedDepth = function () {
         const userDepth = myVars.lastValue || 11;
-        const timeRemaining = myFunctions.estimateTimeRemaining();
         const gamePhase = myFunctions.estimateGamePhase();
 
         let depth = userDepth;
@@ -299,14 +298,6 @@ function setupUtilities(myVars) {
             depth = Math.min(depth, Math.max(15, targetDepth));
         }
         // After 15 moves, use full depth
-
-        if (timeRemaining < 10) {
-            depth = Math.min(userDepth, Math.floor(Math.random() * 3) + 1);
-        } else if (timeRemaining < 30) {
-            depth = Math.min(userDepth, Math.floor(Math.random() * 4) + 4);
-        } else if (timeRemaining < 60) {
-            depth = Math.min(userDepth, Math.floor(Math.random() * 5) + 5);
-        }
 
         return depth;
     };
