@@ -248,6 +248,17 @@ function setupUtilities(myVars) {
         if (!isLegalMove) {
             return;
         }
+
+        // Reset progress bar when move is initiated
+        var barEl = document.getElementById("depthBarFill");
+        if (barEl) {
+            barEl.style.width = "0%";
+        }
+        var depthEl = document.getElementById("currentDepthValue");
+        if (depthEl) {
+            depthEl.textContent = "-";
+        }
+
         setTimeout(() => {
             try {
                 window.board.game.move({
