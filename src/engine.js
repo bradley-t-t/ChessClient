@@ -151,5 +151,23 @@ function setupEngine(myVars, myFunctions) {
         }
     };
 
+    myFunctions.stopEngine = function () {
+        if (engine.engine) {
+            engine.engine.postMessage("stop");
+        }
+        window.isThinking = false;
+        window.canGo = true;
+        engine.analysisComplete = true;
+        
+        if (engine.thinkingTimeout) {
+            clearTimeout(engine.thinkingTimeout);
+            engine.thinkingTimeout = null;
+        }
+        if (engine.reloadTimeout) {
+            clearTimeout(engine.reloadTimeout);
+            engine.reloadTimeout = null;
+        }
+    };
+
     return engine;
 }

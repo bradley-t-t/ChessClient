@@ -41,6 +41,9 @@ setInterval(() => {
             window.myTurn = true;
         } else {
             window.myTurn = false;
+            if (window.isThinking) {
+                myFunctions.stopEngine();
+            }
             window.canGo = true;
             window.isThinking = false;
         }
@@ -48,6 +51,9 @@ setInterval(() => {
         if (wasMyTurn && !window.myTurn) {
             myFunctions.clearHighlights(true);
             window.lastAnalyzedFen = null;
+            if (window.isThinking) {
+                myFunctions.stopEngine();
+            }
             window.isThinking = false;
             window.canGo = true;
             
@@ -90,10 +96,10 @@ setInterval(() => {
             const timeSinceStart = Date.now() - window.lastAnalysisStartTime;
             if (timeSinceStart > 10000 && !window.isThinking) {
                 console.log("Watchdog: Detected hung state, resetting...");
+                myFunctions.stopEngine();
                 window.canGo = true;
                 window.lastAnalyzedFen = null;
                 window.watchdogChecks = 0;
-                window.isThinking = false;
             }
         }
     } else {
