@@ -35,8 +35,12 @@ var waitForChessBoard = setInterval(() => {
         let minDel = parseFloat($("#timeDelayMin")[0].value);
         let maxDel = parseFloat($("#timeDelayMax")[0].value);
         myVars.delay = Math.random() * (maxDel - minDel) + minDel;
-        myVars.isThinking = window.isThinking;
-        myFunctions.spinner();
+
+        // Only call spinner if thinking state changed
+        if (myVars.isThinking !== window.isThinking) {
+            myVars.isThinking = window.isThinking;
+            myFunctions.spinner();
+        }
 
         var wasMyTurn = window.myTurn;
         if (window.board && window.board.game && window.board.game.getTurn() == window.board.game.getPlayingAs()) {

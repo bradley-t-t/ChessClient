@@ -106,6 +106,9 @@ function setupUI(myVars, myFunctions) {
     };
     myFunctions.loadEx = function () {
         try {
+            // Check if UI is already loaded
+            if (document.getElementById("settingsContainer")) return;
+            
             window.board = $("chess-board")[0] || $("wc-chess-board")[0];
             myVars.board = window.board;
             var div = document.createElement("div");
@@ -120,13 +123,18 @@ function setupUI(myVars, myFunctions) {
             minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-spinner"></span><span class="tab-label">Chess Client</span></div>';
             document.body.appendChild(minimizedTab);
 
-            var botStyles = document.createElement("style");
-            botStyles.innerHTML = mainStyles + advancedStyles;
-            document.head.appendChild(botStyles);
-            addAnimation(`@keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }`);
+            // Check if styles are already added
+            if (!document.querySelector('style[data-chess-client]')) {
+                var botStyles = document.createElement("style");
+                botStyles.setAttribute("data-chess-client", "true");
+                botStyles.innerHTML = mainStyles + advancedStyles;
+                document.head.appendChild(botStyles);
+                addAnimation(`@keyframes rotate {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }`);
+            }
+            
             $("#advanced-settings .advanced-controls").append(advancedSettingsTemplate);
             myFunctions.loadSettings();
             applySettingsToUI(myVars);
@@ -162,13 +170,28 @@ function setupUI(myVars, myFunctions) {
     };
     myFunctions.initMinimize = function () {
         var panel = document.getElementById("settingsContainer");
-        var minimizeBtn = document.getElementById("minimizeBtn");
+        var minimizeHint = document.getElementById("minimizeHint");
         var minimizedTab = document.getElementById("minimizedTab");
 
-        minimizeBtn.addEventListener("click", function (e) {
+        // Handle click on (Esc) hint
+        minimizeHint.addEventListener("click", function (e) {
             e.stopPropagation();
             panel.classList.add("minimized");
             minimizedTab.classList.add("visible");
+        });
+
+        // Handle Escape key
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                if (panel.classList.contains("minimized")) {
+                    panel.classList.remove("minimized");
+                    minimizedTab.classList.remove("visible");
+                } else {
+                    panel.classList.add("minimized");
+                    minimizedTab.classList.add("visible");
+                }
+            }
         });
 
         minimizedTab.addEventListener("click", function () {
