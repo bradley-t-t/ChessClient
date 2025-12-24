@@ -85,33 +85,9 @@ var mainTemplate = `
 
         <div class="tab-panel" id="advanced-settings">
             <div class="setting-group advanced-controls">
-                <div class="toggle-row">
-                    <span class="toggle-label">Adapt to Rating</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="adaptToRating" name="adaptToRating" class="toggle-input" value="true" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">Opening Book</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="useOpeningBook" name="useOpeningBook" class="toggle-input" value="true" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
                 <div class="input-row">
                     <label for="bestMoveColor">Recommended Move</label>
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
-                </div>
-                <div class="input-row">
-                    <label for="preferredOpeningSelect">Opening</label>
-                    <select id="preferredOpeningSelect" class="select-field">
-                        <option value="random">Random</option>
-                        <option value="e4">e4</option>
-                        <option value="d4">d4</option>
-                        <option value="c4">c4</option>
-                        <option value="Nf3">Nf3</option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -152,14 +128,6 @@ var mainTemplate = `
 
 var advancedSettingsTemplate = `
 <div class="advanced-section">
-    <div class="toggle-row">
-        <span class="toggle-label">Randomize Timing</span>
-        <label class="toggle">
-            <input type="checkbox" id="randomizeTiming" name="randomizeTiming" class="toggle-input" checked>
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-
     <button type="button" id="resetDefaults" class="btn-reset">Reset to Defaults</button>
 </div>
 `;

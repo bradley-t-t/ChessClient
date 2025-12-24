@@ -57,12 +57,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("change", "#adaptToRating, #useOpeningBook, #randomizeTiming", function () {
-        const id = $(this).attr("id");
-        myVars[id] = $(this).prop("checked");
-        myFunctions.saveSettings();
-        myFunctions.updateDetectionScore();
-    });
     $(document).on("input", "#bestMoveColor", function () {
         myVars.bestMoveColor = $(this).val();
         myFunctions.saveSettings();
@@ -70,15 +64,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
-    $(document).on("change", "#preferredOpeningSelect", function () {
-        const selectedOpening = $(this).val();
-        if (selectedOpening === "random") {
-            myVars.preferredOpenings = ["e4", "d4", "c4", "Nf3"].sort(() => Math.random() - 0.5);
-        } else {
-            myVars.preferredOpenings = [selectedOpening];
-        }
-        myFunctions.saveSettings();
-    });
     $(document).on("change", "#timeDelayMin, #timeDelayMax", function () {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
