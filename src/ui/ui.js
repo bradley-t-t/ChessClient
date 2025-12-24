@@ -13,11 +13,9 @@ function setupUI(myVars, myFunctions) {
     myFunctions.spinner = function () {
         if (window.isThinking == true) {
             $("#thinking-indicator").addClass("active");
-            // $("#minimizedTab .tab-spinner").addClass("active");
         }
         if (window.isThinking == false) {
             $("#thinking-indicator").removeClass("active");
-            // $("#minimizedTab .tab-spinner").removeClass("active");
         }
     };
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
@@ -62,13 +60,13 @@ function setupUI(myVars, myFunctions) {
 
         fromHighlight.style.width = squareSize + "px";
         fromHighlight.style.height = squareSize + "px";
-        fromHighlight.style.left = (fromFile * squareSize) + "px";
-        fromHighlight.style.top = (fromRank * squareSize) + "px";
+        fromHighlight.style.left = fromFile * squareSize + "px";
+        fromHighlight.style.top = fromRank * squareSize + "px";
 
         toHighlight.style.width = squareSize + "px";
         toHighlight.style.height = squareSize + "px";
-        toHighlight.style.left = (toFile * squareSize) + "px";
-        toHighlight.style.top = (toRank * squareSize) + "px";
+        toHighlight.style.left = toFile * squareSize + "px";
+        toHighlight.style.top = toRank * squareSize + "px";
 
         var boardElement = $(board).find(".board")[0] || board;
         if (boardElement) {
@@ -108,7 +106,7 @@ function setupUI(myVars, myFunctions) {
         try {
             // Check if UI is already loaded
             if (document.getElementById("settingsContainer")) return;
-            
+
             window.board = $("chess-board")[0] || $("wc-chess-board")[0];
             myVars.board = window.board;
             var div = document.createElement("div");
@@ -117,13 +115,6 @@ function setupUI(myVars, myFunctions) {
             div.prepend($(spinnerTemplate)[0]);
             document.body.appendChild(div);
 
-            // var minimizedTab = document.createElement("div");
-            // minimizedTab.setAttribute("id", "minimizedTab");
-            // minimizedTab.className = "minimized-tab";
-            // minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-label">Chess Client</span><span class="tab-spinner"></span></div>';
-            // document.body.appendChild(minimizedTab);
-
-            // Check if styles are already added
             if (!document.querySelector('style[data-chess-client]')) {
                 var botStyles = document.createElement("style");
                 botStyles.setAttribute("data-chess-client", "true");
@@ -134,7 +125,7 @@ function setupUI(myVars, myFunctions) {
                 100% { transform: rotate(360deg); }
             }`);
             }
-            
+
             $("#advanced-settings .advanced-controls").append(advancedSettingsTemplate);
             myFunctions.loadSettings();
             applySettingsToUI(myVars);
@@ -171,59 +162,40 @@ function setupUI(myVars, myFunctions) {
     myFunctions.initMinimize = function () {
         var panel = document.getElementById("settingsContainer");
         var minimizeHint = document.getElementById("minimizeHint");
-        // var minimizedTab = document.getElementById("minimizedTab");
 
-        // Handle click on (Esc) hint
         minimizeHint.addEventListener("click", function (e) {
             e.stopPropagation();
             panel.classList.add("minimized");
-            // minimizedTab.classList.add("visible");
         });
 
-        // Handle Escape key
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") {
                 e.preventDefault();
                 if (panel.classList.contains("minimized")) {
                     panel.classList.remove("minimized");
-                    // minimizedTab.classList.remove("visible");
                 } else {
                     panel.classList.add("minimized");
-                    // minimizedTab.classList.add("visible");
                 }
             }
         });
-
-        // minimizedTab.addEventListener("click", function () {
-        //     panel.classList.remove("minimized");
-        //     minimizedTab.classList.remove("visible");
-        // });
     };
     myFunctions.updateDetectionScore = function () {
         var score = 5;
 
         var depth = myVars.lastValue || 11;
-        if (depth <= 5) score -= 2;
-        else if (depth <= 10) score -= 1;
-        else if (depth >= 15) score += 2;
-        else if (depth >= 12) score += 1;
+        if (depth <= 5) score -= 2; else if (depth <= 10) score -= 1; else if (depth >= 15) score += 2; else if (depth >= 12) score += 1;
 
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.05;
-        if (blunderRate >= 0.5) score -= 2;
-        else if (blunderRate >= 0.3) score -= 1;
-        else if (blunderRate <= 0.1) score += 1;
-        else if (blunderRate <= 0.02) score += 2;
+        if (blunderRate >= 0.5) score -= 2; else if (blunderRate >= 0.3) score -= 1; else if (blunderRate <= 0.1) score += 1; else if (blunderRate <= 0.02) score += 2;
 
-        if (myVars.randomizeTiming === true) score -= 1;
-        else if (myVars.randomizeTiming === false) score += 1;
+        if (myVars.randomizeTiming === true) score -= 1; else if (myVars.randomizeTiming === false) score += 1;
 
         if (myVars.autoMove === true) score += 2;
 
         var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
         var maxDelay = parseFloat($("#timeDelayMax").val()) || 1;
         var avgDelay = (minDelay + maxDelay) / 2;
-        if (avgDelay >= 2) score -= 1;
-        else if (avgDelay <= 0.3) score += 1;
+        if (avgDelay >= 2) score -= 1; else if (avgDelay <= 0.3) score += 1;
 
         score = Math.max(1, Math.min(10, score));
 
@@ -233,18 +205,14 @@ function setupUI(myVars, myFunctions) {
 
         if (scoreEl) scoreEl.textContent = score;
         if (barEl) {
-            barEl.style.width = (score * 10) + "%";
+            barEl.style.width = score * 10 + "%";
             barEl.classList.remove("low", "medium", "high");
-            if (score <= 3) barEl.classList.add("low");
-            else if (score <= 6) barEl.classList.add("medium");
-            else barEl.classList.add("high");
+            if (score <= 3) barEl.classList.add("low"); else if (score <= 6) barEl.classList.add("medium"); else
+                barEl.classList.add("high");
         }
         if (descEl) {
-            if (score <= 2) descEl.textContent = "Very Safe";
-            else if (score <= 4) descEl.textContent = "Safe";
-            else if (score <= 6) descEl.textContent = "Moderate";
-            else if (score <= 8) descEl.textContent = "Risky";
-            else descEl.textContent = "Very Risky";
+            if (score <= 2) descEl.textContent = "Very Safe"; else if (score <= 4) descEl.textContent = "Safe"; else if (score <= 6) descEl.textContent = "Moderate"; else if (score <= 8) descEl.textContent = "Risky"; else
+                descEl.textContent = "Very Risky";
         }
 
         myFunctions.updateEloEstimate();
@@ -253,9 +221,9 @@ function setupUI(myVars, myFunctions) {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
 
-        var skillFactor = (depth / 21) * (1 - blunderRate);
+        var skillFactor = depth / 21 * (1 - blunderRate);
 
-        var elo = Math.round(400 + (skillFactor * 3000));
+        var elo = Math.round(400 + skillFactor * 3000);
 
         elo = Math.max(400, Math.min(3400, elo));
 
@@ -265,23 +233,12 @@ function setupUI(myVars, myFunctions) {
 
         if (eloEl) eloEl.textContent = elo;
         if (barEl) {
-            var percentage = ((elo - 400) / 3000) * 100;
+            var percentage = (elo - 400) / 3000 * 100;
             barEl.style.width = percentage + "%";
         }
         if (descEl) {
-            if (elo < 800) descEl.textContent = "Beginner";
-            else if (elo < 1000) descEl.textContent = "Novice";
-            else if (elo < 1200) descEl.textContent = "Amateur";
-            else if (elo < 1400) descEl.textContent = "Intermediate";
-            else if (elo < 1600) descEl.textContent = "Club Player";
-            else if (elo < 1800) descEl.textContent = "Tournament Player";
-            else if (elo < 2000) descEl.textContent = "Expert";
-            else if (elo < 2200) descEl.textContent = "Candidate Master";
-            else if (elo < 2400) descEl.textContent = "Master";
-            else if (elo < 2600) descEl.textContent = "International Master";
-            else if (elo < 2800) descEl.textContent = "Grandmaster";
-            else if (elo < 3000) descEl.textContent = "Super Grandmaster";
-            else descEl.textContent = "World Champion";
+            if (elo < 800) descEl.textContent = "Beginner"; else if (elo < 1000) descEl.textContent = "Novice"; else if (elo < 1200) descEl.textContent = "Amateur"; else if (elo < 1400) descEl.textContent = "Intermediate"; else if (elo < 1600) descEl.textContent = "Club Player"; else if (elo < 1800) descEl.textContent = "Tournament Player"; else if (elo < 2000) descEl.textContent = "Expert"; else if (elo < 2200) descEl.textContent = "Candidate Master"; else if (elo < 2400) descEl.textContent = "Master"; else if (elo < 2600) descEl.textContent = "International Master"; else if (elo < 2800) descEl.textContent = "Grandmaster"; else if (elo < 3000) descEl.textContent = "Super Grandmaster"; else
+                descEl.textContent = "World Champion";
         }
     };
     myFunctions.initDraggable = function () {
