@@ -29,6 +29,15 @@ function setupParser(myVars, myFunctions) {
                 maxDepth = Math.max(maxDepth, depth);
                 multiPvMoves[pvNum - 1] = {move: move, score: score};
 
+                // Force stop if target depth reached
+                if (maxDepth >= myFunctions.targetDepth && !window.stopSent) {
+                    if (document.engine && document.engine.engine) {
+                        document.engine.engine.postMessage("stop");
+                        window.stopSent = true;
+                        console.log("Sent stop command at depth " + maxDepth);
+                    }
+                }
+
                 // Update current depth display and progress bar
                 var depthEl = document.getElementById("currentDepthValue");
                 var barEl = document.getElementById("depthBarFill");
@@ -96,6 +105,7 @@ function setupParser(myVars, myFunctions) {
             lastDisplayedDepth = 0;
             maxDepth = 0;
             targetDepth = 0; // Reset target depth
+            window.stopSent = false; // Reset stop flag
         }
     };
 
