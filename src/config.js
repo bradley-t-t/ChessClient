@@ -1,1 +1,1 @@
-var currentVersion = "1.7.6";
+var currentVersion = "1.7.7";

@@ -265,20 +265,18 @@ function setupUtilities(myVars) {
 
         window.moveInProgress = true;
 
+        try {
+            window.board.game.move({
+                ...moveObject,
+                promotion: moveObject.promotion || "q",
+                animate: true,
+                userGenerated: true
+            });
+        } catch (error) {
+        }
         setTimeout(() => {
-            try {
-                window.board.game.move({
-                    ...moveObject,
-                    promotion: moveObject.promotion || "q",
-                    animate: true,
-                    userGenerated: true
-                });
-            } catch (error) {
-            }
-            setTimeout(() => {
-                window.moveInProgress = false;
-            }, 2000);
-        }, 100 + Math.random() * 300);
+            window.moveInProgress = false;
+        }, 2000);
     };
     myFunctions.getAdjustedDepth = function () {
         const userDepth = myVars.lastValue || 11;
