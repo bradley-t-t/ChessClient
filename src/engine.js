@@ -26,6 +26,14 @@ function setupEngine(myVars, myFunctions) {
             return;
         }
 
+        var reloadBtn = document.getElementById("relEngBut");
+        if (reloadBtn) {
+            reloadBtn.classList.add("reloading");
+            setTimeout(function () {
+                reloadBtn.classList.remove("reloading");
+            }, 600);
+        }
+
         $("#thinking-indicator").addClass("reloading");
 
         setTimeout(function () {

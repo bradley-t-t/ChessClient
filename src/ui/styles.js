@@ -549,167 +549,214 @@ var mainStyles = `
 }
 
 .detection-score {
-    padding: 14px 18px;
-    background: #fafafa;
-    border-top: 1px solid #ebebeb;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-top: 1px solid #f59e0b;
+    border-radius: 0 0 0 0;
 }
 
 .score-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
+    align-items: baseline;
+    margin-bottom: 10px;
 }
 
 .score-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #666666;
+    font-size: 11px;
+    font-weight: 700;
+    color: #78350f;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .score-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-size: 32px;
+    font-weight: 800;
+    color: #78350f;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .score-bar {
-    height: 6px;
-    background: #e8e8e8;
-    border-radius: 3px;
+    height: 8px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .score-bar-fill {
     height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s ease, background-color 0.3s ease;
-    background: #10b981;
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .score-bar-fill.low {
-    background: #10b981;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .score-bar-fill.medium {
-    background: #f59e0b;
+    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
 }
 
 .score-bar-fill.high {
-    background: #ef4444;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
 }
 
 .score-description {
-    font-size: 11px;
-    color: #888888;
-    font-weight: 500;
+    font-size: 12px;
+    color: #92400e;
+    font-weight: 600;
 }
 
 .elo-estimate {
-    padding: 14px 18px;
-    background: #fafafa;
-    border-top: 1px solid #ebebeb;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-top: 1px solid #3b82f6;
 }
 
 .elo-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
+    align-items: baseline;
+    margin-bottom: 10px;
 }
 
 .elo-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #666666;
+    font-size: 11px;
+    font-weight: 700;
+    color: #1e3a8a;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .elo-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e3a8a;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .elo-bar {
-    height: 6px;
-    background: #e8e8e8;
-    border-radius: 3px;
+    height: 8px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .elo-bar-fill {
     height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s ease, background-color 0.3s ease;
-    background: #3b82f6;
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
 }
 
 .elo-description {
-    font-size: 11px;
-    color: #888888;
-    font-weight: 500;
+    font-size: 12px;
+    color: #1e40af;
+    font-weight: 600;
 }
 
 .current-depth {
-    margin-top: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(30, 58, 138, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .depth-label {
     font-size: 11px;
-    color: #666666;
-    font-weight: 500;
+    color: #1e3a8a;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .depth-bar-container {
-    height: 4px;
-    background: #e8e8e8;
-    border-radius: 2px;
+    height: 6px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 3px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .depth-bar-fill {
     height: 100%;
-    border-radius: 2px;
-    transition: width 0.3s ease;
-    background: #3b82f6;
+    border-radius: 3px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
+    box-shadow: 0 0 6px rgba(139, 92, 246, 0.5);
 }
 
 .depth-value {
-    font-size: 10px;
-    color: #1a1a1a;
-    font-weight: 600;
+    font-size: 13px;
+    color: #1e3a8a;
+    font-weight: 700;
     align-self: flex-end;
 }
 
 .btn-primary {
     width: 100%;
-    background: #1a1a1a;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     color: #ffffff;
     border: none;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 14px 16px;
     font-size: 13px;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary:hover {
-    background: #333333;
+    background: linear-gradient(135deg, #2d2d2d 0%, #404040 100%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
 }
 
 .btn-primary:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-primary.reloading {
+    animation: reloadPulse 0.6s ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes reloadPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    25% {
+        transform: scale(0.95);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    75% {
+        transform: scale(0.98);
+    }
 }
 
 .btn-reset {

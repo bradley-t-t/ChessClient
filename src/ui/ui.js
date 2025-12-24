@@ -183,19 +183,17 @@ function setupUI(myVars, myFunctions) {
         var score = 5;
 
         var depth = myVars.lastValue || 11;
-        if (depth <= 5) score -= 2; else if (depth <= 10) score -= 1; else if (depth >= 15) score += 2; else if (depth >= 12) score += 1;
+        if (depth <= 5) score -= 2; else if (depth <= 10) score -= 1; else if (depth >= 18) score += 3; else if (depth >= 15) score += 2; else if (depth >= 12) score += 1;
 
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.05;
-        if (blunderRate >= 0.5) score -= 2; else if (blunderRate >= 0.3) score -= 1; else if (blunderRate <= 0.1) score += 1; else if (blunderRate <= 0.02) score += 2;
+        if (blunderRate >= 0.5) score -= 2; else if (blunderRate >= 0.3) score -= 1; else if (blunderRate <= 0.05) score += 2; else if (blunderRate <= 0.1) score += 1;
 
-        if (myVars.randomizeTiming === true) score -= 1; else if (myVars.randomizeTiming === false) score += 1;
-
-        if (myVars.autoMove === true) score += 2;
+        if (myVars.autoMove === true) score += 3;
 
         var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
         var maxDelay = parseFloat($("#timeDelayMax").val()) || 1;
         var avgDelay = (minDelay + maxDelay) / 2;
-        if (avgDelay >= 2) score -= 1; else if (avgDelay <= 0.3) score += 1;
+        if (avgDelay >= 2) score -= 1; else if (avgDelay <= 0.2) score += 2; else if (avgDelay <= 0.3) score += 1;
 
         score = Math.max(1, Math.min(10, score));
 
