@@ -36,10 +36,10 @@ function setupUI(myVars, myFunctions) {
         whitePercentage = Math.max(0, Math.min(100, whitePercentage));
         var blackPercentage = 100 - whitePercentage;
         
-        console.log("Updating meter - Score:", score, "Eval:", evaluation, "White%:", whitePercentage, "Black%:", blackPercentage);
+        console.log("Meter Update - Score:", score, "Eval:", evaluation, "White:", whitePercentage + "%", "Black:", blackPercentage + "%");
         
-        whiteFill.style.height = whitePercentage + "%";
         blackFill.style.height = blackPercentage + "%";
+        whiteFill.style.height = whitePercentage + "%";
         
         if (evaluation > 0) {
             meterValue.textContent = "+" + Math.abs(evaluation).toFixed(1);

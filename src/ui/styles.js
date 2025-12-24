@@ -99,25 +99,24 @@ var mainStyles = `
     position: relative;
     overflow: hidden;
     border: 1px solid #555;
-    background: #333;
+    background: #000000;
+    display: flex;
+    flex-direction: column;
 }
 
 .meter-fill {
-    position: absolute;
     width: 100%;
     transition: height 0.3s ease;
 }
 
-.meter-fill.white-advantage {
-    background: #ffffff;
-    bottom: 0;
-    height: 50%;
-}
-
 .meter-fill.black-advantage {
     background: #000000;
-    top: 0;
-    height: 50%;
+    order: 1;
+}
+
+.meter-fill.white-advantage {
+    background: #ffffff;
+    order: 2;
 }
 
 .meter-value {
