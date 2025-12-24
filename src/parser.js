@@ -85,6 +85,11 @@ function setupParser(myVars, myFunctions) {
                 clearTimeout(document.engine.reloadTimeout);
                 document.engine.reloadTimeout = null;
             }
+
+            // Mark analysis as complete
+            if (document.engine) {
+                document.engine.analysisComplete = true;
+            }
             
             multiPvMoves = [];
             currentDepth = 0;

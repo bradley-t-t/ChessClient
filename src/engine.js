@@ -25,6 +25,12 @@ function setupEngine(myVars, myFunctions) {
     };
     
     myFunctions.reloadChessEngine = function() {
+        // Don't reload if analysis has completed
+        if (engine.analysisComplete) {
+            console.log("Analysis completed, skipping reload.");
+            return;
+        }
+
         console.log("Reloading the chess engine!");
         
         // Add reloading visual effect
@@ -80,6 +86,9 @@ function setupEngine(myVars, myFunctions) {
 
         // Set target depth for progress bar
         myFunctions.targetDepth = adjustedDepth;
+
+        // Reset analysis complete flag
+        engine.analysisComplete = false;
 
         engine.engine.postMessage("setoption name Skill Level value " + skillLevel);
         engine.engine.postMessage("position fen " + fen);
