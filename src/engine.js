@@ -50,30 +50,6 @@ function setupEngine(myVars, myFunctions) {
         return Math.max(400, Math.min(3400, elo));
     };
     
-    myFunctions.getAdjustedDepth = function() {
-        var baseDepth = myVars.lastValue || 3;
-        var gamePhase = window.board.game.getPhase(); // Assume this function exists
-        var timeRemaining = window.board.game.getTimeRemaining(); // Assume this function exists
-        
-        // Adjust depth based on game phase
-        if (gamePhase === "opening") {
-            baseDepth = Math.min(5, baseDepth + 1);
-        } else if (gamePhase === "middlegame") {
-            baseDepth = Math.max(3, baseDepth);
-        } else if (gamePhase === "endgame") {
-            baseDepth = Math.max(2, baseDepth - 1);
-        }
-        
-        // Further adjust depth based on time remaining
-        if (timeRemaining < 30000) { // Less than 30 seconds
-            baseDepth = Math.max(1, baseDepth - 1);
-        } else if (timeRemaining > 60000) { // More than 60 seconds
-            baseDepth += 1;
-        }
-        
-        return baseDepth;
-    };
-    
     myFunctions.runChessEngine = function(depth) {
         var fen = window.board.game.getFEN();
         var estimatedElo = myFunctions.getEstimatedElo();
