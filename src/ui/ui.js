@@ -134,11 +134,15 @@ function setupUI(myVars, myFunctions) {
     };
     myFunctions.loadEx = function () {
         try {
-            // Check if UI is already loaded
             if (document.getElementById("settingsContainer")) return;
 
             window.board = $("chess-board")[0] || $("wc-chess-board")[0];
             myVars.board = window.board;
+            
+            var meterDiv = document.createElement("div");
+            meterDiv.innerHTML = positionalMeterTemplate;
+            document.body.appendChild(meterDiv.firstElementChild);
+            
             var div = document.createElement("div");
             div.setAttribute("id", "settingsContainer");
             div.innerHTML = mainTemplate;

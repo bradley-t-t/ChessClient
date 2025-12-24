@@ -1,4 +1,4 @@
-var mainTemplate = `
+var positionalMeterTemplate = `
 <div class="positional-meter" id="positionalMeter">
     <div class="meter-bar">
         <div class="meter-fill white-advantage" id="meterFillWhite"></div>
@@ -6,7 +6,9 @@ var mainTemplate = `
     </div>
     <div class="meter-value" id="meterValue">0.0</div>
 </div>
+`;
 
+var mainTemplate = `
 <div class="minimized-tab" id="minimizedTab">
     <span class="tab-label">Chess Client</span>
 </div>
