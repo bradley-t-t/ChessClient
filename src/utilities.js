@@ -132,18 +132,19 @@ function setupUtilities(myVars) {
         }
         return str2;
     };
-    myFunctions.displayRecommendedMove = function (move) {
+    myFunctions.displayRecommendedMove = function (move, isIntermediate) {
         myFunctions.clearHighlights();
 
         var fromSquare = move.substring(0, 2);
         var toSquare = move.substring(2, 4);
 
-        var moveColor = myVars.bestMoveColor || "#5b8c5a";
+        // Use different color for intermediate vs final results
+        var moveColor = isIntermediate ? "#ffa500" : (myVars.bestMoveColor || "#5b8c5a"); // Orange for intermediate, configured color for final
 
         myFunctions.highlightSingleSquare(fromSquare, moveColor, 0.5);
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
 
-        if (myVars.autoMove === true) {
+        if (!isIntermediate && myVars.autoMove === true) {
             myFunctions.movePiece(fromSquare, toSquare);
         }
     };

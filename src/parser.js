@@ -1,14 +1,18 @@
 function setupParser(myVars, myFunctions) {
     var multiPvMoves = [];
+    var currentDepth = 0;
+    var lastDisplayedDepth = 0;
 
     myFunctions.parser = function (e) {
         if (e.data.includes(" pv ") && e.data.includes("multipv")) {
+            var depthMatch = e.data.match(/depth (\d+)/);
             var pvMatch = e.data.match(/multipv (\d+)/);
             var moveMatch = e.data.match(/ pv ([a-h][1-8][a-h][1-8][qrbn]?)/);
             var scoreMatch = e.data.match(/score cp (-?\d+)/);
             var mateMatch = e.data.match(/score mate (-?\d+)/);
 
-            if (pvMatch && moveMatch) {
+            if (depthMatch && pvMatch && moveMatch) {
+                var depth = parseInt(depthMatch[1]);
                 var pvNum = parseInt(pvMatch[1]);
                 var move = moveMatch[1];
                 var score = 0;
@@ -19,7 +23,23 @@ function setupParser(myVars, myFunctions) {
                     score = parseInt(scoreMatch[1]);
                 }
 
+                currentDepth = depth;
                 multiPvMoves[pvNum - 1] = {move: move, score: score};
+
+                // Display intermediate results for depths >= 3 and different from last displayed
+                var targetDepth = myVars.lastValue || 11;
+                if (depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepth) {
+                    var validMoves = multiPvMoves.filter(function (m) {
+                        return m && m.move;
+                    });
+
+                    if (validMoves.length > 0) {
+                        var selectedMove = myFunctions.selectMoveBySkill(validMoves, validMoves[0].move);
+                        console.log("Intermediate result at depth " + depth + ": " + selectedMove);
+                        myFunctions.displayRecommendedMove(selectedMove, true); // true = intermediate
+                        lastDisplayedDepth = depth;
+                    }
+                }
             }
         }
 
@@ -36,9 +56,9 @@ function setupParser(myVars, myFunctions) {
 
             var selectedMove = myFunctions.selectMoveBySkill(validMoves, bestMove);
 
-            console.log("Best move: " + bestMove + ", Selected move: " + selectedMove);
+            console.log("Final result at depth " + (myVars.lastValue || 11) + ": " + selectedMove);
 
-            myFunctions.displayRecommendedMove(selectedMove);
+            myFunctions.displayRecommendedMove(selectedMove, false); // false = final
             window.isThinking = false;
             myFunctions.spinner();
             
@@ -53,6 +73,8 @@ function setupParser(myVars, myFunctions) {
             }
             
             multiPvMoves = [];
+            currentDepth = 0;
+            lastDisplayedDepth = 0;
         }
     };
 
