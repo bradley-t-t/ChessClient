@@ -110,7 +110,6 @@ var mainTemplate = `
                 <span id="eloDescription" class="elo-description">Intermediate</span>
                 <span id="eloValue" class="elo-value">1500</span>
             </div>
-            <span id="eloDescription" class="elo-description">Intermediate</span>
             <div class="current-depth">
                 <span class="depth-label">Analysis Progress</span>
                 <div class="depth-bar-container">
