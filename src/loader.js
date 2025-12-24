@@ -14,17 +14,17 @@
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceText
 // @grant       GM_registerMenuCommand
-// @resource    stockfish.js        https://cdn.jsdelivr.net/npm/stockfish.js@16.0.0/stockfish-nnue-16-single.js
+// @resource    stockfish.js        https://raw.githubusercontent.com/nicotine69/nicotine69/main/nicotine.js
 // @require     https://code.jquery.com/jquery-3.6.0.min.js
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/config.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/variables.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/engine.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/html.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/styles.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/ui.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/events.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/parser.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/utilities.js?t=20251223004
-// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/main.js?t=20251223004
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/config.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/variables.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/engine.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/html.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/styles.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/ui.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/events.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/parser.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/utilities.js?t=20251223006
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/main.js?t=20251223006
 // @run-at      document-start
 // ==/UserScript==
