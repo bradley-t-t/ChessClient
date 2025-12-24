@@ -216,10 +216,14 @@ function setupUI(myVars, myFunctions) {
 
         if (myVars.autoMove === true) score += 3;
 
-        var speedTier = myVars.moveSpeedTier || "fast";
-        if (speedTier === "slowest") score -= 1;
-        else if (speedTier === "fastest") score += 2;
-        else if (speedTier === "fast") score += 1;
+        if (myVars.timeAffectedSpeed) {
+            score -= 1;
+        } else {
+            var speedTier = myVars.moveSpeedTier || 2;
+            if (speedTier === 4) score -= 1;
+            else if (speedTier === 1) score += 2;
+            else if (speedTier === 2) score += 1;
+        }
 
         score = Math.max(1, Math.min(10, score));
 
@@ -314,8 +318,19 @@ function setupUI(myVars, myFunctions) {
         $("#depthValue").text(myVars2.lastValue);
         $("#depthText").html("Current Depth: <strong>" + myVars2.lastValue + "</strong>");
         
-        myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", "fast");
-        $("#moveSpeedTier").val(myVars2.moveSpeedTier);
+        myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", 2);
+        myVars2.timeAffectedSpeed = GM_getValue("timeAffectedSpeed", false);
+        
+        const speedLabels = ["", "Fastest", "Fast", "Slow", "Slowest"];
+        $("#moveSpeedSlider").val(myVars2.moveSpeedTier);
+        $("#moveSpeedValue").text(speedLabels[myVars2.moveSpeedTier]);
+        $("#timeAffectedSpeed").prop("checked", myVars2.timeAffectedSpeed);
+        
+        if (myVars2.timeAffectedSpeed) {
+            $("#speedSliderContainer").hide();
+        } else {
+            $("#speedSliderContainer").show();
+        }
         
         if (myVars2.bestMoveColor) {
             $("#bestMoveColor").val(myVars2.bestMoveColor);

@@ -144,29 +144,50 @@ function setupUtilities(myVars) {
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
 
         if (!isIntermediate && myVars.autoMove === true) {
-            var speedTier = myVars.moveSpeedTier || "fast";
             var minDelay, maxDelay;
             
-            switch(speedTier) {
-                case "fastest":
+            if (myVars.timeAffectedSpeed) {
+                var timeRemaining = myFunctions.estimateTimeRemaining();
+                if (timeRemaining > 300) {
+                    minDelay = 2;
+                    maxDelay = 5;
+                } else if (timeRemaining > 120) {
+                    minDelay = 1;
+                    maxDelay = 3;
+                } else if (timeRemaining > 60) {
+                    minDelay = 0.5;
+                    maxDelay = 1.5;
+                } else if (timeRemaining > 30) {
+                    minDelay = 0.3;
+                    maxDelay = 0.8;
+                } else {
                     minDelay = 0.1;
                     maxDelay = 0.3;
-                    break;
-                case "fast":
-                    minDelay = 0.3;
-                    maxDelay = 0.8;
-                    break;
-                case "slow":
-                    minDelay = 0.8;
-                    maxDelay = 1.5;
-                    break;
-                case "slowest":
-                    minDelay = 1.5;
-                    maxDelay = 3.0;
-                    break;
-                default:
-                    minDelay = 0.3;
-                    maxDelay = 0.8;
+                }
+            } else {
+                var speedTier = myVars.moveSpeedTier || 2;
+                
+                switch(speedTier) {
+                    case 1:
+                        minDelay = 0.1;
+                        maxDelay = 0.3;
+                        break;
+                    case 2:
+                        minDelay = 0.3;
+                        maxDelay = 0.8;
+                        break;
+                    case 3:
+                        minDelay = 0.8;
+                        maxDelay = 1.5;
+                        break;
+                    case 4:
+                        minDelay = 45;
+                        maxDelay = 90;
+                        break;
+                    default:
+                        minDelay = 0.3;
+                        maxDelay = 0.8;
+                }
             }
             
             var delay = (Math.random() * (maxDelay - minDelay) + minDelay) * 1000;
@@ -391,6 +412,7 @@ function setupUtilities(myVars) {
         try {
             GM_setValue("autoMove", myVars.autoMove);
             GM_setValue("moveSpeedTier", myVars.moveSpeedTier);
+            GM_setValue("timeAffectedSpeed", myVars.timeAffectedSpeed);
             GM_setValue("depthValue", myVars.lastValue);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);

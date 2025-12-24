@@ -69,25 +69,58 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
-    $(document).on("change", "#moveSpeedTier", function () {
-        myVars.moveSpeedTier = $(this).val();
+    const speedLabels = ["", "Fastest", "Fast", "Slow", "Slowest"];
+    
+    $(document).on("input", "#moveSpeedSlider", function () {
+        const speed = parseInt($(this).val());
+        $("#moveSpeedValue").text(speedLabels[speed]);
+        myVars.moveSpeedTier = speed;
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
+    
+    $(document).on("click", "#decreaseSpeed", function () {
+        const currentSpeed = parseInt($("#moveSpeedSlider").val());
+        if (currentSpeed > 1) {
+            $("#moveSpeedSlider").val(currentSpeed - 1).trigger("input");
+        }
+    });
+    
+    $(document).on("click", "#increaseSpeed", function () {
+        const currentSpeed = parseInt($("#moveSpeedSlider").val());
+        if (currentSpeed < 4) {
+            $("#moveSpeedSlider").val(currentSpeed + 1).trigger("input");
+        }
+    });
+    
+    $(document).on("change", "#timeAffectedSpeed", function () {
+        myVars.timeAffectedSpeed = $(this).prop("checked");
+        const speedContainer = $("#speedSliderContainer");
+        if (myVars.timeAffectedSpeed) {
+            speedContainer.hide();
+        } else {
+            speedContainer.show();
+        }
+        myFunctions.saveSettings();
+        myFunctions.updateDetectionScore();
+    });
+    
     $(document).on("click", "#resetDefaults", function () {
         myVars.autoMove = false;
         myVars.lastValue = 7;
         myVars.blunderRate = 0.1;
         myVars.bestMoveColor = "#87ceeb";
         myVars.intermediateMoveColor = "#ffdab9";
-        myVars.moveSpeedTier = "fast";
+        myVars.moveSpeedTier = 2;
+        myVars.timeAffectedSpeed = false;
 
         $("#autoMove").prop("checked", myVars.autoMove);
         $("#depthSlider").val(myVars.lastValue).trigger("input");
         $("#blunderRateSlider").val(1).trigger("input");
         $("#bestMoveColor").val(myVars.bestMoveColor);
         $("#intermediateMoveColor").val(myVars.intermediateMoveColor);
-        $("#moveSpeedTier").val(myVars.moveSpeedTier);
+        $("#moveSpeedSlider").val(myVars.moveSpeedTier).trigger("input");
+        $("#timeAffectedSpeed").prop("checked", myVars.timeAffectedSpeed).trigger("change");
 
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
