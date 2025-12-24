@@ -177,19 +177,19 @@ var mainStyles = `
     display: flex;
 }
 
-.thinking-spinner {
-    width: 12px;
-    height: 12px;
-    border: 2px solid #bbf7d0;
-    border-top-color: #22c55e;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+.thinking-indicator.reloading {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    animation: flash-red 1.5s ease-in-out 3;
 }
 
-.thinking-text {
-    font-size: 11px;
-    font-weight: 600;
-    color: #16a34a;
+.thinking-indicator.reloading .thinking-spinner {
+    border: 2px solid #fecaca;
+    border-top-color: #dc2626;
+}
+
+.thinking-indicator.reloading .thinking-text {
+    color: #dc2626;
 }
 
 @keyframes spin {
@@ -199,6 +199,17 @@ var mainStyles = `
 @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes flash-red {
+    0%, 100% { 
+        background: #f0fdf4; 
+        border-color: #bbf7d0; 
+    }
+    50% { 
+        background: #fef2f2; 
+        border-color: #fecaca; 
+    }
 }
 
 .client-tabs {

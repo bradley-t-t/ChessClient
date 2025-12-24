@@ -26,6 +26,15 @@ function setupEngine(myVars, myFunctions) {
     
     myFunctions.reloadChessEngine = function() {
         console.log("Reloading the chess engine!");
+        
+        // Add reloading visual effect
+        $("#thinking-indicator").addClass("reloading");
+        
+        // Remove reloading class after animation completes (4.5 seconds)
+        setTimeout(function() {
+            $("#thinking-indicator").removeClass("reloading");
+        }, 4500);
+        
         if (engine.engine) {
             engine.engine.terminate();
         }
@@ -65,18 +74,18 @@ function setupEngine(myVars, myFunctions) {
         if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);
         if (engine.reloadTimeout) clearTimeout(engine.reloadTimeout);
 
-        // Set timeout to reload engine after 60 seconds
+        // Set timeout to reload engine after 90 seconds
         engine.thinkingTimeout = setTimeout(function() {
-            console.log("Engine thinking for too long (60s), reloading...");
+            console.log("Engine thinking for too long (90s), reloading...");
             myFunctions.reloadChessEngine();
             
-            // Set another timeout to stop thinking if it continues for another 60 seconds
+            // Set another timeout to stop thinking if it continues for another 90 seconds
             engine.reloadTimeout = setTimeout(function() {
-                console.log("Engine still thinking after reload (120s total), stopping...");
+                console.log("Engine still thinking after reload (180s total), stopping...");
                 window.isThinking = false;
                 myFunctions.spinner();
-            }, 60000);
-        }, 60000);
+            }, 90000);
+        }, 90000);
     };
     
     myFunctions.autoRun = function(lstValue) {
