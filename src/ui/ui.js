@@ -164,10 +164,14 @@ function setupUI(myVars, myFunctions) {
         var minimizeHint = document.getElementById("minimizeHint");
         var minimizedTab = document.getElementById("minimizedTab");
 
-        panel.classList.add("minimized");
+        panel.classList.add("minimized", "initial-load");
         if (minimizedTab) {
             minimizedTab.classList.add("visible");
         }
+        
+        setTimeout(function() {
+            panel.classList.remove("initial-load");
+        }, 100);
 
         minimizeHint.addEventListener("click", function (e) {
             e.stopPropagation();

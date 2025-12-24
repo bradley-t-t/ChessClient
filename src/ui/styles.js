@@ -70,6 +70,10 @@ var mainStyles = `
     pointer-events: none;
 }
 
+#settingsContainer.minimized.initial-load {
+    animation: none;
+}
+
 .minimized-tab {
     position: fixed;
     top: 20px;
