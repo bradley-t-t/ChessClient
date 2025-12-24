@@ -13,11 +13,11 @@ function setupUI(myVars, myFunctions) {
     myFunctions.spinner = function () {
         if (window.isThinking == true) {
             $("#thinking-indicator").addClass("active");
-            $("#minimizedTab .tab-spinner").addClass("active");
+            // $("#minimizedTab .tab-spinner").addClass("active");
         }
         if (window.isThinking == false) {
             $("#thinking-indicator").removeClass("active");
-            $("#minimizedTab .tab-spinner").removeClass("active");
+            // $("#minimizedTab .tab-spinner").removeClass("active");
         }
     };
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
@@ -117,11 +117,11 @@ function setupUI(myVars, myFunctions) {
             div.prepend($(spinnerTemplate)[0]);
             document.body.appendChild(div);
 
-            var minimizedTab = document.createElement("div");
-            minimizedTab.setAttribute("id", "minimizedTab");
-            minimizedTab.className = "minimized-tab";
-            minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-label">Chess Client</span><span class="tab-spinner"></span></div>';
-            document.body.appendChild(minimizedTab);
+            // var minimizedTab = document.createElement("div");
+            // minimizedTab.setAttribute("id", "minimizedTab");
+            // minimizedTab.className = "minimized-tab";
+            // minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-label">Chess Client</span><span class="tab-spinner"></span></div>';
+            // document.body.appendChild(minimizedTab);
 
             // Check if styles are already added
             if (!document.querySelector('style[data-chess-client]')) {
@@ -171,13 +171,13 @@ function setupUI(myVars, myFunctions) {
     myFunctions.initMinimize = function () {
         var panel = document.getElementById("settingsContainer");
         var minimizeHint = document.getElementById("minimizeHint");
-        var minimizedTab = document.getElementById("minimizedTab");
+        // var minimizedTab = document.getElementById("minimizedTab");
 
         // Handle click on (Esc) hint
         minimizeHint.addEventListener("click", function (e) {
             e.stopPropagation();
             panel.classList.add("minimized");
-            minimizedTab.classList.add("visible");
+            // minimizedTab.classList.add("visible");
         });
 
         // Handle Escape key
@@ -186,18 +186,18 @@ function setupUI(myVars, myFunctions) {
                 e.preventDefault();
                 if (panel.classList.contains("minimized")) {
                     panel.classList.remove("minimized");
-                    minimizedTab.classList.remove("visible");
+                    // minimizedTab.classList.remove("visible");
                 } else {
                     panel.classList.add("minimized");
-                    minimizedTab.classList.add("visible");
+                    // minimizedTab.classList.add("visible");
                 }
             }
         });
 
-        minimizedTab.addEventListener("click", function () {
-            panel.classList.remove("minimized");
-            minimizedTab.classList.remove("visible");
-        });
+        // minimizedTab.addEventListener("click", function () {
+        //     panel.classList.remove("minimized");
+        //     minimizedTab.classList.remove("visible");
+        // });
     };
     myFunctions.updateDetectionScore = function () {
         var score = 5;

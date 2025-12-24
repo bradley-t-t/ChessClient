@@ -1,0 +1,36 @@
+{
+  "name": "@kenmori/clean-react-comments",
+  "version": "1.0.0",
+  "description": "CLI tool that removes comments from JavaScript, TypeScript, and JSX/TSX files",
+  "main": "index.js",
+  "bin": {
+    "clean-react-comments": "./bin/clean-react-comments.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "comments",
+    "javascript",
+    "typescript",
+    "jsx",
+    "tsx",
+    "clean",
+    "remove"
+  ],
+  "author": "Ken Mori",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "glob": "^10.0.0",
+    "@babel/core": "^7.23.0",
+    "@babel/parser": "^7.23.0",
+    "@babel/generator": "^7.23.0",
+    "@babel/traverse": "^7.23.0",
+    "@babel/types": "^7.23.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

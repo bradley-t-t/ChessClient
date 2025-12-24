@@ -178,21 +178,21 @@ var mainStyles = `
 }
 
 .thinking-indicator.reloading {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    animation: flash-red 1.5s ease-in-out 3;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    animation: flash-green 1.5s ease-in-out 3;
 }
 
 .thinking-indicator.reloading .thinking-spinner {
-    border: 3px solid #666;
-    border-top-color: #000;
+    border: 2px solid #16a34a;
+    border-top-color: #15803d;
 }
 
 .thinking-spinner {
-    width: 16px;
-    height: 16px;
-    border: 3px solid #666;
-    border-top-color: #000;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #16a34a;
+    border-top-color: #15803d;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -206,14 +206,14 @@ var mainStyles = `
     50% { opacity: 0.5; transform: scale(0.85); }
 }
 
-@keyframes flash-red {
+@keyframes flash-green {
     0%, 100% { 
         background: #f0fdf4; 
         border-color: #bbf7d0; 
     }
     50% { 
-        background: #fef2f2; 
-        border-color: #fecaca; 
+        background: #dcfce7; 
+        border-color: #86efac; 
     }
 }
 
