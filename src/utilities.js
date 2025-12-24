@@ -259,6 +259,9 @@ function setupUtilities(myVars) {
             depthEl.textContent = "-";
         }
 
+        // Prevent auto-run during move execution
+        window.moveInProgress = true;
+
         setTimeout(() => {
             try {
                 window.board.game.move({
@@ -270,6 +273,10 @@ function setupUtilities(myVars) {
             } catch (error) {
                 console.error("Error making move:", error);
             }
+            // Allow auto-run after move is executed
+            setTimeout(() => {
+                window.moveInProgress = false;
+            }, 500);
         }, 100 + Math.random() * 300);
     };
     myFunctions.other = function (delay) {

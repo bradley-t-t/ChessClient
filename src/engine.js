@@ -123,6 +123,7 @@ function setupEngine(myVars, myFunctions) {
     };
     
     myFunctions.autoRun = function(lstValue) {
+        if (window.moveInProgress) return;
         if (window.board.game.getTurn() == window.board.game.getPlayingAs()) {
             myFunctions.runChessEngine(lstValue);
         }
