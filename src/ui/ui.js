@@ -219,9 +219,14 @@ function setupUI(myVars, myFunctions) {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
 
-        var skillFactor = depth / 21 * (1 - blunderRate);
-
-        var elo = Math.round(400 + skillFactor * 3000);
+        var baseElo = 500;
+        var maxElo = 3400;
+        var eloRange = maxElo - baseElo;
+        
+        var depthFactor = Math.pow(depth / 21, 0.8);
+        var accuracyFactor = (1 - blunderRate);
+        
+        var elo = Math.round(baseElo + (depthFactor * accuracyFactor * eloRange));
 
         elo = Math.max(400, Math.min(3400, elo));
 
