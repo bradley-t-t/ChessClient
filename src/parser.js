@@ -4,6 +4,7 @@ function setupParser(myVars, myFunctions) {
     var lastDisplayedDepth = 0;
     var maxDepth = 0;
     var targetDepth = 0;
+    var finalMoveShown = false;
 
     myFunctions.parser = function (e) {
         if (e.data.includes(" pv ")) {
@@ -47,7 +48,7 @@ function setupParser(myVars, myFunctions) {
                 }
 
                 var targetDepthLocal = myVars.lastValue || 11;
-                if (depth >= 1 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
+                if (depth >= 1 && depth !== lastDisplayedDepth && depth < targetDepthLocal && !finalMoveShown) {
                     var validMoves = multiPvMoves.filter(function (m) {
                         return m && m.move;
                     });
@@ -76,6 +77,7 @@ function setupParser(myVars, myFunctions) {
 
 
             myFunctions.displayRecommendedMove(selectedMove, false);
+            finalMoveShown = true;
             window.isThinking = false;
             myFunctions.spinner();
 
@@ -97,6 +99,7 @@ function setupParser(myVars, myFunctions) {
             lastDisplayedDepth = 0;
             maxDepth = 0;
             targetDepth = 0;
+            finalMoveShown = false;
             window.stopSent = false;
         }
     };
