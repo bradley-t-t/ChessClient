@@ -183,15 +183,6 @@ var mainStyles = `
     animation: flash-red 1.5s ease-in-out 3;
 }
 
-.thinking-indicator.reloading .thinking-spinner {
-    border: 2px solid #fecaca;
-    border-top-color: #dc2626;
-}
-
-.thinking-indicator.reloading .thinking-text {
-    color: #dc2626;
-}
-
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
