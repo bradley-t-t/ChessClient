@@ -6,16 +6,16 @@ function setupParser(myVars, myFunctions) {
   var targetDepth = 0;
 
   myFunctions.parser = function (e) {
-    if (e.data.includes(" pv ") && e.data.includes("multipv")) {
+    if (e.data.includes(" pv ")) {
       var depthMatch = e.data.match(/depth (\d+)/);
       var pvMatch = e.data.match(/multipv (\d+)/);
       var moveMatch = e.data.match(/ pv ([a-h][1-8][a-h][1-8][qrbn]?)/);
       var scoreMatch = e.data.match(/score cp (-?\d+)/);
       var mateMatch = e.data.match(/score mate (-?\d+)/);
 
-      if (depthMatch && pvMatch && moveMatch) {
+      if (depthMatch && moveMatch) {
         var depth = parseInt(depthMatch[1]);
-        var pvNum = parseInt(pvMatch[1]);
+        var pvNum = pvMatch ? parseInt(pvMatch[1]) : 1;
         var move = moveMatch[1];
         var score = 0;
 
@@ -27,7 +27,7 @@ function setupParser(myVars, myFunctions) {
 
         currentDepth = depth;
         maxDepth = Math.max(maxDepth, depth);
-        multiPvMoves[pvNum - 1] = { move: move, score: score };
+        multiPvMoves[pvNum - 1] = {move: move, score: score};
 
         // Force stop if target depth reached
         if (maxDepth >= myFunctions.targetDepth && !window.stopSent) {
@@ -48,9 +48,9 @@ function setupParser(myVars, myFunctions) {
           barEl.style.width = percentage + "%";
         }
 
-        // Display intermediate results for depths >= 3 and different from last displayed
+        // Display intermediate results for depths >= 1 and different from last displayed
         var targetDepthLocal = myVars.lastValue || 11;
-        if (depth >= 3 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
+        if (depth >= 1 && depth !== lastDisplayedDepth && depth < targetDepthLocal) {
           var validMoves = multiPvMoves.filter(function (m) {
             return m && m.move;
           });
