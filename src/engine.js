@@ -1,6 +1,8 @@
 function setupEngine(myVars, myFunctions) {
     const engine = {
-        engine: null
+        engine: null,
+        ready: false,
+        pendingCommand: null
     };
     myFunctions.loadChessEngine = function() {
         if (!engine.stockfishObjectURL) {
@@ -8,20 +10,35 @@ function setupEngine(myVars, myFunctions) {
         }
         if (engine.stockfishObjectURL) {
             console.log(engine.stockfishObjectURL);
+            engine.ready = false;
             engine.engine = new Worker(engine.stockfishObjectURL);
             engine.engine.onmessage = (e) => {
-                myFunctions.parser(e);
+                if (e.data === "uciok") {
+                    console.log("Engine is ready");
+                    engine.ready = true;
+                    engine.engine.postMessage("ucinewgame");
+                    engine.engine.postMessage("isready");
+                } else if (e.data === "readyok") {
+                    console.log("Engine ready for commands");
+                    if (engine.pendingCommand) {
+                        engine.pendingCommand();
+                        engine.pendingCommand = null;
+                    }
+                } else {
+                    myFunctions.parser(e);
+                }
             };
             engine.engine.onerror = (e) => {
+                console.log("Engine error: " + e.message);
             };
             console.log("loaded chess engine");
             engine.engine.postMessage("uci");
-            engine.engine.postMessage("ucinewgame");
         }
     };
     myFunctions.reloadChessEngine = function() {
         console.log("Reloading the chess engine!");
         engine.engine.terminate();
+        engine.ready = false;
         window.isThinking = false;
         myFunctions.loadChessEngine();
     };
@@ -30,9 +47,14 @@ function setupEngine(myVars, myFunctions) {
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
         var skillFactor = (depth / 21) * (1 - blunderRate);
         var elo = Math.round(400 + (skillFactor * 2400));
-        return Math.max(400, Math.min(2800, elo));
+        return Math.max(1320, Math.min(3190, elo));
     };
     myFunctions.runChessEngine = function(depth) {
+        if (!engine.ready) {
+            console.log("Engine not ready, queuing command");
+            engine.pendingCommand = function() { myFunctions.runChessEngine(depth); };
+            return;
+        }
         var fen = window.board.game.getFEN();
         var estimatedElo = myFunctions.getEstimatedElo();
         
