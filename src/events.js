@@ -6,6 +6,7 @@ function setupUIEventHandlers(myVars, myFunctions) {
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + depth + "</strong>";
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
+        myFunctions.reloadChessEngine();
     });
     $(document).on("click", "#decreaseDepth", function () {
         const currentDepth = parseInt($("#depthSlider").val());
