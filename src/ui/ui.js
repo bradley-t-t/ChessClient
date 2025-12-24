@@ -249,14 +249,17 @@ function setupUI(myVars, myFunctions) {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
 
-        var baseElo = 500;
+        var baseElo = 400;
         var maxElo = 3400;
-        var eloRange = maxElo - baseElo;
         
-        var depthFactor = Math.pow(depth / 21, 0.8);
-        var accuracyFactor = (1 - blunderRate);
+        var depthFactor = (depth - 1) / 20;
+        var blunderPenalty = Math.pow(blunderRate * 3, 1.5);
         
-        var elo = Math.round(baseElo + (depthFactor * accuracyFactor * eloRange));
+        var adjustedDepthFactor = depthFactor * 0.6;
+        
+        var strengthFactor = Math.max(0, Math.min(1, adjustedDepthFactor - blunderPenalty));
+        
+        var elo = Math.round(baseElo + (strengthFactor * (maxElo - baseElo)));
 
         elo = Math.max(400, Math.min(3400, elo));
 
