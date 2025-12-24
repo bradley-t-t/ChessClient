@@ -24,11 +24,16 @@ function setupUI(myVars, myFunctions) {
         var whiteFill = document.getElementById("meterFillWhite");
         var blackFill = document.getElementById("meterFillBlack");
         
-        if (!meterValue || !whiteFill || !blackFill) return;
+        if (!meterValue || !whiteFill || !blackFill) {
+            console.log("Positional meter elements not found");
+            return;
+        }
         
         var evaluation = score / 100;
         var cappedEval = Math.max(-10, Math.min(10, evaluation));
         var percentage = Math.min(50, Math.abs(cappedEval) * 5);
+        
+        console.log("Updating meter - Score:", score, "Eval:", evaluation, "Percentage:", percentage);
         
         if (cappedEval > 0) {
             whiteFill.style.height = percentage + "%";
@@ -197,10 +202,14 @@ function setupUI(myVars, myFunctions) {
         var panel = document.getElementById("settingsContainer");
         var minimizeHint = document.getElementById("minimizeHint");
         var minimizedTab = document.getElementById("minimizedTab");
+        var positionMeter = document.getElementById("positionalMeter");
 
         panel.classList.add("minimized", "initial-load");
         if (minimizedTab) {
             minimizedTab.classList.add("visible");
+        }
+        if (positionMeter) {
+            positionMeter.style.display = "none";
         }
         
         setTimeout(function() {
@@ -213,12 +222,18 @@ function setupUI(myVars, myFunctions) {
             if (minimizedTab) {
                 minimizedTab.classList.add("visible");
             }
+            if (positionMeter) {
+                positionMeter.style.display = "none";
+            }
         });
 
         if (minimizedTab) {
             minimizedTab.addEventListener("click", function () {
                 panel.classList.remove("minimized");
                 minimizedTab.classList.remove("visible");
+                if (positionMeter) {
+                    positionMeter.style.display = "flex";
+                }
             });
         }
 
@@ -230,10 +245,16 @@ function setupUI(myVars, myFunctions) {
                     if (minimizedTab) {
                         minimizedTab.classList.remove("visible");
                     }
+                    if (positionMeter) {
+                        positionMeter.style.display = "flex";
+                    }
                 } else {
                     panel.classList.add("minimized");
                     if (minimizedTab) {
                         minimizedTab.classList.add("visible");
+                    }
+                    if (positionMeter) {
+                        positionMeter.style.display = "none";
                     }
                 }
             }
