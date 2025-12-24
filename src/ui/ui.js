@@ -120,7 +120,7 @@ function setupUI(myVars, myFunctions) {
             var minimizedTab = document.createElement("div");
             minimizedTab.setAttribute("id", "minimizedTab");
             minimizedTab.className = "minimized-tab";
-            minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-spinner"></span><span class="tab-label">Chess Client</span></div>';
+            minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-label">Chess Client</span><span class="tab-spinner"></span></div>';
             document.body.appendChild(minimizedTab);
 
             // Check if styles are already added

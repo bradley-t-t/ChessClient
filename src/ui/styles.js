@@ -704,7 +704,9 @@ var mainStyles = `
 .tab-content {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    gap: 8px;
+    flex-direction: column;
 }
 
 .tab-spinner {
