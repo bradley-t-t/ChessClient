@@ -261,11 +261,12 @@ function setupUI(myVars, myFunctions) {
     myFunctions.updateDetectionScore = function () {
         var score = 5;
 
-        var depth = myVars.lastValue || 11;
-        if (depth <= 5) score -= 2; else if (depth <= 10) score -= 1; else if (depth >= 18) score += 3; else if (depth >= 15) score += 2; else if (depth >= 12) score += 1;
-
-        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.05;
-        if (blunderRate >= 0.5) score -= 2; else if (blunderRate >= 0.3) score -= 1; else if (blunderRate <= 0.05) score += 2; else if (blunderRate <= 0.1) score += 1;
+        var targetElo = myVars.targetElo || 1500;
+        if (targetElo < 800) score -= 2;
+        else if (targetElo < 1200) score -= 1;
+        else if (targetElo >= 2800) score += 3;
+        else if (targetElo >= 2400) score += 2;
+        else if (targetElo >= 2000) score += 1;
 
         if (myVars.autoMove === true) score += 3;
 
@@ -294,40 +295,6 @@ function setupUI(myVars, myFunctions) {
         if (descEl) {
             if (score <= 2) descEl.textContent = "Very Safe"; else if (score <= 4) descEl.textContent = "Safe"; else if (score <= 6) descEl.textContent = "Moderate"; else if (score <= 8) descEl.textContent = "Risky"; else
                 descEl.textContent = "Very Risky";
-        }
-
-        myFunctions.updateEloEstimate();
-    };
-    myFunctions.updateEloEstimate = function () {
-        var depth = myVars.lastValue || 3;
-        var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
-
-        var baseElo = 400;
-        var maxElo = 3400;
-        
-        var depthFactor = (depth - 1) / 20;
-        var blunderPenalty = Math.pow(blunderRate * 3, 1.5);
-        
-        var adjustedDepthFactor = depthFactor * 0.6;
-        
-        var strengthFactor = Math.max(0, Math.min(1, adjustedDepthFactor - blunderPenalty));
-        
-        var elo = Math.round(baseElo + (strengthFactor * (maxElo - baseElo)));
-
-        elo = Math.max(400, Math.min(3400, elo));
-
-        var eloEl = document.getElementById("eloValue");
-        var barEl = document.getElementById("eloBarFill");
-        var descEl = document.getElementById("eloDescription");
-
-        if (eloEl) eloEl.textContent = elo;
-        if (barEl) {
-            var percentage = (elo - 400) / 3000 * 100;
-            barEl.style.width = percentage + "%";
-        }
-        if (descEl) {
-            if (elo < 800) descEl.textContent = "Beginner"; else if (elo < 1000) descEl.textContent = "Novice"; else if (elo < 1200) descEl.textContent = "Amateur"; else if (elo < 1400) descEl.textContent = "Intermediate"; else if (elo < 1600) descEl.textContent = "Club Player"; else if (elo < 1800) descEl.textContent = "Tournament Player"; else if (elo < 2000) descEl.textContent = "Expert"; else if (elo < 2200) descEl.textContent = "Candidate Master"; else if (elo < 2400) descEl.textContent = "Master"; else if (elo < 2600) descEl.textContent = "International Master"; else if (elo < 2800) descEl.textContent = "Grandmaster"; else if (elo < 3000) descEl.textContent = "Super Grandmaster"; else
-                descEl.textContent = "World Champion";
         }
     };
     myFunctions.initDraggable = function () {
@@ -366,13 +333,25 @@ function setupUI(myVars, myFunctions) {
 
     function applySettingsToUI(myVars2) {
         $("#autoMove").prop("checked", myVars2.autoMove);
-        $("#adaptToRating").prop("checked", myVars2.adaptToRating !== void 0 ? myVars2.adaptToRating : true);
-        $("#useOpeningBook").prop("checked", myVars2.useOpeningBook !== void 0 ? myVars2.useOpeningBook : true);
-        $("#randomizeTiming").prop("checked", myVars2.randomizeTiming !== void 0 ? myVars2.randomizeTiming : true);
 
-        $("#depthSlider").val(myVars2.lastValue);
-        $("#depthValue").text(myVars2.lastValue);
-        $("#depthText").html("Current Depth: <strong>" + myVars2.lastValue + "</strong>");
+        $("#targetEloSlider").val(myVars2.targetElo);
+        $("#targetEloValue").text(myVars2.targetElo);
+        
+        const eloDesc = $("#eloDescription");
+        const elo = myVars2.targetElo;
+        if (elo < 800) eloDesc.text("Beginner");
+        else if (elo < 1000) eloDesc.text("Novice");
+        else if (elo < 1200) eloDesc.text("Amateur");
+        else if (elo < 1400) eloDesc.text("Intermediate");
+        else if (elo < 1600) eloDesc.text("Club Player");
+        else if (elo < 1800) eloDesc.text("Tournament Player");
+        else if (elo < 2000) eloDesc.text("Expert");
+        else if (elo < 2200) eloDesc.text("Candidate Master");
+        else if (elo < 2400) eloDesc.text("Master");
+        else if (elo < 2600) eloDesc.text("International Master");
+        else if (elo < 2800) eloDesc.text("Grandmaster");
+        else if (elo < 3000) eloDesc.text("Super Grandmaster");
+        else eloDesc.text("World Champion");
         
         myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", 2);
         myVars2.timeAffectedSpeed = GM_getValue("timeAffectedSpeed", false);
@@ -391,32 +370,8 @@ function setupUI(myVars, myFunctions) {
         if (myVars2.bestMoveColor) {
             $("#bestMoveColor").val(myVars2.bestMoveColor);
         }
-        if (myVars2.playStyle) {
-            const aggressiveValue = Math.round((myVars2.playStyle.aggressive - 0.3) / 0.5 * 10);
-            $("#aggressiveSlider").val(aggressiveValue);
-            $("#aggressiveValue").text(aggressiveValue);
-            const defensiveValue = Math.round((myVars2.playStyle.defensive - 0.3) / 0.5 * 10);
-            $("#defensiveSlider").val(defensiveValue);
-            $("#defensiveValue").text(defensiveValue);
-            const tacticalValue = Math.round((myVars2.playStyle.tactical - 0.2) / 0.6 * 10);
-            $("#tacticalSlider").val(tacticalValue);
-            $("#tacticalValue").text(tacticalValue);
-            const positionalValue = Math.round((myVars2.playStyle.positional - 0.2) / 0.6 * 10);
-            $("#positionalSlider").val(positionalValue);
-            $("#positionalValue").text(positionalValue);
-        }
-        if (myVars2.blunderRate !== void 0) {
-            const blunderValue = Math.round(myVars2.blunderRate * 10);
-            $("#blunderRateSlider").val(blunderValue);
-            $("#blunderRateValue").text(blunderValue);
-        }
-        if (myVars2.mouseMovementRealism !== void 0) {
-            const movementValue = Math.round(myVars2.mouseMovementRealism * 10);
-            $("#mouseMovementSlider").val(movementValue);
-            $("#mouseMovementSliderValue").text(movementValue);
-        }
-        if (myVars2.preferredOpenings && myVars2.preferredOpenings.length === 1) {
-            $("#preferredOpeningSelect").val(myVars2.preferredOpenings[0]);
+        if (myVars2.intermediateMoveColor) {
+            $("#intermediateMoveColor").val(myVars2.intermediateMoveColor);
         }
     }
 

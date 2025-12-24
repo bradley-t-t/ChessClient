@@ -413,20 +413,48 @@ function setupUtilities(myVars) {
             GM_setValue("autoMove", myVars.autoMove);
             GM_setValue("moveSpeedTier", myVars.moveSpeedTier);
             GM_setValue("timeAffectedSpeed", myVars.timeAffectedSpeed);
-            GM_setValue("depthValue", myVars.lastValue);
+            GM_setValue("targetElo", myVars.targetElo);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
-            GM_setValue("blunderRate", myVars.blunderRate);
         } catch (error) {
         }
     };
     myFunctions.loadSettings = function () {
         try {
             myVars.autoMove = GM_getValue("autoMove", false);
-            myVars.lastValue = GM_getValue("depthValue", 3);
+            myVars.targetElo = GM_getValue("targetElo", 1500);
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
-            myVars.blunderRate = GM_getValue("blunderRate", 0.7);
+            
+            function eloToDepthAndBlunder(elo) {
+                var depth, blunderRate;
+                if (elo < 800) {
+                    depth = Math.round(3 + (elo - 400) / 400 * 2);
+                    blunderRate = 0.8 - (elo - 400) / 400 * 0.3;
+                } else if (elo < 1200) {
+                    depth = Math.round(5 + (elo - 800) / 400 * 3);
+                    blunderRate = 0.5 - (elo - 800) / 400 * 0.2;
+                } else if (elo < 1600) {
+                    depth = Math.round(8 + (elo - 1200) / 400 * 3);
+                    blunderRate = 0.3 - (elo - 1200) / 400 * 0.15;
+                } else if (elo < 2000) {
+                    depth = Math.round(11 + (elo - 1600) / 400 * 3);
+                    blunderRate = 0.15 - (elo - 1600) / 400 * 0.1;
+                } else if (elo < 2400) {
+                    depth = Math.round(14 + (elo - 2000) / 400 * 3);
+                    blunderRate = 0.05 - (elo - 2000) / 400 * 0.03;
+                } else {
+                    depth = Math.round(17 + (elo - 2400) / 1000 * 4);
+                    blunderRate = 0.02 - (elo - 2400) / 1000 * 0.02;
+                }
+                depth = Math.max(1, Math.min(21, depth));
+                blunderRate = Math.max(0, Math.min(1, blunderRate));
+                return { depth: depth, blunderRate: blunderRate };
+            }
+            
+            var config = eloToDepthAndBlunder(myVars.targetElo);
+            myVars.lastValue = config.depth;
+            myVars.blunderRate = config.blunderRate;
         } catch (error) {
         }
     };

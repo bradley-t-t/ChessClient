@@ -1,11 +1,12 @@
-var currentVersion = "2.2.5";
+var currentVersion = "2.2.6";
 
 function initializeVariables() {
     const myVars = {
         delay: 0.1,
         loaded: false,
         onGamePage: false,
-        lastValue: 3,
+        targetElo: 1500,
+        lastValue: 11,
         blunderRate: 0.2,
         bestMoveColor: "#5b8c5a",
         intermediateMoveColor: "#ffa500",

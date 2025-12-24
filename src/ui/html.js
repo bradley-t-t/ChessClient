@@ -48,27 +48,15 @@ var mainTemplate = `
         <div class="tab-panel active" id="main-settings">
             <div class="setting-group">
                 <div class="setting-row">
-                    <span class="setting-label">Depth</span>
-                    <span id="depthValue" class="setting-value">11</span>
+                    <span class="setting-label">Target ELO</span>
+                    <span id="targetEloValue" class="setting-value">1500</span>
                 </div>
                 <div class="slider-row">
-                    <button class="slider-btn" id="decreaseDepth">-</button>
-                    <input type="range" id="depthSlider" min="1" max="21" value="11" class="slider">
-                    <button class="slider-btn" id="increaseDepth">+</button>
+                    <button class="slider-btn" id="decreaseElo">-</button>
+                    <input type="range" id="targetEloSlider" min="400" max="3400" step="50" value="1500" class="slider">
+                    <button class="slider-btn" id="increaseElo">+</button>
                 </div>
-                <p id="depthText" style="display:none;">Current Depth: <strong>11</strong></p>
-            </div>
-
-            <div class="setting-group">
-                <div class="setting-row">
-                    <span class="setting-label">Blunder Rate</span>
-                    <span id="blunderRateValue" class="setting-value">2</span>
-                </div>
-                <div class="slider-row">
-                    <button class="slider-btn" id="decreaseBlunder">-</button>
-                    <input type="range" id="blunderRateSlider" min="0" max="10" value="2" class="slider">
-                    <button class="slider-btn" id="increaseBlunder">+</button>
-                </div>
+                <div class="setting-description" id="eloDescription">Intermediate</div>
             </div>
 
             <div class="setting-group">
@@ -125,22 +113,13 @@ var mainTemplate = `
             </div>
         </div>
 
-        <div class="elo-estimate">
-            <span class="elo-label">Estimated ELO</span>
-            <div class="elo-bar">
-                <div id="eloBarFill" class="elo-bar-fill" style="width: 50%;"></div>
+        <div class="current-depth">
+            <span class="depth-label">Analysis Progress</span>
+            <div class="depth-bar-container">
+                <div id="depthBarFill" class="depth-bar-fill"></div>
             </div>
-            <div class="elo-footer">
-                <span id="eloDescription" class="elo-description">Intermediate</span>
-                <span id="eloValue" class="elo-value">1500</span>
-            </div>
-            <div class="current-depth">
-                <span class="depth-label">Analysis Progress</span>
-                <div class="depth-bar-container">
-                    <div id="depthBarFill" class="depth-bar-fill"></div>
-                </div>
-                <span id="currentDepthValue" class="depth-value">0%</span>
-            </div>
+            <span id="currentDepthValue" class="depth-value">0%</span>
+        </div>
         </div>
 
         <div class="client-footer">
