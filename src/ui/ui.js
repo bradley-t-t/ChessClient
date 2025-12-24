@@ -13,9 +13,11 @@ function setupUI(myVars, myFunctions) {
     myFunctions.spinner = function () {
         if (window.isThinking == true) {
             $("#thinking-indicator").addClass("active");
+            $("#minimizedTab .tab-spinner").addClass("active");
         }
         if (window.isThinking == false) {
             $("#thinking-indicator").removeClass("active");
+            $("#minimizedTab .tab-spinner").removeClass("active");
         }
     };
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
@@ -115,7 +117,7 @@ function setupUI(myVars, myFunctions) {
             var minimizedTab = document.createElement("div");
             minimizedTab.setAttribute("id", "minimizedTab");
             minimizedTab.className = "minimized-tab";
-            minimizedTab.innerHTML = '<span class="tab-label">Chess Client</span>';
+            minimizedTab.innerHTML = '<div class="tab-content"><span class="tab-spinner"></span><span class="tab-label">Chess Client</span></div>';
             document.body.appendChild(minimizedTab);
 
             var botStyles = document.createElement("style");

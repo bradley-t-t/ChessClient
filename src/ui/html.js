@@ -9,11 +9,7 @@ var mainTemplate = `
                 <span class="thinking-spinner"></span>
                 <span class="thinking-text">Thinking</span>
             </div>
-            <button id="minimizeBtn" class="minimize-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14"/>
-                </svg>
-            </button>
+            <span id="minimizeHint" class="minimize-hint">(Esc)</span>
         </div>
     </div>
 

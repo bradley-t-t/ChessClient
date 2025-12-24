@@ -41,7 +41,17 @@ function setupParser(myVars, myFunctions) {
             myFunctions.displayRecommendedMove(selectedMove);
             window.isThinking = false;
             myFunctions.spinner();
-
+            
+            // Clear any pending timeouts
+            if (document.engine && document.engine.thinkingTimeout) {
+                clearTimeout(document.engine.thinkingTimeout);
+                document.engine.thinkingTimeout = null;
+            }
+            if (document.engine && document.engine.reloadTimeout) {
+                clearTimeout(document.engine.reloadTimeout);
+                document.engine.reloadTimeout = null;
+            }
+            
             multiPvMoves = [];
         }
     };

@@ -1,11 +1,13 @@
 function setupEngine(myVars, myFunctions) {
     const engine = {
-        engine: null
+        engine: null,
+        thinkingTimeout: null,
+        reloadTimeout: null
     };
-
-    myFunctions.loadChessEngine = function () {
+    
+    myFunctions.loadChessEngine = function() {
         if (!engine.stockfishObjectURL) {
-            engine.stockfishObjectURL = URL.createObjectURL(new Blob([GM_getResourceText("stockfish.js")], {type: "application/javascript"}));
+            engine.stockfishObjectURL = URL.createObjectURL(new Blob([GM_getResourceText("stockfish.js")], { type: "application/javascript" }));
         }
         if (engine.stockfishObjectURL) {
             console.log(engine.stockfishObjectURL);
@@ -21,8 +23,8 @@ function setupEngine(myVars, myFunctions) {
             engine.engine.postMessage("ucinewgame");
         }
     };
-
-    myFunctions.reloadChessEngine = function () {
+    
+    myFunctions.reloadChessEngine = function() {
         console.log("Reloading the chess engine!");
         if (engine.engine) {
             engine.engine.terminate();
@@ -30,16 +32,16 @@ function setupEngine(myVars, myFunctions) {
         window.isThinking = false;
         myFunctions.loadChessEngine();
     };
-
-    myFunctions.getEstimatedElo = function () {
+    
+    myFunctions.getEstimatedElo = function() {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
         var skillFactor = (depth / 21) * (1 - blunderRate);
         var elo = Math.round(400 + (skillFactor * 2400));
         return Math.max(400, Math.min(2800, elo));
     };
-
-    myFunctions.runChessEngine = function (depth) {
+    
+    myFunctions.runChessEngine = function(depth) {
         var fen = window.board.game.getFEN();
         var estimatedElo = myFunctions.getEstimatedElo();
         var skillLevel = Math.floor((estimatedElo - 400) / 120);
@@ -58,13 +60,30 @@ function setupEngine(myVars, myFunctions) {
         engine.engine.postMessage("setoption name MultiPV value 3");
         engine.engine.postMessage("go depth " + depth);
         myVars.lastValue = depth;
-    };
 
-    myFunctions.autoRun = function (lstValue) {
+        // Clear any existing timeouts
+        if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);
+        if (engine.reloadTimeout) clearTimeout(engine.reloadTimeout);
+
+        // Set timeout to reload engine after 10 seconds
+        engine.thinkingTimeout = setTimeout(function() {
+            console.log("Engine thinking for too long (10s), reloading...");
+            myFunctions.reloadChessEngine();
+            
+            // Set another timeout to stop thinking if it continues for another 10 seconds
+            engine.reloadTimeout = setTimeout(function() {
+                console.log("Engine still thinking after reload (20s total), stopping...");
+                window.isThinking = false;
+                myFunctions.spinner();
+            }, 10000);
+        }, 10000);
+    };
+    
+    myFunctions.autoRun = function(lstValue) {
         if (window.board.game.getTurn() == window.board.game.getPlayingAs()) {
             myFunctions.runChessEngine(lstValue);
         }
     };
-
+    
     return engine;
 }
