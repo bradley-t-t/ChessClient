@@ -4,6 +4,8 @@ window.myTurn = false;
 window.wasPreviouslyMyTurn = false;
 window.board = null;
 window.lastAnalyzedFen = null;
+window.lastAnalysisStartTime = null;
+window.watchdogChecks = 0;
 
 function main() {
     const myVars = initializeVariables();
@@ -67,7 +69,24 @@ var waitForChessBoard = setInterval(() => {
         if (currentFen !== window.lastAnalyzedFen) {
             window.canGo = false;
             window.lastAnalyzedFen = currentFen;
+            window.lastAnalysisStartTime = Date.now();
+            window.watchdogChecks = 0;
             myFunctions.autoRun(myVars.lastValue);
         }
+    }
+    
+    if (myVars.onGamePage && window.myTurn && !window.canGo) {
+        window.watchdogChecks++;
+        if (window.watchdogChecks > 300 && window.lastAnalysisStartTime) {
+            var timeSinceStart = Date.now() - window.lastAnalysisStartTime;
+            if (timeSinceStart > 30000 && !window.isThinking) {
+                console.log("Watchdog: Detected hung state, resetting...");
+                window.canGo = true;
+                window.lastAnalyzedFen = null;
+                window.watchdogChecks = 0;
+            }
+        }
+    } else {
+        window.watchdogChecks = 0;
     }
 }, 100);

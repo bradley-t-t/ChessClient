@@ -22,10 +22,6 @@ function setupEngine(myVars, myFunctions) {
     };
 
     myFunctions.reloadChessEngine = function () {
-        if (engine.analysisComplete) {
-            return;
-        }
-
         var reloadBtn = document.getElementById("relEngBut");
         if (reloadBtn) {
             var originalText = reloadBtn.textContent;
@@ -62,7 +58,15 @@ function setupEngine(myVars, myFunctions) {
         if (engine.engine) {
             engine.engine.terminate();
         }
+        
         window.isThinking = false;
+        window.canGo = true;
+        window.lastAnalyzedFen = null;
+        
+        if (engine.analysisComplete) {
+            engine.analysisComplete = false;
+        }
+        
         myFunctions.loadChessEngine();
     };
 
