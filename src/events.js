@@ -61,6 +61,10 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myVars.bestMoveColor = $(this).val();
         myFunctions.saveSettings();
     });
+    $(document).on("input", "#intermediateMoveColor", function () {
+        myVars.intermediateMoveColor = $(this).val();
+        myFunctions.saveSettings();
+    });
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {

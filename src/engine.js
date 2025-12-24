@@ -46,8 +46,8 @@ function setupEngine(myVars, myFunctions) {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
         var skillFactor = (depth / 21) * (1 - blunderRate);
-        var elo = Math.round(400 + (skillFactor * 2400));
-        return Math.max(400, Math.min(2800, elo));
+        var elo = Math.round(400 + (skillFactor * 3000));
+        return Math.max(400, Math.min(3400, elo));
     };
     
     myFunctions.runChessEngine = function(depth) {

@@ -139,7 +139,7 @@ function setupUtilities(myVars) {
         var toSquare = move.substring(2, 4);
 
         // Use different color for intermediate vs final results
-        var moveColor = isIntermediate ? "#ffa500" : (myVars.bestMoveColor || "#5b8c5a"); // Orange for intermediate, configured color for final
+        var moveColor = isIntermediate ? (myVars.intermediateMoveColor || "#ffa500") : (myVars.bestMoveColor || "#5b8c5a"); // Configurable intermediate color, configured color for final
 
         myFunctions.highlightSingleSquare(fromSquare, moveColor, 0.5);
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
@@ -377,6 +377,7 @@ function setupUtilities(myVars) {
             GM_setValue("timeDelayMax", $("#timeDelayMax").val());
             GM_setValue("depthValue", myVars.lastValue);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
+            GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
             GM_setValue("playStyle", myVars.playStyle);
             GM_setValue("blunderRate", myVars.blunderRate);
             GM_setValue("adaptToRating", myVars.adaptToRating);
@@ -392,6 +393,7 @@ function setupUtilities(myVars) {
             myVars.autoMove = GM_getValue("autoMove", false);
             myVars.lastValue = GM_getValue("depthValue", 3);
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
+            myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.blunderRate = GM_getValue("blunderRate", 0.7);
             myVars.adaptToRating = GM_getValue("adaptToRating", true);
             myVars.useOpeningBook = GM_getValue("useOpeningBook", true);

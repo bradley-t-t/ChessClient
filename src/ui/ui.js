@@ -255,9 +255,9 @@ function setupUI(myVars, myFunctions) {
 
         var skillFactor = (depth / 21) * (1 - blunderRate);
 
-        var elo = Math.round(400 + (skillFactor * 2400));
+        var elo = Math.round(400 + (skillFactor * 3000));
 
-        elo = Math.max(400, Math.min(2800, elo));
+        elo = Math.max(400, Math.min(3400, elo));
 
         var eloEl = document.getElementById("eloValue");
         var barEl = document.getElementById("eloBarFill");
@@ -265,7 +265,7 @@ function setupUI(myVars, myFunctions) {
 
         if (eloEl) eloEl.textContent = elo;
         if (barEl) {
-            var percentage = ((elo - 400) / 2800) * 100;
+            var percentage = ((elo - 400) / 3000) * 100;
             barEl.style.width = percentage + "%";
         }
         if (descEl) {
@@ -279,7 +279,9 @@ function setupUI(myVars, myFunctions) {
             else if (elo < 2200) descEl.textContent = "Candidate Master";
             else if (elo < 2400) descEl.textContent = "Master";
             else if (elo < 2600) descEl.textContent = "International Master";
-            else descEl.textContent = "Grandmaster";
+            else if (elo < 2800) descEl.textContent = "Grandmaster";
+            else if (elo < 3000) descEl.textContent = "Super Grandmaster";
+            else descEl.textContent = "World Champion";
         }
     };
     myFunctions.initDraggable = function () {
