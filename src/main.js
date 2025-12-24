@@ -3,6 +3,7 @@ window.canGo = true;
 window.myTurn = false;
 window.wasPreviouslyMyTurn = false;
 window.board = null;
+window.lastAnalyzedFen = null;
 
 function main() {
     const myVars = initializeVariables();
@@ -54,8 +55,12 @@ var waitForChessBoard = setInterval(() => {
         myFunctions.loadChessEngine();
     }
     if (myVars.onGamePage && window.canGo == true && window.isThinking == false && window.myTurn) {
-        window.canGo = false;
-        var currentDelay = myVars.delay != void 0 ? myVars.delay * 1e3 : 10;
-        myFunctions.other(currentDelay);
+        var currentFen = window.board.game.getFEN();
+        if (currentFen !== window.lastAnalyzedFen) {
+            window.canGo = false;
+            window.lastAnalyzedFen = currentFen;
+            var currentDelay = myVars.delay != void 0 ? myVars.delay * 1e3 : 10;
+            myFunctions.other(currentDelay);
+        }
     }
 }, 100);
