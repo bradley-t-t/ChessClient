@@ -69,8 +69,6 @@ setInterval(() => {
             window.lastAnalyzedFen = null;
             window.isThinking = false;
         }
-
-        $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
     } else {
         myFunctions.loadEx();
     }
