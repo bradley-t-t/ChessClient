@@ -32,9 +32,6 @@ var waitForChessBoard = setInterval(() => {
         if (!myVars.onGamePage) return;
 
         myVars.autoMove = $("#autoMove")[0].checked;
-        let minDel = parseFloat($("#timeDelayMin")[0].value);
-        let maxDel = parseFloat($("#timeDelayMax")[0].value);
-        myVars.delay = Math.random() * (maxDel - minDel) + minDel;
 
         var wasMyTurn = window.myTurn;
         if (window.board && window.board.game && window.board.game.getTurn() == window.board.game.getPlayingAs()) {
@@ -59,8 +56,10 @@ var waitForChessBoard = setInterval(() => {
         if (currentFen !== window.lastAnalyzedFen) {
             window.canGo = false;
             window.lastAnalyzedFen = currentFen;
-            var currentDelay = myVars.delay != void 0 ? myVars.delay * 1e3 : 10;
-            myFunctions.other(currentDelay);
+            myFunctions.autoRun(myVars.lastValue);
+            setTimeout(function() {
+                window.canGo = true;
+            }, 500);
         }
     }
 }, 100);

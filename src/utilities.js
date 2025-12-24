@@ -144,7 +144,13 @@ function setupUtilities(myVars) {
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
 
         if (!isIntermediate && myVars.autoMove === true) {
-            myFunctions.movePiece(fromSquare, toSquare);
+            var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
+            var maxDelay = parseFloat($("#timeDelayMax").val()) || 1;
+            var delay = (Math.random() * (maxDelay - minDelay) + minDelay) * 1000;
+            
+            setTimeout(function() {
+                myFunctions.movePiece(fromSquare, toSquare);
+            }, delay);
         }
     };
     myFunctions.highlightSingleSquare = function (square, color, opacity) {
@@ -273,26 +279,6 @@ function setupUtilities(myVars) {
                 window.moveInProgress = false;
             }, 2000);
         }, 100 + Math.random() * 300);
-    };
-    myFunctions.other = function (delay) {
-        const gamePhase = myFunctions.estimateGamePhase();
-        const positionComplexity = myFunctions.estimatePositionComplexity();
-        let naturalDelay = delay;
-        if (gamePhase < 10) {
-            naturalDelay *= 0.6 + Math.random() * 0.4;
-        }
-        if (positionComplexity > 0.7) {
-            naturalDelay *= 1 + Math.random() * 1.5;
-        }
-        naturalDelay *= 0.85 + Math.random() * 0.3;
-        var endTime = Date.now() + naturalDelay;
-        var timer = setInterval(() => {
-            if (Date.now() >= endTime) {
-                myFunctions.autoRun(myVars.lastValue);
-                window.canGo = true;
-                clearInterval(timer);
-            }
-        }, 10);
     };
     myFunctions.getAdjustedDepth = function () {
         const userDepth = myVars.lastValue || 11;
