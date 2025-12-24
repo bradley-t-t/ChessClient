@@ -60,9 +60,23 @@ function setupEngine(myVars, myFunctions) {
             myFunctions.loadChessEngine();
         }
 
-        // Adjust depth based on game phase and time constraints
-        var adjustedDepth = myFunctions.getAdjustedDepth();
-        console.log("Running Stockfish 10 with Skill Level: " + skillLevel + " (ELO: " + estimatedElo + "), Requested Depth: " + depth + ", Adjusted Depth: " + adjustedDepth);
+        // Calculate game phase from FEN move number
+        var parts = fen.split(" ");
+        var moveNumber = parseInt(parts[5]) || 1;
+        var userDepth = myVars.lastValue || 11;
+        var adjustedDepth = userDepth;
+
+        // Adjust depth based on game phase
+        if (moveNumber <= 10) {
+            adjustedDepth = Math.min(adjustedDepth, 15);
+        } else if (moveNumber <= 15) {
+            var progress = (moveNumber - 10) / 5;
+            var targetDepth = 15 + Math.floor((userDepth - 15) * progress);
+            adjustedDepth = Math.min(adjustedDepth, targetDepth);
+        }
+        // After move 15, use full depth
+
+        console.log("Running Stockfish 10 with Skill Level: " + skillLevel + " (ELO: " + estimatedElo + "), Move: " + moveNumber + ", Requested Depth: " + depth + ", Adjusted Depth: " + adjustedDepth);
 
         // Set target depth for progress bar
         myFunctions.targetDepth = adjustedDepth;
