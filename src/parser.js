@@ -96,6 +96,7 @@ function setupParser(myVars, myFunctions) {
             myFunctions.displayRecommendedMove(selectedMove, false);
             finalMoveShown = true;
             window.isThinking = false;
+            window.canGo = true;
             myFunctions.spinner();
 
             if (document.engine && document.engine.thinkingTimeout) {

@@ -38,10 +38,12 @@ var waitForChessBoard = setInterval(() => {
             window.myTurn = true;
         } else {
             window.myTurn = false;
+            window.canGo = true;
         }
 
         if (wasMyTurn && !window.myTurn) {
             myFunctions.clearHighlights(true);
+            window.lastAnalyzedFen = null;
         }
 
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
@@ -57,9 +59,6 @@ var waitForChessBoard = setInterval(() => {
             window.canGo = false;
             window.lastAnalyzedFen = currentFen;
             myFunctions.autoRun(myVars.lastValue);
-            setTimeout(function() {
-                window.canGo = true;
-            }, 500);
         }
     }
 }, 100);
