@@ -5,6 +5,7 @@ window.wasPreviouslyMyTurn = false;
 window.board = null;
 
 function main() {
+    console.log("Chess Client v" + currentVersion);
     const myVars = initializeVariables();
     const myFunctions = setupUtilities(myVars);
     myFunctions.loadSettings();

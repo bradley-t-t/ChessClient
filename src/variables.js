@@ -26,16 +26,6 @@ function initializeVariables() {
             exchangeThreshold: Math.random() * 0.3 + 0.1,
             attackingStyle: ["kingside", "queenside", "central"][Math.floor(Math.random() * 3)]
         }),
-        tacticalProfile: GM_getValue("tacticalProfile", {
-            strengths: [
-                getRandomTacticalStrength(),
-                getRandomTacticalStrength()
-            ],
-            weaknesses: [
-                getRandomTacticalWeakness(),
-                getRandomTacticalWeakness()
-            ]
-        }),
         psychologicalState: {
             confidence: 0.7 + Math.random() * 0.3,
             tiltFactor: 0,
@@ -45,9 +35,6 @@ function initializeVariables() {
     };
     if (!GM_getValue("playerFingerprint")) {
         GM_setValue("playerFingerprint", myVars.playerFingerprint);
-    }
-    if (!GM_getValue("tacticalProfile")) {
-        GM_setValue("tacticalProfile", myVars.tacticalProfile);
     }
     return myVars;
 }

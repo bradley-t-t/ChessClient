@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chess Client by Trent
 // @namespace    chess-client-trent
-// @version      1.1.4
+// @version      1.1.6
 // @description  Chess.com assistant with move suggestions and customizable features
 // @author       Trent
 // @match       https://www.chess.com/play/*
@@ -14,17 +14,17 @@
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceText
 // @grant       GM_registerMenuCommand
-// @resource    stockfish.js        https://cdn.jsdelivr.net/npm/stockfish@16.0.0/src/stockfish-nnue-16.js
+// @resource    stockfish.js        https://raw.githubusercontent.com/nicm34/nicm/main/stockfish-16.1-lite-single.js
 // @require     https://code.jquery.com/jquery-3.6.0.min.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/config.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/variables.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/engine.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/ui/html.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/ui/styles.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/ui/ui.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/events.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/parser.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/utilities.js
-// @require     https://cdn.jsdelivr.net/gh/bradley-t-t/ChessClient@main/src/main.js
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/config.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/variables.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/engine.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/html.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/styles.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/ui/ui.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/events.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/parser.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/utilities.js?v=1.1.6
+// @require     https://raw.githubusercontent.com/bradley-t-t/ChessClient/main/src/main.js?v=1.1.6
 // @run-at      document-start
 // ==/UserScript==
