@@ -66,17 +66,6 @@ var mainTemplate = `
                     </label>
                 </div>
             </div>
-
-            <div class="setting-group">
-                <div class="input-row">
-                    <label for="timeDelayMin">Min Delay (s)</label>
-                    <input type="number" id="timeDelayMin" name="timeDelayMin" min="0.1" value="0.1" step="0.1" class="input-field">
-                </div>
-                <div class="input-row">
-                    <label for="timeDelayMax">Max Delay (s)</label>
-                    <input type="number" id="timeDelayMax" name="timeDelayMax" min="0.1" value="1" step="0.1" class="input-field">
-                </div>
-            </div>
         </div>
 
         <div class="tab-panel" id="advanced-settings">
@@ -84,6 +73,14 @@ var mainTemplate = `
                 <div class="input-row">
                     <label for="bestMoveColor">Recommended Move</label>
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
+                </div>
+                <div class="input-row">
+                    <label for="timeDelayMin">Min Delay (s)</label>
+                    <input type="number" id="timeDelayMin" name="timeDelayMin" min="0.1" value="0.1" step="0.1" class="input-field">
+                </div>
+                <div class="input-row">
+                    <label for="timeDelayMax">Max Delay (s)</label>
+                    <input type="number" id="timeDelayMax" name="timeDelayMax" min="0.1" value="1" step="0.1" class="input-field">
                 </div>
             </div>
         </div>
