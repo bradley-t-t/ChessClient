@@ -579,8 +579,8 @@ var mainStyles = `
 
 .detection-score {
     padding: 10px 14px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border-top: 1px solid #f59e0b;
+    background: #fafafa;
+    border-top: 1px solid #e5e5e5;
 }
 
 .score-header {
@@ -593,56 +593,56 @@ var mainStyles = `
 .score-label {
     font-size: 9px;
     font-weight: 700;
-    color: #78350f;
+    color: #666666;
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
 
 .score-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: #78350f;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
     line-height: 1;
 }
 
 .score-bar {
-    height: 5px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 3px;
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
     overflow: hidden;
     margin-bottom: 5px;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .score-bar-fill {
     height: 100%;
-    border-radius: 3px;
+    border-radius: 2px;
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
-    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    background: #10b981;
+    width: 0%;
 }
 
 .score-bar-fill.low {
-    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    background: #10b981;
 }
 
 .score-bar-fill.medium {
-    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+    background: #f59e0b;
 }
 
 .score-bar-fill.high {
-    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    background: #ef4444;
 }
 
 .score-description {
     font-size: 10px;
-    color: #92400e;
+    color: #888888;
     font-weight: 600;
 }
 
 .elo-estimate {
     padding: 10px 14px;
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    border-top: 1px solid #3b82f6;
+    background: #fafafa;
+    border-top: 1px solid #e5e5e5;
 }
 
 .elo-header {
@@ -655,44 +655,44 @@ var mainStyles = `
 .elo-label {
     font-size: 9px;
     font-weight: 700;
-    color: #1e3a8a;
+    color: #666666;
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
 
 .elo-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1e3a8a;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
     line-height: 1;
 }
 
 .elo-bar {
-    height: 5px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 3px;
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
     overflow: hidden;
     margin-bottom: 5px;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .elo-bar-fill {
     height: 100%;
-    border-radius: 3px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
-    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #3b82f6;
+    width: 0%;
 }
 
 .elo-description {
     font-size: 10px;
-    color: #1e40af;
+    color: #888888;
     font-weight: 600;
 }
 
 .current-depth {
     margin-top: 8px;
     padding-top: 8px;
-    border-top: 1px solid rgba(30, 58, 138, 0.2);
+    border-top: 1px solid #e5e5e5;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -700,7 +700,7 @@ var mainStyles = `
 
 .depth-label {
     font-size: 9px;
-    color: #1e3a8a;
+    color: #666666;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -708,22 +708,21 @@ var mainStyles = `
 
 .depth-bar-container {
     height: 4px;
-    background: rgba(255,255,255,0.5);
+    background: #e8e8e8;
     border-radius: 2px;
     overflow: hidden;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .depth-bar-fill {
     height: 100%;
     border-radius: 2px;
-    background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
+    background: #89b4fa;
     width: 0%;
 }
 
 .depth-value {
     font-size: 11px;
-    color: #1e3a8a;
+    color: #1a1a1a;
     font-weight: 700;
     align-self: flex-end;
 }

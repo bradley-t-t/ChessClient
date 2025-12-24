@@ -30,19 +30,27 @@ function setupEngine(myVars, myFunctions) {
         if (reloadBtn) {
             var originalText = reloadBtn.textContent;
             reloadBtn.disabled = true;
+            reloadBtn.style.opacity = '0.7';
             var dotCount = 0;
+            var loopCount = 0;
             
             var dotInterval = setInterval(function() {
                 dotCount = (dotCount % 3) + 1;
                 var dots = '.'.repeat(dotCount);
                 reloadBtn.textContent = 'Reloading' + dots;
-            }, 500);
-            
-            setTimeout(function () {
-                clearInterval(dotInterval);
-                reloadBtn.textContent = originalText;
-                reloadBtn.disabled = false;
-            }, 2000);
+                
+                if (dotCount === 3) {
+                    loopCount++;
+                    if (loopCount >= 2) {
+                        clearInterval(dotInterval);
+                        setTimeout(function() {
+                            reloadBtn.textContent = originalText;
+                            reloadBtn.disabled = false;
+                            reloadBtn.style.opacity = '1';
+                        }, 200);
+                    }
+                }
+            }, 200);
         }
 
         $("#thinking-indicator").addClass("reloading");
