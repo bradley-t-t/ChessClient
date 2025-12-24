@@ -95,29 +95,29 @@ var mainStyles = `
 .meter-bar {
     width: 30px;
     height: 100%;
-    background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 50%, #2a2a2a 50%, #000000 100%);
     border-radius: 4px;
     position: relative;
     overflow: hidden;
     border: 1px solid #555;
+    background: #333;
 }
 
 .meter-fill {
     position: absolute;
     width: 100%;
-    transition: height 0.3s ease, top 0.3s ease;
+    transition: height 0.3s ease;
 }
 
 .meter-fill.white-advantage {
-    background: rgba(255, 255, 255, 0.4);
-    bottom: 50%;
-    height: 0%;
+    background: #ffffff;
+    bottom: 0;
+    height: 50%;
 }
 
 .meter-fill.black-advantage {
-    background: rgba(0, 0, 0, 0.4);
-    top: 50%;
-    height: 0%;
+    background: #000000;
+    top: 0;
+    height: 50%;
 }
 
 .meter-value {

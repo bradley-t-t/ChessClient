@@ -31,26 +31,24 @@ function setupUI(myVars, myFunctions) {
         
         var evaluation = score / 100;
         var cappedEval = Math.max(-10, Math.min(10, evaluation));
-        var percentage = Math.min(50, Math.abs(cappedEval) * 5);
         
-        console.log("Updating meter - Score:", score, "Eval:", evaluation, "Percentage:", percentage);
+        var whitePercentage = 50 + (cappedEval * 5);
+        whitePercentage = Math.max(0, Math.min(100, whitePercentage));
+        var blackPercentage = 100 - whitePercentage;
         
-        if (cappedEval > 0) {
-            whiteFill.style.height = percentage + "%";
-            blackFill.style.height = "0%";
+        console.log("Updating meter - Score:", score, "Eval:", evaluation, "White%:", whitePercentage, "Black%:", blackPercentage);
+        
+        whiteFill.style.height = whitePercentage + "%";
+        blackFill.style.height = blackPercentage + "%";
+        
+        if (evaluation > 0) {
             meterValue.textContent = "+" + Math.abs(evaluation).toFixed(1);
-            meterValue.style.color = "#ffffff";
-        } else if (cappedEval < 0) {
-            blackFill.style.height = percentage + "%";
-            whiteFill.style.height = "0%";
+        } else if (evaluation < 0) {
             meterValue.textContent = "-" + Math.abs(evaluation).toFixed(1);
-            meterValue.style.color = "#ffffff";
         } else {
-            whiteFill.style.height = "0%";
-            blackFill.style.height = "0%";
             meterValue.textContent = "0.0";
-            meterValue.style.color = "#ffffff";
         }
+        meterValue.style.color = "#ffffff";
     };
     
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
