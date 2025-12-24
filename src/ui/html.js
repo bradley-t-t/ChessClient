@@ -110,6 +110,10 @@ var mainTemplate = `
                 <div id="eloBarFill" class="elo-bar-fill" style="width: 50%;"></div>
             </div>
             <span id="eloDescription" class="elo-description">Intermediate</span>
+            <div class="current-depth">
+                <span class="depth-label">Current Depth:</span>
+                <span id="currentDepthValue" class="depth-value">-</span>
+            </div>
         </div>
 
         <div class="client-footer">

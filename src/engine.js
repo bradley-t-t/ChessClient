@@ -50,6 +50,30 @@ function setupEngine(myVars, myFunctions) {
         return Math.max(400, Math.min(3400, elo));
     };
     
+    myFunctions.getAdjustedDepth = function() {
+        var baseDepth = myVars.lastValue || 3;
+        var gamePhase = window.board.game.getPhase(); // Assume this function exists
+        var timeRemaining = window.board.game.getTimeRemaining(); // Assume this function exists
+        
+        // Adjust depth based on game phase
+        if (gamePhase === "opening") {
+            baseDepth = Math.min(5, baseDepth + 1);
+        } else if (gamePhase === "middlegame") {
+            baseDepth = Math.max(3, baseDepth);
+        } else if (gamePhase === "endgame") {
+            baseDepth = Math.max(2, baseDepth - 1);
+        }
+        
+        // Further adjust depth based on time remaining
+        if (timeRemaining < 30000) { // Less than 30 seconds
+            baseDepth = Math.max(1, baseDepth - 1);
+        } else if (timeRemaining > 60000) { // More than 60 seconds
+            baseDepth += 1;
+        }
+        
+        return baseDepth;
+    };
+    
     myFunctions.runChessEngine = function(depth) {
         var fen = window.board.game.getFEN();
         var estimatedElo = myFunctions.getEstimatedElo();
@@ -60,15 +84,23 @@ function setupEngine(myVars, myFunctions) {
             myFunctions.loadChessEngine();
         }
 
-        console.log("Running Stockfish 10 with Skill Level: " + skillLevel + " (ELO: " + estimatedElo + "), Depth: " + depth);
+        // Adjust depth based on game phase and time constraints
+        var adjustedDepth = myFunctions.getAdjustedDepth();
+        console.log("Running Stockfish 10 with Skill Level: " + skillLevel + " (ELO: " + estimatedElo + "), Requested Depth: " + depth + ", Adjusted Depth: " + adjustedDepth);
 
         engine.engine.postMessage("setoption name Skill Level value " + skillLevel);
         engine.engine.postMessage("position fen " + fen);
         window.isThinking = true;
         myFunctions.spinner();
         engine.engine.postMessage("setoption name MultiPV value 3");
-        engine.engine.postMessage("go depth " + depth);
+        engine.engine.postMessage("go depth " + adjustedDepth);
         myVars.lastValue = depth;
+
+        // Reset current depth display
+        var depthEl = document.getElementById("currentDepthValue");
+        if (depthEl) {
+            depthEl.textContent = "-";
+        }
 
         // Clear any existing timeouts
         if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);

@@ -656,6 +656,25 @@ var mainStyles = `
     font-weight: 500;
 }
 
+.current-depth {
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.depth-label {
+    font-size: 11px;
+    color: #666666;
+    font-weight: 500;
+}
+
+.depth-value {
+    font-size: 12px;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
 .btn-primary {
     width: 100%;
     background: #1a1a1a;

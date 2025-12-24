@@ -284,8 +284,14 @@ function setupUtilities(myVars) {
     myFunctions.getAdjustedDepth = function () {
         const userDepth = myVars.lastValue || 11;
         const timeRemaining = myFunctions.estimateTimeRemaining();
+        const gamePhase = myFunctions.estimateGamePhase();
 
         let depth = userDepth;
+
+        // Cap depth at 15 in opening (first 10 moves)
+        if (gamePhase < 10) {
+            depth = Math.min(depth, 15);
+        }
 
         if (timeRemaining < 10) {
             depth = Math.min(userDepth, Math.floor(Math.random() * 3) + 1);
