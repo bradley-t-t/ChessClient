@@ -44,6 +44,15 @@ var waitForChessBoard = setInterval(() => {
         if (wasMyTurn && !window.myTurn) {
             myFunctions.clearHighlights(true);
             window.lastAnalyzedFen = null;
+            
+            var barEl = document.getElementById("depthBarFill");
+            if (barEl) {
+                barEl.style.width = "0%";
+            }
+            var depthEl = document.getElementById("currentDepthValue");
+            if (depthEl) {
+                depthEl.textContent = "0%";
+            }
         }
 
         $("#depthText")[0].innerHTML = "Current Depth: <strong>" + myVars.lastValue + "</strong>";
