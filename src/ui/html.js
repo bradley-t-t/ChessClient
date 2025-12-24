@@ -83,12 +83,13 @@ var mainTemplate = `
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
                 <div class="input-row">
-                    <label for="timeDelayMin">Min Delay (s)</label>
-                    <input type="number" id="timeDelayMin" name="timeDelayMin" min="0.1" value="0.1" step="0.1" class="input-field">
-                </div>
-                <div class="input-row">
-                    <label for="timeDelayMax">Max Delay (s)</label>
-                    <input type="number" id="timeDelayMax" name="timeDelayMax" min="0.1" value="1" step="0.1" class="input-field">
+                    <label for="moveSpeedTier">Move Speed</label>
+                    <select id="moveSpeedTier" class="input-field">
+                        <option value="fastest">Fastest (0.1-0.3s)</option>
+                        <option value="fast" selected>Fast (0.3-0.8s)</option>
+                        <option value="slow">Slow (0.8-1.5s)</option>
+                        <option value="slowest">Slowest (1.5-3.0s)</option>
+                    </select>
                 </div>
             </div>
         </div>

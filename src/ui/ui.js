@@ -216,10 +216,10 @@ function setupUI(myVars, myFunctions) {
 
         if (myVars.autoMove === true) score += 3;
 
-        var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
-        var maxDelay = parseFloat($("#timeDelayMax").val()) || 1;
-        var avgDelay = (minDelay + maxDelay) / 2;
-        if (avgDelay >= 2) score -= 1; else if (avgDelay <= 0.2) score += 2; else if (avgDelay <= 0.3) score += 1;
+        var speedTier = myVars.moveSpeedTier || "fast";
+        if (speedTier === "slowest") score -= 1;
+        else if (speedTier === "fastest") score += 2;
+        else if (speedTier === "fast") score += 1;
 
         score = Math.max(1, Math.min(10, score));
 
@@ -313,8 +313,10 @@ function setupUI(myVars, myFunctions) {
         $("#depthSlider").val(myVars2.lastValue);
         $("#depthValue").text(myVars2.lastValue);
         $("#depthText").html("Current Depth: <strong>" + myVars2.lastValue + "</strong>");
-        $("#timeDelayMin").val(GM_getValue("timeDelayMin", 0.1));
-        $("#timeDelayMax").val(GM_getValue("timeDelayMax", 1));
+        
+        myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", "fast");
+        $("#moveSpeedTier").val(myVars2.moveSpeedTier);
+        
         if (myVars2.bestMoveColor) {
             $("#bestMoveColor").val(myVars2.bestMoveColor);
         }

@@ -1,4 +1,4 @@
-var currentVersion = "2.0.1";
+var currentVersion = "2.0.2";
 
 function initializeVariables() {
     const myVars = {
@@ -8,7 +8,8 @@ function initializeVariables() {
         lastValue: 3,
         blunderRate: 0.2,
         bestMoveColor: "#5b8c5a",
-        intermediateMoveColor: "#ffa500"
+        intermediateMoveColor: "#ffa500",
+        moveSpeedTier: "fast"
     };
     return myVars;
 }

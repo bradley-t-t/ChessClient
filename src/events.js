@@ -69,7 +69,8 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
-    $(document).on("change", "#timeDelayMin, #timeDelayMax", function () {
+    $(document).on("change", "#moveSpeedTier", function () {
+        myVars.moveSpeedTier = $(this).val();
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
@@ -79,15 +80,14 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myVars.blunderRate = 0.1;
         myVars.bestMoveColor = "#87ceeb";
         myVars.intermediateMoveColor = "#ffdab9";
+        myVars.moveSpeedTier = "fast";
 
         $("#autoMove").prop("checked", myVars.autoMove);
         $("#depthSlider").val(myVars.lastValue).trigger("input");
         $("#blunderRateSlider").val(1).trigger("input");
         $("#bestMoveColor").val(myVars.bestMoveColor);
         $("#intermediateMoveColor").val(myVars.intermediateMoveColor);
-
-        $("#timeDelayMin").val(0.1);
-        $("#timeDelayMax").val(1);
+        $("#moveSpeedTier").val(myVars.moveSpeedTier);
 
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();

@@ -144,8 +144,31 @@ function setupUtilities(myVars) {
         myFunctions.highlightSingleSquare(toSquare, moveColor, 0.7);
 
         if (!isIntermediate && myVars.autoMove === true) {
-            var minDelay = parseFloat($("#timeDelayMin").val()) || 0.1;
-            var maxDelay = parseFloat($("#timeDelayMax").val()) || 1;
+            var speedTier = myVars.moveSpeedTier || "fast";
+            var minDelay, maxDelay;
+            
+            switch(speedTier) {
+                case "fastest":
+                    minDelay = 0.1;
+                    maxDelay = 0.3;
+                    break;
+                case "fast":
+                    minDelay = 0.3;
+                    maxDelay = 0.8;
+                    break;
+                case "slow":
+                    minDelay = 0.8;
+                    maxDelay = 1.5;
+                    break;
+                case "slowest":
+                    minDelay = 1.5;
+                    maxDelay = 3.0;
+                    break;
+                default:
+                    minDelay = 0.3;
+                    maxDelay = 0.8;
+            }
+            
             var delay = (Math.random() * (maxDelay - minDelay) + minDelay) * 1000;
             
             setTimeout(function() {
@@ -367,8 +390,7 @@ function setupUtilities(myVars) {
     myFunctions.saveSettings = function () {
         try {
             GM_setValue("autoMove", myVars.autoMove);
-            GM_setValue("timeDelayMin", $("#timeDelayMin").val());
-            GM_setValue("timeDelayMax", $("#timeDelayMax").val());
+            GM_setValue("moveSpeedTier", myVars.moveSpeedTier);
             GM_setValue("depthValue", myVars.lastValue);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
