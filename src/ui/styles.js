@@ -184,8 +184,17 @@ var mainStyles = `
 }
 
 .thinking-indicator.reloading .thinking-spinner {
-    border: 2px solid #bbf7d0;
-    border-top-color: #22c55e;
+    border: 3px solid #666;
+    border-top-color: #000;
+}
+
+.thinking-spinner {
+    width: 16px;
+    height: 16px;
+    border: 3px solid #666;
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {

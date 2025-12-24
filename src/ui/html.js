@@ -71,12 +71,12 @@ var mainTemplate = `
         <div class="tab-panel" id="advanced-settings">
             <div class="setting-group advanced-controls">
                 <div class="input-row">
-                    <label for="bestMoveColor">Recommended Move</label>
-                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
-                </div>
-                <div class="input-row">
                     <label for="intermediateMoveColor">Intermediate Move</label>
                     <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
+                </div>
+                <div class="input-row">
+                    <label for="bestMoveColor">Recommended Move</label>
+                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
                 <div class="input-row">
                     <label for="timeDelayMin">Min Delay (s)</label>

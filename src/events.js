@@ -72,6 +72,36 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
+    $(document).on("click", "#resetDefaults", function () {
+        // Reset to specified defaults
+        myVars.lastValue = 7;
+        myVars.blunderRate = 0.1; // 1 on the 0-10 scale = 0.1
+        myVars.autoMove = false;
+        myVars.bestMoveColor = "#87ceeb"; // light blue
+        myVars.intermediateMoveColor = "#ffdab9"; // light orange/peach
+        
+        // Update UI elements
+        $("#depthSlider").val(7);
+        $("#depthValue").text(7);
+        $("#depthText").html("Current Depth: <strong>7</strong>");
+        
+        $("#blunderRateSlider").val(1);
+        $("#blunderRateValue").text(1);
+        
+        $("#autoMove").prop("checked", false);
+        
+        $("#bestMoveColor").val("#87ceeb");
+        $("#intermediateMoveColor").val("#ffdab9");
+        
+        // Reset delay values to defaults
+        $("#timeDelayMin").val(0.1);
+        $("#timeDelayMax").val(1);
+        
+        // Save settings and update UI
+        myFunctions.saveSettings();
+        myFunctions.updateDetectionScore();
+        myFunctions.updateEloEstimate();
+    });
 }
 
 function setupEventHandlers(myVars, myFunctions, engine) {
