@@ -76,7 +76,7 @@ function setupParser(myVars, myFunctions) {
             window.isThinking = false;
             myFunctions.spinner();
             
-            // Clear any pending timeouts
+            // Clear any pending timeouts to prevent reload
             if (document.engine && document.engine.thinkingTimeout) {
                 clearTimeout(document.engine.thinkingTimeout);
                 document.engine.thinkingTimeout = null;

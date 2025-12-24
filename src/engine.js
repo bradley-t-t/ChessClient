@@ -99,18 +99,18 @@ function setupEngine(myVars, myFunctions) {
         if (engine.thinkingTimeout) clearTimeout(engine.thinkingTimeout);
         if (engine.reloadTimeout) clearTimeout(engine.reloadTimeout);
 
-        // Set timeout to reload engine after 90 seconds
+        // Set timeout to reload engine after 180 seconds
         engine.thinkingTimeout = setTimeout(function() {
-            console.log("Engine thinking for too long (90s), reloading...");
+            console.log("Engine thinking for too long (180s), reloading...");
             myFunctions.reloadChessEngine();
             
-            // Set another timeout to stop thinking if it continues for another 90 seconds
+            // Set another timeout to stop thinking if it continues for another 180 seconds
             engine.reloadTimeout = setTimeout(function() {
-                console.log("Engine still thinking after reload (180s total), stopping...");
+                console.log("Engine still thinking after reload (360s total), stopping...");
                 window.isThinking = false;
                 myFunctions.spinner();
-            }, 90000);
-        }, 90000);
+            }, 180000);
+        }, 180000);
     };
     
     myFunctions.autoRun = function(lstValue) {
