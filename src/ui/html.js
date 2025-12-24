@@ -31,7 +31,6 @@ var mainTemplate = `
     <div class="client-body">
         <div class="client-tabs">
             <button class="tab-btn active" data-tab="main-settings">Main</button>
-            <button class="tab-btn" data-tab="style-settings">Style</button>
             <button class="tab-btn" data-tab="advanced-settings">Advanced</button>
         </div>
 
@@ -48,6 +47,18 @@ var mainTemplate = `
                     <button class="slider-btn" id="increaseDepth">+</button>
                 </div>
                 <p id="depthText" style="display:none;">Current Depth: <strong>11</strong></p>
+            </div>
+
+            <div class="setting-group">
+                <div class="setting-row">
+                    <span class="setting-label">Blunder Rate</span>
+                    <span id="blunderRateValue" class="setting-value">2</span>
+                </div>
+                <div class="slider-row">
+                    <button class="slider-btn" id="decreaseBlunder">-</button>
+                    <input type="range" id="blunderRateSlider" min="0" max="10" value="2" class="slider">
+                    <button class="slider-btn" id="increaseBlunder">+</button>
+                </div>
             </div>
 
             <div class="setting-group">
@@ -68,46 +79,6 @@ var mainTemplate = `
                 <div class="input-row">
                     <label for="timeDelayMax">Max Delay (s)</label>
                     <input type="number" id="timeDelayMax" name="timeDelayMax" min="0.1" value="1" step="0.1" class="input-field">
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-panel" id="style-settings">
-            <div class="setting-group">
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span>Aggressive</span>
-                        <span id="aggressiveValue">5</span>
-                    </div>
-                    <input type="range" id="aggressiveSlider" min="1" max="10" value="5" class="slider">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span>Defensive</span>
-                        <span id="defensiveValue">5</span>
-                    </div>
-                    <input type="range" id="defensiveSlider" min="1" max="10" value="5" class="slider">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span>Tactical</span>
-                        <span id="tacticalValue">5</span>
-                    </div>
-                    <input type="range" id="tacticalSlider" min="1" max="10" value="5" class="slider">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span>Positional</span>
-                        <span id="positionalValue">5</span>
-                    </div>
-                    <input type="range" id="positionalSlider" min="1" max="10" value="5" class="slider">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span>Blunder Rate</span>
-                        <span id="blunderRateValue">2</span>
-                    </div>
-                    <input type="range" id="blunderRateSlider" min="0" max="10" value="2" class="slider">
                 </div>
             </div>
         </div>

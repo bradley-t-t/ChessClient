@@ -16,9 +16,30 @@ function setupUIEventHandlers(myVars, myFunctions) {
     });
     $(document).on("click", "#increaseDepth", function () {
         const currentDepth = parseInt($("#depthSlider").val());
-        if (currentDepth < 26) {
+        if (currentDepth < 21) {
             const newDepth = currentDepth + 1;
             $("#depthSlider").val(newDepth).trigger("input");
+        }
+    });
+    $(document).on("input", "#blunderRateSlider", function () {
+        const value = parseInt($(this).val());
+        $("#blunderRateValue").text(value);
+        myVars.blunderRate = parseFloat(value) / 10;
+        myFunctions.saveSettings();
+        myFunctions.updateDetectionScore();
+    });
+    $(document).on("click", "#decreaseBlunder", function () {
+        const currentVal = parseInt($("#blunderRateSlider").val());
+        if (currentVal > 0) {
+            const newVal = currentVal - 1;
+            $("#blunderRateSlider").val(newVal).trigger("input");
+        }
+    });
+    $(document).on("click", "#increaseBlunder", function () {
+        const currentVal = parseInt($("#blunderRateSlider").val());
+        if (currentVal < 10) {
+            const newVal = currentVal + 1;
+            $("#blunderRateSlider").val(newVal).trigger("input");
         }
     });
     $(document).on("click", ".tab-btn", function () {
@@ -31,22 +52,6 @@ function setupUIEventHandlers(myVars, myFunctions) {
 }
 
 function setupStyleEventHandlers(myVars, myFunctions) {
-    $(document).on("input", "#aggressiveSlider, #defensiveSlider, #tacticalSlider, #positionalSlider, #blunderRateSlider", function () {
-        const value = $(this).val();
-        const styleType = this.id.replace("Slider", "");
-        $(`#${styleType}Value`).text(value);
-        if (styleType === "blunderRate") {
-            myVars.blunderRate = parseFloat(value) / 10;
-        } else if (myVars.playStyle && styleType in myVars.playStyle) {
-            if (styleType === "aggressive" || styleType === "defensive") {
-                myVars.playStyle[styleType] = 0.3 + parseFloat(value) / 10 * 0.5;
-            } else {
-                myVars.playStyle[styleType] = 0.2 + parseFloat(value) / 10 * 0.6;
-            }
-        }
-        myFunctions.saveSettings();
-        myFunctions.updateDetectionScore();
-    });
     $(document).on("change", "#autoMove", function () {
         myVars.autoMove = $(this).prop("checked");
         myFunctions.saveSettings();
