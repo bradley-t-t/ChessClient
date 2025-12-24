@@ -1,4 +1,8 @@
 var mainTemplate = `
+<div class="minimized-tab" id="minimizedTab">
+    <span class="tab-label">Chess Client</span>
+</div>
+
 <div class="chess-client">
     <div class="client-header">
         <div class="header-left">

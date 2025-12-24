@@ -162,19 +162,41 @@ function setupUI(myVars, myFunctions) {
     myFunctions.initMinimize = function () {
         var panel = document.getElementById("settingsContainer");
         var minimizeHint = document.getElementById("minimizeHint");
+        var minimizedTab = document.getElementById("minimizedTab");
+
+        panel.classList.add("minimized");
+        if (minimizedTab) {
+            minimizedTab.classList.add("visible");
+        }
 
         minimizeHint.addEventListener("click", function (e) {
             e.stopPropagation();
             panel.classList.add("minimized");
+            if (minimizedTab) {
+                minimizedTab.classList.add("visible");
+            }
         });
+
+        if (minimizedTab) {
+            minimizedTab.addEventListener("click", function () {
+                panel.classList.remove("minimized");
+                minimizedTab.classList.remove("visible");
+            });
+        }
 
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") {
                 e.preventDefault();
                 if (panel.classList.contains("minimized")) {
                     panel.classList.remove("minimized");
+                    if (minimizedTab) {
+                        minimizedTab.classList.remove("visible");
+                    }
                 } else {
                     panel.classList.add("minimized");
+                    if (minimizedTab) {
+                        minimizedTab.classList.add("visible");
+                    }
                 }
             }
         });
