@@ -90,11 +90,11 @@ function setupEngine(myVars, myFunctions) {
         // Reset analysis complete flag
         engine.analysisComplete = false;
 
-        engine.engine.postMessage("setoption name Skill Level value " + skillLevel);
+        // engine.engine.postMessage("setoption name Skill Level value " + skillLevel);
         engine.engine.postMessage("position fen " + fen);
         window.isThinking = true;
         myFunctions.spinner();
-        engine.engine.postMessage("setoption name MultiPV value 3");
+        engine.engine.postMessage("setoption name MultiPV value 1");
         engine.engine.postMessage("go depth " + adjustedDepth);
         myVars.lastValue = depth;
 
