@@ -38,74 +38,98 @@ const AppState = {
 
 window.AppState = AppState;
 
-Object.defineProperty(window, 'isThinking', {
-    get() {
-        return AppState.thinking;
-    },
-    set(value) {
-        AppState.thinking = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'isThinking', {
+        get() {
+            return AppState.thinking;
+        },
+        set(value) {
+            AppState.thinking = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'canGo', {
-    get() {
-        return AppState.canAnalyze;
-    },
-    set(value) {
-        AppState.canAnalyze = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'canGo', {
+        get() {
+            return AppState.canAnalyze;
+        },
+        set(value) {
+            AppState.canAnalyze = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'myTurn', {
-    get() {
-        return AppState.isPlayerTurn;
-    },
-    set(value) {
-        AppState.isPlayerTurn = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'myTurn', {
+        get() {
+            return AppState.isPlayerTurn;
+        },
+        set(value) {
+            AppState.isPlayerTurn = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'board', {
-    get() {
-        return AppState.board;
-    },
-    set(value) {
-        AppState.board = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'board', {
+        get() {
+            return AppState.board;
+        },
+        set(value) {
+            AppState.board = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'lastAnalyzedFen', {
-    get() {
-        return AppState.lastAnalyzedFen;
-    },
-    set(value) {
-        AppState.lastAnalyzedFen = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'lastAnalyzedFen', {
+        get() {
+            return AppState.lastAnalyzedFen;
+        },
+        set(value) {
+            AppState.lastAnalyzedFen = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'lastAnalysisStartTime', {
-    get() {
-        return AppState.lastAnalysisStartTime;
-    },
-    set(value) {
-        AppState.lastAnalysisStartTime = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'lastAnalysisStartTime', {
+        get() {
+            return AppState.lastAnalysisStartTime;
+        },
+        set(value) {
+            AppState.lastAnalysisStartTime = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'watchdogChecks', {
-    get() {
-        return AppState.watchdogChecks;
-    },
-    set(value) {
-        AppState.watchdogChecks = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'watchdogChecks', {
+        get() {
+            return AppState.watchdogChecks;
+        },
+        set(value) {
+            AppState.watchdogChecks = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
 
-Object.defineProperty(window, 'moveInProgress', {
-    get() {
-        return AppState.moveInProgress;
-    },
-    set(value) {
-        AppState.moveInProgress = value;
-    }
-});
+try {
+    Object.defineProperty(window, 'moveInProgress', {
+        get() {
+            return AppState.moveInProgress;
+        },
+        set(value) {
+            AppState.moveInProgress = value;
+        },
+        configurable: true
+    });
+} catch (e) {}
