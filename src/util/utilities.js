@@ -440,23 +440,23 @@ function setupUtilities(myVars) {
             function eloToDepthAndBlunder(elo) {
                 var depth, blunderRate;
                 if (elo < 800) {
-                    depth = Math.round(3 + (elo - 400) / 400 * 2);
-                    blunderRate = 0.8 - (elo - 400) / 400 * 0.3;
+                    depth = Math.round(1 + (elo - 400) / 400 * 2);
+                    blunderRate = 0.95 - (elo - 400) / 400 * 0.25;
                 } else if (elo < 1200) {
-                    depth = Math.round(5 + (elo - 800) / 400 * 3);
-                    blunderRate = 0.5 - (elo - 800) / 400 * 0.2;
+                    depth = Math.round(3 + (elo - 800) / 400 * 3);
+                    blunderRate = 0.70 - (elo - 800) / 400 * 0.25;
                 } else if (elo < 1600) {
-                    depth = Math.round(8 + (elo - 1200) / 400 * 3);
-                    blunderRate = 0.3 - (elo - 1200) / 400 * 0.15;
+                    depth = Math.round(6 + (elo - 1200) / 400 * 4);
+                    blunderRate = 0.45 - (elo - 1200) / 400 * 0.20;
                 } else if (elo < 2000) {
-                    depth = Math.round(11 + (elo - 1600) / 400 * 3);
-                    blunderRate = 0.15 - (elo - 1600) / 400 * 0.1;
+                    depth = Math.round(10 + (elo - 1600) / 400 * 3);
+                    blunderRate = 0.25 - (elo - 1600) / 400 * 0.15;
                 } else if (elo < 2400) {
-                    depth = Math.round(14 + (elo - 2000) / 400 * 3);
-                    blunderRate = 0.05 - (elo - 2000) / 400 * 0.03;
+                    depth = Math.round(13 + (elo - 2000) / 400 * 3);
+                    blunderRate = 0.10 - (elo - 2000) / 400 * 0.07;
                 } else {
-                    depth = Math.round(17 + (elo - 2400) / 1000 * 4);
-                    blunderRate = 0.02 - (elo - 2400) / 1000 * 0.02;
+                    depth = Math.round(16 + (elo - 2400) / 1000 * 5);
+                    blunderRate = 0.03 - (elo - 2400) / 1000 * 0.03;
                 }
                 depth = Math.max(1, Math.min(21, depth));
                 blunderRate = Math.max(0, Math.min(1, blunderRate));

@@ -1,4 +1,4 @@
-var currentVersion = "2.4.0";
+var currentVersion = "2.4.1";
 
 function initializeVariables() {
     const myVars = {
@@ -120,6 +120,8 @@ function setupCore(myVars, myFunctions) {
         var estimatedElo = myFunctions.getEstimatedElo();
         var skillLevel = Math.floor((estimatedElo - 400) / 120);
         skillLevel = Math.max(0, Math.min(20, skillLevel));
+        
+        console.log("Running engine with Target ELO:", myVars.targetElo, "Depth:", myVars.lastValue, "Blunder Rate:", myVars.blunderRate.toFixed(2));
 
         if (!engine.engine) {
             myFunctions.loadChessEngine();
@@ -145,7 +147,7 @@ function setupCore(myVars, myFunctions) {
         engine.engine.postMessage("position fen " + fen);
         window.isThinking = true;
         myFunctions.spinner();
-        engine.engine.postMessage("setoption name MultiPV value 1");
+        engine.engine.postMessage("setoption name MultiPV value 5");
         engine.engine.postMessage("go depth " + adjustedDepth);
         myVars.lastValue = depth;
 
@@ -316,18 +318,44 @@ function setupCore(myVars, myFunctions) {
     }
 
     function selectMoveBySkill(moves, bestMove) {
+        var targetElo = myVars.targetElo || 1500;
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
 
-        var skillFactor = depth / 21 * (1 - blunderRate);
-
-        if (moves.length <= 1 || Math.random() < skillFactor * 0.7 + 0.3) {
-            return bestMove;
+        var rand = Math.random();
+        
+        if (targetElo < 800) {
+            if (rand < 0.35) {
+                if (window.board && window.board.game && window.board.game.getLegalMoves) {
+                    var legalMoves = window.board.game.getLegalMoves();
+                    if (legalMoves && legalMoves.length > 0) {
+                        var randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+                        var randomMoveStr = randomMove.from + randomMove.to + (randomMove.promotion || '');
+                        if (myFunctions.showNotification && randomMoveStr !== bestMove) {
+                            myFunctions.showNotification(
+                                "Random legal move selected (simulating very low ELO play)",
+                                "warning",
+                                4000
+                            );
+                        }
+                        return randomMoveStr;
+                    }
+                }
+            }
         }
-
-        var blunderChance = blunderRate * 0.5;
-        if (Math.random() < blunderChance && moves.length > 1) {
-            var worseMove = moves[Math.min(moves.length - 1, 1 + Math.floor(Math.random() * (moves.length - 1)))];
+        
+        var blunderChance = blunderRate;
+        if (targetElo < 600) {
+            blunderChance = Math.min(1, blunderRate * 1.5);
+        } else if (targetElo < 1000) {
+            blunderChance = Math.min(1, blunderRate * 1.2);
+        }
+        
+        if (rand < blunderChance && moves.length > 1) {
+            var maxWorseIndex = Math.min(moves.length - 1, Math.floor(moves.length * 0.7));
+            var worseIndex = 1 + Math.floor(Math.random() * maxWorseIndex);
+            var worseMove = moves[worseIndex];
+            
             if (worseMove && worseMove.move) {
                 if (myFunctions.showNotification) {
                     var scoreDiff = Math.abs((worseMove.score || 0) - (moves[0].score || 0));
