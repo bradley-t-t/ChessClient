@@ -99,7 +99,7 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
-    const speedLabels = ["", "Fastest", "Fast", "Slow", "Slowest"];
+    const speedLabels = ["", "Slowest", "Very Slow", "Slow", "Medium", "Fast", "Very Fast", "Fastest"];
     
     $(document).on("input", "#moveSpeedSlider", function () {
         const speed = parseInt($(this).val());
@@ -118,7 +118,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
     
     $(document).on("click", "#increaseSpeed", function () {
         const currentSpeed = parseInt($("#moveSpeedSlider").val());
-        if (currentSpeed < 4) {
+        if (currentSpeed < 7) {
             $("#moveSpeedSlider").val(currentSpeed + 1).trigger("input");
         }
     });
@@ -140,7 +140,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myVars.targetElo = 1500;
         myVars.bestMoveColor = "#87ceeb";
         myVars.intermediateMoveColor = "#ffdab9";
-        myVars.moveSpeedTier = 2;
+        myVars.moveSpeedTier = 4;
         myVars.timeAffectedSpeed = false;
 
         $("#autoMove").prop("checked", myVars.autoMove);

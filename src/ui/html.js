@@ -90,11 +90,11 @@ var mainTemplate = `
                 <div id="speedSliderContainer" class="setting-group">
                     <div class="setting-row">
                         <span class="setting-label">Move Speed</span>
-                        <span id="moveSpeedValue" class="setting-value">Fast</span>
+                        <span id="moveSpeedValue" class="setting-value">Medium</span>
                     </div>
                     <div class="slider-row">
                         <button class="slider-btn" id="decreaseSpeed">-</button>
-                        <input type="range" id="moveSpeedSlider" min="1" max="4" value="2" class="slider">
+                        <input type="range" id="moveSpeedSlider" min="1" max="7" value="4" class="slider">
                         <button class="slider-btn" id="increaseSpeed">+</button>
                     </div>
                 </div>

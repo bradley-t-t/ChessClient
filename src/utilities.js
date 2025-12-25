@@ -165,28 +165,40 @@ function setupUtilities(myVars) {
                     maxDelay = 0.3;
                 }
             } else {
-                var speedTier = myVars.moveSpeedTier || 2;
+                var speedTier = myVars.moveSpeedTier || 4;
                 
                 switch(speedTier) {
                     case 1:
-                        minDelay = 0.1;
-                        maxDelay = 0.3;
-                        break;
-                    case 2:
-                        minDelay = 0.3;
-                        maxDelay = 0.8;
-                        break;
-                    case 3:
-                        minDelay = 0.8;
-                        maxDelay = 1.5;
-                        break;
-                    case 4:
                         minDelay = 45;
                         maxDelay = 90;
                         break;
-                    default:
+                    case 2:
+                        minDelay = 15;
+                        maxDelay = 30;
+                        break;
+                    case 3:
+                        minDelay = 5;
+                        maxDelay = 10;
+                        break;
+                    case 4:
+                        minDelay = 2;
+                        maxDelay = 4;
+                        break;
+                    case 5:
+                        minDelay = 0.8;
+                        maxDelay = 1.5;
+                        break;
+                    case 6:
                         minDelay = 0.3;
                         maxDelay = 0.8;
+                        break;
+                    case 7:
+                        minDelay = 0.1;
+                        maxDelay = 0.3;
+                        break;
+                    default:
+                        minDelay = 2;
+                        maxDelay = 4;
                 }
             }
             

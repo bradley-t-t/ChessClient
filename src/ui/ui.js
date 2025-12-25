@@ -287,10 +287,10 @@ function setupUI(myVars, myFunctions) {
         if (myVars.timeAffectedSpeed) {
             score -= 1;
         } else {
-            var speedTier = myVars.moveSpeedTier || 2;
-            if (speedTier === 4) score -= 1;
-            else if (speedTier === 1) score += 2;
-            else if (speedTier === 2) score += 1;
+            var speedTier = myVars.moveSpeedTier || 4;
+            if (speedTier <= 2) score -= 1;
+            else if (speedTier >= 6) score += 2;
+            else if (speedTier === 5) score += 1;
         }
 
         score = Math.max(1, Math.min(10, score));
@@ -367,10 +367,10 @@ function setupUI(myVars, myFunctions) {
         else if (elo < 3000) eloDesc.text("Super Grandmaster");
         else eloDesc.text("World Champion");
         
-        myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", 2);
+        myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", 4);
         myVars2.timeAffectedSpeed = GM_getValue("timeAffectedSpeed", false);
         
-        const speedLabels = ["", "Fastest", "Fast", "Slow", "Slowest"];
+        const speedLabels = ["", "Slowest", "Very Slow", "Slow", "Medium", "Fast", "Very Fast", "Fastest"];
         $("#moveSpeedSlider").val(myVars2.moveSpeedTier);
         $("#moveSpeedValue").text(speedLabels[myVars2.moveSpeedTier]);
         $("#timeAffectedSpeed").prop("checked", myVars2.timeAffectedSpeed);
