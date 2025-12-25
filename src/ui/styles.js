@@ -915,16 +915,22 @@ var mainStyles = `
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 1000000;
+    z-index: 999998;
     width: 400px;
-    max-height: 300px;
-    background: #1a1a1a;
-    border: 1px solid #333333;
-    border-radius: 8px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    min-width: 300px;
+    max-width: 600px;
+    height: 300px;
+    min-height: 200px;
+    max-height: 500px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
     display: none;
     flex-direction: column;
-    font-family: 'Courier New', monospace;
+    font-family: 'Inter', -apple-system, sans-serif;
+    resize: both;
+    overflow: hidden;
 }
 
 #notificationContainer.visible {
@@ -932,44 +938,48 @@ var mainStyles = `
 }
 
 .console-header {
-    background: #2a2a2a;
-    padding: 8px 12px;
-    border-bottom: 1px solid #333333;
+    background: #fafafa;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ebebeb;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 8px 8px 0 0;
+    border-radius: 16px 16px 0 0;
+    cursor: move;
+    user-select: none;
 }
 
 .console-title {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    color: #10b981;
+    color: #1a1a1a;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .console-close {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #666666;
-    font-size: 14px;
+    color: #888888;
+    font-size: 18px;
     transition: color 0.2s;
+    font-weight: 600;
 }
 
 .console-close:hover {
-    color: #ffffff;
+    color: #1a1a1a;
 }
 
 .console-body {
     flex: 1;
     overflow-y: auto;
-    padding: 8px;
-    max-height: 250px;
+    padding: 12px;
+    background: #ffffff;
+    min-height: 0;
 }
 
 .console-body::-webkit-scrollbar {
@@ -977,26 +987,28 @@ var mainStyles = `
 }
 
 .console-body::-webkit-scrollbar-track {
-    background: #1a1a1a;
+    background: transparent;
 }
 
 .console-body::-webkit-scrollbar-thumb {
-    background: #444444;
+    background: #d4d4d4;
     border-radius: 3px;
 }
 
 .console-body::-webkit-scrollbar-thumb:hover {
-    background: #555555;
+    background: #a3a3a3;
 }
 
 .console-entry {
     font-size: 11px;
     line-height: 1.6;
-    margin-bottom: 4px;
-    padding: 4px 6px;
-    border-radius: 3px;
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
     animation: consoleSlideIn 0.2s ease;
     word-wrap: break-word;
+    font-family: 'Inter', -apple-system, sans-serif;
+    border-left: 3px solid;
 }
 
 @keyframes consoleSlideIn {
@@ -1011,58 +1023,70 @@ var mainStyles = `
 }
 
 .console-entry.info {
-    color: #60a5fa;
-    background: rgba(96, 165, 250, 0.1);
+    color: #1e40af;
+    background: #eff6ff;
+    border-left-color: #3b82f6;
 }
 
 .console-entry.success {
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
+    color: #065f46;
+    background: #f0fdf4;
+    border-left-color: #10b981;
 }
 
 .console-entry.warning {
-    color: #f59e0b;
-    background: rgba(245, 158, 11, 0.1);
+    color: #92400e;
+    background: #fffbeb;
+    border-left-color: #f59e0b;
 }
 
 .console-entry.error {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    color: #991b1b;
+    background: #fef2f2;
+    border-left-color: #ef4444;
 }
 
 .console-timestamp {
-    color: #666666;
+    color: #9ca3af;
     font-size: 10px;
-    margin-right: 6px;
+    margin-right: 8px;
+    font-weight: 500;
 }
 
 .console-icon {
-    margin-right: 4px;
+    margin-right: 6px;
+    font-weight: 600;
 }
 
 .console-footer {
-    background: #2a2a2a;
-    padding: 6px 12px;
-    border-top: 1px solid #333333;
-    font-size: 10px;
+    background: #fafafa;
+    padding: 10px 16px;
+    border-top: 1px solid #ebebeb;
+    font-size: 11px;
     color: #666666;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 16px 16px;
 }
 
 .console-clear {
     color: #666666;
     cursor: pointer;
     transition: color 0.2s;
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .console-clear:hover {
-    color: #ffffff;
+    color: #1a1a1a;
+}
+
+.console-count {
+    font-weight: 500;
+    color: #888888;
 }
 `;
 

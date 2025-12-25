@@ -311,10 +311,29 @@ function setupUI(myVars, myFunctions) {
                 descEl.textContent = "Very Risky";
         }
     };
+    
+    var lastNotificationCache = {
+        message: '',
+        type: '',
+        timestamp: 0
+    };
+    
     myFunctions.showNotification = function (message, type, duration) {
         if (!myVars.consoleLogEnabled) return;
 
         type = type || 'info';
+        
+        var now = Date.now();
+        var cacheKey = message + '|' + type;
+        var lastCacheKey = lastNotificationCache.message + '|' + lastNotificationCache.type;
+        
+        if (cacheKey === lastCacheKey && (now - lastNotificationCache.timestamp) < 2000) {
+            return;
+        }
+        
+        lastNotificationCache.message = message;
+        lastNotificationCache.type = type;
+        lastNotificationCache.timestamp = now;
 
         var container = document.getElementById('notificationContainer');
         if (!container) {
@@ -322,14 +341,14 @@ function setupUI(myVars, myFunctions) {
             container.id = 'notificationContainer';
             container.className = 'visible';
             container.innerHTML = `
-                <div class="console-header">
+                <div class="console-header" id="consoleHeader">
                     <span class="console-title">Console Log</span>
                     <span class="console-close" id="consoleClose">×</span>
                 </div>
                 <div class="console-body" id="consoleBody"></div>
                 <div class="console-footer">
                     <span class="console-clear" id="consoleClear">Clear</span>
-                    <span id="consoleCount">0 entries</span>
+                    <span id="consoleCount" class="console-count">0 entries</span>
                 </div>
             `;
             document.body.appendChild(container);
@@ -342,6 +361,40 @@ function setupUI(myVars, myFunctions) {
                 document.getElementById('consoleBody').innerHTML = '';
                 document.getElementById('consoleCount').textContent = '0 entries';
             };
+            
+            var header = document.getElementById('consoleHeader');
+            var isDragging = false;
+            var offsetX = 0;
+            var offsetY = 0;
+            
+            header.addEventListener('mousedown', function(e) {
+                if (e.target.id === 'consoleClose') return;
+                isDragging = true;
+                offsetX = e.clientX - container.getBoundingClientRect().left;
+                offsetY = e.clientY - container.getBoundingClientRect().top;
+                container.style.transition = 'none';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                var newX = e.clientX - offsetX;
+                var newY = e.clientY - offsetY;
+                
+                newX = Math.max(0, Math.min(newX, window.innerWidth - container.offsetWidth));
+                newY = Math.max(0, Math.min(newY, window.innerHeight - container.offsetHeight));
+                
+                container.style.left = newX + 'px';
+                container.style.top = newY + 'px';
+                container.style.bottom = 'auto';
+            });
+            
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    container.style.transition = '';
+                }
+            });
         } else if (!container.classList.contains('visible')) {
             container.classList.add('visible');
         }
