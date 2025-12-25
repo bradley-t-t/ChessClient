@@ -3,7 +3,6 @@ function setupUtilities(myVars) {
     let stop_b = stop_w = 0;
     let s_br = s_br2 = s_wr = s_wr2 = 0;
     let obs = "";
-    setupParser(myVars, myFunctions);
     myFunctions.rescan = function (lev) {
         var ari = $("chess-board").find(".piece").map(function () {
             return this.className;

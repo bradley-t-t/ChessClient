@@ -311,6 +311,57 @@ function setupUI(myVars, myFunctions) {
                 descEl.textContent = "Very Risky";
         }
     };
+    myFunctions.showNotification = function(message, type, duration) {
+        type = type || 'info';
+        duration = duration || 5000;
+        
+        var container = document.getElementById('notificationContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notificationContainer';
+            document.body.appendChild(container);
+        }
+        
+        var notification = document.createElement('div');
+        notification.className = 'notification ' + type;
+        
+        var icons = {
+            info: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+            success: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>',
+            warning: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+            error: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+        };
+        
+        notification.innerHTML = 
+            '<div class="notification-icon">' + (icons[type] || icons.info) + '</div>' +
+            '<div class="notification-content">' + message + '</div>' +
+            '<div class="notification-close">×</div>';
+        
+        var closeBtn = notification.querySelector('.notification-close');
+        closeBtn.onclick = function() {
+            notification.classList.add('fadeout');
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        };
+        
+        container.appendChild(notification);
+        
+        if (duration > 0) {
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.classList.add('fadeout');
+                    setTimeout(function() {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, duration);
+        }
+    };
     myFunctions.initDraggable = function () {
         var panel = document.getElementById("settingsContainer");
         var header = panel.querySelector(".client-header");

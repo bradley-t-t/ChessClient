@@ -11,7 +11,7 @@ function main() {
     const myVars = initializeVariables();
     const myFunctions = setupUtilities(myVars);
     myFunctions.loadSettings();
-    const engine = setupEngine(myVars, myFunctions);
+    const engine = setupCore(myVars, myFunctions);
     document.engine = engine;
     document.myVars = myVars;
     document.myFunctions = myFunctions;
