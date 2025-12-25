@@ -81,6 +81,13 @@ var mainTemplate = `
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
                 <div class="toggle-row">
+                    <span class="toggle-label">Console Log</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row">
                     <span class="toggle-label">Time Affected Speed</span>
                     <label class="toggle">
                         <input type="checkbox" id="timeAffectedSpeed" class="toggle-input" value="false">

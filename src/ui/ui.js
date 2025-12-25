@@ -312,54 +312,71 @@ function setupUI(myVars, myFunctions) {
         }
     };
     myFunctions.showNotification = function(message, type, duration) {
+        if (!myVars.consoleLogEnabled) return;
+        
         type = type || 'info';
-        duration = duration || 5000;
         
         var container = document.getElementById('notificationContainer');
         if (!container) {
             container = document.createElement('div');
             container.id = 'notificationContainer';
+            container.className = 'visible';
+            container.innerHTML = `
+                <div class="console-header">
+                    <span class="console-title">Console Log</span>
+                    <span class="console-close" id="consoleClose">×</span>
+                </div>
+                <div class="console-body" id="consoleBody"></div>
+                <div class="console-footer">
+                    <span class="console-clear" id="consoleClear">Clear</span>
+                    <span id="consoleCount">0 entries</span>
+                </div>
+            `;
             document.body.appendChild(container);
+            
+            document.getElementById('consoleClose').onclick = function() {
+                container.classList.remove('visible');
+            };
+            
+            document.getElementById('consoleClear').onclick = function() {
+                document.getElementById('consoleBody').innerHTML = '';
+                document.getElementById('consoleCount').textContent = '0 entries';
+            };
+        } else if (!container.classList.contains('visible')) {
+            container.classList.add('visible');
         }
         
-        var notification = document.createElement('div');
-        notification.className = 'notification ' + type;
+        var body = document.getElementById('consoleBody');
+        var entry = document.createElement('div');
+        entry.className = 'console-entry ' + type;
         
         var icons = {
-            info: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
-            success: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>',
-            warning: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-            error: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+            info: '[i]',
+            success: '[✓]',
+            warning: '[!]',
+            error: '[✗]'
         };
         
-        notification.innerHTML = 
-            '<div class="notification-icon">' + (icons[type] || icons.info) + '</div>' +
-            '<div class="notification-content">' + message + '</div>' +
-            '<div class="notification-close">×</div>';
+        var timestamp = new Date().toLocaleTimeString('en-US', { 
+            hour12: false, 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit' 
+        });
         
-        var closeBtn = notification.querySelector('.notification-close');
-        closeBtn.onclick = function() {
-            notification.classList.add('fadeout');
-            setTimeout(function() {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        };
+        entry.innerHTML = 
+            '<span class="console-timestamp">' + timestamp + '</span>' +
+            '<span class="console-icon">' + (icons[type] || icons.info) + '</span>' +
+            message;
         
-        container.appendChild(notification);
+        body.appendChild(entry);
+        body.scrollTop = body.scrollHeight;
         
-        if (duration > 0) {
-            setTimeout(function() {
-                if (notification.parentNode) {
-                    notification.classList.add('fadeout');
-                    setTimeout(function() {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 300);
-                }
-            }, duration);
+        var count = body.children.length;
+        document.getElementById('consoleCount').textContent = count + ' ' + (count === 1 ? 'entry' : 'entries');
+        
+        if (count > 100) {
+            body.removeChild(body.firstChild);
         }
     };
     myFunctions.initDraggable = function () {
@@ -438,6 +455,9 @@ function setupUI(myVars, myFunctions) {
         if (myVars2.intermediateMoveColor) {
             $("#intermediateMoveColor").val(myVars2.intermediateMoveColor);
         }
+        
+        myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
+        $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
     }
 
     return myFunctions;

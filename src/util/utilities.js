@@ -427,6 +427,7 @@ function setupUtilities(myVars) {
             GM_setValue("targetElo", myVars.targetElo);
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
+            GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
         } catch (error) {
         }
     };
@@ -436,6 +437,7 @@ function setupUtilities(myVars) {
             myVars.targetElo = GM_getValue("targetElo", 1500);
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
+            myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
             
             function eloToDepthAndBlunder(elo) {
                 var depth, blunderRate;

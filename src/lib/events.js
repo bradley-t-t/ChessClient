@@ -125,7 +125,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
     
     $(document).on("change", "#timeAffectedSpeed", function () {
         myVars.timeAffectedSpeed = $(this).prop("checked");
-        const speedContainer = $("#speedSliderContainer");
+        var speedContainer = $("#speedSliderContainer");
         if (myVars.timeAffectedSpeed) {
             speedContainer.hide();
         } else {
@@ -133,6 +133,19 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         }
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
+    });
+    
+    $(document).on("change", "#consoleLogEnabled", function () {
+        myVars.consoleLogEnabled = $(this).prop("checked");
+        myFunctions.saveSettings();
+        var container = document.getElementById('notificationContainer');
+        if (container) {
+            if (myVars.consoleLogEnabled) {
+                container.classList.add('visible');
+            } else {
+                container.classList.remove('visible');
+            }
+        }
     });
     
     $(document).on("click", "#resetDefaults", function () {
