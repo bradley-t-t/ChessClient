@@ -14,7 +14,7 @@ const DOMHelpers = {
     setProgress(percentage) {
         const bar = this.getElementById("depthBarFill");
         const value = this.getElementById("currentDepthValue");
-        
+
         if (bar) bar.style.width = `${percentage}%`;
         if (value) value.textContent = `${Math.round(percentage)}%`;
     },
@@ -24,8 +24,8 @@ const DOMHelpers = {
     },
 
     isPlayerTurn(board) {
-        return board?.game && 
-               board.game.getTurn() === board.game.getPlayingAs();
+        return board?.game &&
+            board.game.getTurn() === board.game.getPlayingAs();
     },
 
     getCurrentFEN(board) {

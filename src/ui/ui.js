@@ -18,17 +18,17 @@ function setupUI(myVars, myFunctions) {
             $("#thinking-indicator").removeClass("active");
         }
     };
-    
+
     myFunctions.updatePositionalMeter = function (score) {
         var meterValue = document.getElementById("meterValue");
         var whiteFill = document.getElementById("meterFillWhite");
         var blackFill = document.getElementById("meterFillBlack");
-        
+
         if (!meterValue || !whiteFill || !blackFill) {
             console.log("Positional meter elements not found");
             return;
         }
-        
+
         var playingAs = 1;
         if (window.board && window.board.game && window.board.game.getPlayingAs) {
             try {
@@ -37,24 +37,24 @@ function setupUI(myVars, myFunctions) {
                 playingAs = 1;
             }
         }
-        
+
         var evaluation = score / 100;
-        
+
         if (playingAs === 2) {
             evaluation = -evaluation;
         }
-        
+
         var cappedEval = Math.max(-10, Math.min(10, evaluation));
-        
+
         var whitePercentage = 50 + (cappedEval * 5);
         whitePercentage = Math.max(0, Math.min(100, whitePercentage));
         var blackPercentage = 100 - whitePercentage;
-        
+
         console.log("Meter Update - Score:", score, "Playing as:", playingAs === 2 ? "Black" : "White", "Eval:", evaluation, "White:", whitePercentage + "%", "Black:", blackPercentage + "%");
-        
+
         blackFill.style.height = blackPercentage + "%";
         whiteFill.style.height = whitePercentage + "%";
-        
+
         if (evaluation > 0) {
             meterValue.textContent = "+" + Math.abs(evaluation).toFixed(1);
         } else if (evaluation < 0) {
@@ -64,7 +64,7 @@ function setupUI(myVars, myFunctions) {
         }
         meterValue.style.color = "#ffffff";
     };
-    
+
     myFunctions.highlightSquares = function (fromSq, toSq, color) {
         var board = $("chess-board")[0] || $("wc-chess-board")[0];
         if (!board) return;
@@ -155,11 +155,11 @@ function setupUI(myVars, myFunctions) {
 
             window.board = $("chess-board")[0] || $("wc-chess-board")[0];
             myVars.board = window.board;
-            
+
             var meterDiv = document.createElement("div");
             meterDiv.innerHTML = positionalMeterTemplate;
             document.body.appendChild(meterDiv.firstElementChild);
-            
+
             var div = document.createElement("div");
             div.setAttribute("id", "settingsContainer");
             div.innerHTML = mainTemplate;
@@ -223,8 +223,8 @@ function setupUI(myVars, myFunctions) {
         if (positionMeter) {
             positionMeter.style.display = "none";
         }
-        
-        setTimeout(function() {
+
+        setTimeout(function () {
             panel.classList.remove("initial-load");
         }, 100);
 
@@ -311,11 +311,11 @@ function setupUI(myVars, myFunctions) {
                 descEl.textContent = "Very Risky";
         }
     };
-    myFunctions.showNotification = function(message, type, duration) {
+    myFunctions.showNotification = function (message, type, duration) {
         if (!myVars.consoleLogEnabled) return;
-        
+
         type = type || 'info';
-        
+
         var container = document.getElementById('notificationContainer');
         if (!container) {
             container = document.createElement('div');
@@ -333,48 +333,48 @@ function setupUI(myVars, myFunctions) {
                 </div>
             `;
             document.body.appendChild(container);
-            
-            document.getElementById('consoleClose').onclick = function() {
+
+            document.getElementById('consoleClose').onclick = function () {
                 container.classList.remove('visible');
             };
-            
-            document.getElementById('consoleClear').onclick = function() {
+
+            document.getElementById('consoleClear').onclick = function () {
                 document.getElementById('consoleBody').innerHTML = '';
                 document.getElementById('consoleCount').textContent = '0 entries';
             };
         } else if (!container.classList.contains('visible')) {
             container.classList.add('visible');
         }
-        
+
         var body = document.getElementById('consoleBody');
         var entry = document.createElement('div');
         entry.className = 'console-entry ' + type;
-        
+
         var icons = {
             info: '[i]',
             success: '[✓]',
             warning: '[!]',
             error: '[✗]'
         };
-        
-        var timestamp = new Date().toLocaleTimeString('en-US', { 
-            hour12: false, 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
+
+        var timestamp = new Date().toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
         });
-        
-        entry.innerHTML = 
+
+        entry.innerHTML =
             '<span class="console-timestamp">' + timestamp + '</span>' +
             '<span class="console-icon">' + (icons[type] || icons.info) + '</span>' +
             message;
-        
+
         body.appendChild(entry);
         body.scrollTop = body.scrollHeight;
-        
+
         var count = body.children.length;
         document.getElementById('consoleCount').textContent = count + ' ' + (count === 1 ? 'entry' : 'entries');
-        
+
         if (count > 100) {
             body.removeChild(body.firstChild);
         }
@@ -418,7 +418,7 @@ function setupUI(myVars, myFunctions) {
 
         $("#targetEloSlider").val(myVars2.targetElo);
         $("#targetEloValue").text(myVars2.targetElo);
-        
+
         const eloDesc = $("#eloDescription");
         const elo = myVars2.targetElo;
         if (elo < 800) eloDesc.text("Beginner");
@@ -434,28 +434,28 @@ function setupUI(myVars, myFunctions) {
         else if (elo < 2800) eloDesc.text("Grandmaster");
         else if (elo < 3000) eloDesc.text("Super Grandmaster");
         else eloDesc.text("World Champion");
-        
+
         myVars2.moveSpeedTier = GM_getValue("moveSpeedTier", 4);
         myVars2.timeAffectedSpeed = GM_getValue("timeAffectedSpeed", false);
-        
+
         const speedLabels = ["", "Slowest", "Very Slow", "Slow", "Medium", "Fast", "Very Fast", "Fastest"];
         $("#moveSpeedSlider").val(myVars2.moveSpeedTier);
         $("#moveSpeedValue").text(speedLabels[myVars2.moveSpeedTier]);
         $("#timeAffectedSpeed").prop("checked", myVars2.timeAffectedSpeed);
-        
+
         if (myVars2.timeAffectedSpeed) {
             $("#speedSliderContainer").hide();
         } else {
             $("#speedSliderContainer").show();
         }
-        
+
         if (myVars2.bestMoveColor) {
             $("#bestMoveColor").val(myVars2.bestMoveColor);
         }
         if (myVars2.intermediateMoveColor) {
             $("#intermediateMoveColor").val(myVars2.intermediateMoveColor);
         }
-        
+
         myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
         $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
     }

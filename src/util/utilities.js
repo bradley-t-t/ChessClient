@@ -144,7 +144,7 @@ function setupUtilities(myVars) {
 
         if (!isIntermediate && myVars.autoMove === true) {
             var minDelay, maxDelay;
-            
+
             if (myVars.timeAffectedSpeed) {
                 var timeRemaining = myFunctions.estimateTimeRemaining();
                 if (timeRemaining > 300) {
@@ -165,8 +165,8 @@ function setupUtilities(myVars) {
                 }
             } else {
                 var speedTier = myVars.moveSpeedTier || 4;
-                
-                switch(speedTier) {
+
+                switch (speedTier) {
                     case 1:
                         minDelay = 45;
                         maxDelay = 90;
@@ -200,10 +200,10 @@ function setupUtilities(myVars) {
                         maxDelay = 4;
                 }
             }
-            
+
             var delay = (Math.random() * (maxDelay - minDelay) + minDelay) * 1000;
-            
-            setTimeout(function() {
+
+            setTimeout(function () {
                 myFunctions.movePiece(fromSquare, toSquare);
             }, delay);
         }
@@ -438,7 +438,7 @@ function setupUtilities(myVars) {
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
-            
+
             function eloToDepthAndBlunder(elo) {
                 var depth, blunderRate;
                 if (elo < 800) {
@@ -462,9 +462,9 @@ function setupUtilities(myVars) {
                 }
                 depth = Math.max(1, Math.min(21, depth));
                 blunderRate = Math.max(0, Math.min(1, blunderRate));
-                return { depth: depth, blunderRate: blunderRate };
+                return {depth: depth, blunderRate: blunderRate};
             }
-            
+
             var config = eloToDepthAndBlunder(myVars.targetElo);
             myVars.lastValue = config.depth;
             myVars.blunderRate = config.blunderRate;

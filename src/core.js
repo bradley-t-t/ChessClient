@@ -56,17 +56,17 @@ function setupCore(myVars, myFunctions) {
             reloadBtn.style.opacity = '0.7';
             var dotCount = 0;
             var loopCount = 0;
-            
-            var dotInterval = setInterval(function() {
+
+            var dotInterval = setInterval(function () {
                 dotCount = (dotCount % 3) + 1;
                 var dots = '.'.repeat(dotCount);
                 reloadBtn.textContent = 'Reloading' + dots;
-                
+
                 if (dotCount === 3) {
                     loopCount++;
                     if (loopCount >= 2) {
                         clearInterval(dotInterval);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             reloadBtn.textContent = originalText;
                             reloadBtn.disabled = false;
                             reloadBtn.style.opacity = '1';
@@ -77,7 +77,7 @@ function setupCore(myVars, myFunctions) {
         }
 
         $("#thinking-indicator").addClass("reloading");
-        
+
         if (myFunctions.showNotification) {
             myFunctions.showNotification("Engine reloaded successfully", "info", 3000);
         }
@@ -89,29 +89,29 @@ function setupCore(myVars, myFunctions) {
         if (engine.engine) {
             engine.engine.terminate();
         }
-        
+
         window.isThinking = false;
         window.canGo = true;
         window.lastAnalyzedFen = null;
-        
+
         if (engine.analysisComplete) {
             engine.analysisComplete = false;
         }
-        
+
         myFunctions.loadChessEngine();
     };
 
     myFunctions.getEstimatedElo = function () {
         var depth = myVars.lastValue || 3;
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
-        
+
         var baseElo = 500;
         var maxElo = 3400;
         var eloRange = maxElo - baseElo;
-        
+
         var depthFactor = Math.pow(depth / 21, 0.8);
         var accuracyFactor = (1 - blunderRate);
-        
+
         var elo = Math.round(baseElo + (depthFactor * accuracyFactor * eloRange));
         return Math.max(400, Math.min(3400, elo));
     };
@@ -121,7 +121,7 @@ function setupCore(myVars, myFunctions) {
         var estimatedElo = myFunctions.getEstimatedElo();
         var skillLevel = Math.floor((estimatedElo - 400) / 120);
         skillLevel = Math.max(0, Math.min(20, skillLevel));
-        
+
         console.log("Running engine with Target ELO:", myVars.targetElo, "Depth:", myVars.lastValue, "Blunder Rate:", myVars.blunderRate.toFixed(2));
 
         if (!engine.engine) {
@@ -191,7 +191,7 @@ function setupCore(myVars, myFunctions) {
         window.isThinking = false;
         window.canGo = true;
         engine.analysisComplete = true;
-        
+
         if (engine.thinkingTimeout) {
             clearTimeout(engine.thinkingTimeout);
             engine.thinkingTimeout = null;
@@ -221,7 +221,7 @@ function setupCore(myVars, myFunctions) {
                 } else if (scoreMatch) {
                     score = parseInt(scoreMatch[1]);
                 }
-                
+
                 if (myFunctions.updatePositionalMeter) {
                     myFunctions.updatePositionalMeter(score);
                 }
@@ -242,17 +242,19 @@ function setupCore(myVars, myFunctions) {
                 if (barEl && myFunctions.targetDepth > 0) {
                     var targetPercentage = Math.min(100, Math.max(1, maxDepth / myFunctions.targetDepth * 100));
                     var currentWidth = parseFloat(barEl.style.width) || 0;
-                    
+
                     if (targetPercentage > currentWidth) {
                         var step = (targetPercentage - currentWidth) / 10;
-                        var animateBar = function(current) {
+                        var animateBar = function (current) {
                             if (current < targetPercentage) {
                                 current = Math.min(current + step, targetPercentage);
                                 barEl.style.width = current + "%";
                                 if (depthEl) {
                                     depthEl.textContent = Math.round(current) + "%";
                                 }
-                                requestAnimationFrame(function() { animateBar(current); });
+                                requestAnimationFrame(function () {
+                                    animateBar(current);
+                                });
                             } else {
                                 barEl.style.width = targetPercentage + "%";
                                 if (depthEl) {
@@ -324,7 +326,7 @@ function setupCore(myVars, myFunctions) {
         var blunderRate = myVars.blunderRate !== undefined ? myVars.blunderRate : 0.7;
 
         var rand = Math.random();
-        
+
         if (targetElo < 800) {
             if (rand < 0.35) {
                 if (window.board && window.board.game && window.board.game.getLegalMoves) {
@@ -344,19 +346,19 @@ function setupCore(myVars, myFunctions) {
                 }
             }
         }
-        
+
         var blunderChance = blunderRate;
         if (targetElo < 600) {
             blunderChance = Math.min(1, blunderRate * 1.5);
         } else if (targetElo < 1000) {
             blunderChance = Math.min(1, blunderRate * 1.2);
         }
-        
+
         if (rand < blunderChance && moves.length > 1) {
             var maxWorseIndex = Math.min(moves.length - 1, Math.floor(moves.length * 0.7));
             var worseIndex = 1 + Math.floor(Math.random() * maxWorseIndex);
             var worseMove = moves[worseIndex];
-            
+
             if (worseMove && worseMove.move) {
                 if (myFunctions.showNotification) {
                     var scoreDiff = Math.abs((worseMove.score || 0) - (moves[0].score || 0));

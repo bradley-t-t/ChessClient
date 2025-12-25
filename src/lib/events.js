@@ -1,7 +1,7 @@
 function setupUIEventHandlers(myVars, myFunctions) {
     function eloToDepthAndBlunder(elo) {
         var depth, blunderRate;
-        
+
         if (elo < 800) {
             depth = Math.round(3 + (elo - 400) / 400 * 2);
             blunderRate = 0.8 - (elo - 400) / 400 * 0.3;
@@ -21,22 +21,22 @@ function setupUIEventHandlers(myVars, myFunctions) {
             depth = Math.round(17 + (elo - 2400) / 1000 * 4);
             blunderRate = 0.02 - (elo - 2400) / 1000 * 0.02;
         }
-        
+
         depth = Math.max(1, Math.min(21, depth));
         blunderRate = Math.max(0, Math.min(1, blunderRate));
-        
-        return { depth: depth, blunderRate: blunderRate };
+
+        return {depth: depth, blunderRate: blunderRate};
     }
-    
+
     $(document).on("input", "#targetEloSlider", function () {
         const elo = parseInt($(this).val());
         $("#targetEloValue").text(elo);
         myVars.targetElo = elo;
-        
+
         const config = eloToDepthAndBlunder(elo);
         myVars.lastValue = config.depth;
         myVars.blunderRate = config.blunderRate;
-        
+
         const eloDesc = $("#eloDescription");
         if (elo < 800) eloDesc.text("Beginner");
         else if (elo < 1000) eloDesc.text("Novice");
@@ -51,12 +51,12 @@ function setupUIEventHandlers(myVars, myFunctions) {
         else if (elo < 2800) eloDesc.text("Grandmaster");
         else if (elo < 3000) eloDesc.text("Super Grandmaster");
         else eloDesc.text("World Champion");
-        
+
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
         myFunctions.reloadChessEngine();
     });
-    
+
     $(document).on("click", "#decreaseElo", function () {
         const currentElo = parseInt($("#targetEloSlider").val());
         if (currentElo > 400) {
@@ -64,7 +64,7 @@ function setupUIEventHandlers(myVars, myFunctions) {
             $("#targetEloSlider").val(newElo).trigger("input");
         }
     });
-    
+
     $(document).on("click", "#increaseElo", function () {
         const currentElo = parseInt($("#targetEloSlider").val());
         if (currentElo < 3400) {
@@ -72,7 +72,7 @@ function setupUIEventHandlers(myVars, myFunctions) {
             $("#targetEloSlider").val(newElo).trigger("input");
         }
     });
-    
+
     $(document).on("click", ".tab-btn", function () {
         $(".tab-btn").removeClass("active");
         $(this).addClass("active");
@@ -100,7 +100,7 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {
     const speedLabels = ["", "Slowest", "Very Slow", "Slow", "Medium", "Fast", "Very Fast", "Fastest"];
-    
+
     $(document).on("input", "#moveSpeedSlider", function () {
         const speed = parseInt($(this).val());
         $("#moveSpeedValue").text(speedLabels[speed]);
@@ -108,21 +108,21 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    
+
     $(document).on("click", "#decreaseSpeed", function () {
         const currentSpeed = parseInt($("#moveSpeedSlider").val());
         if (currentSpeed > 1) {
             $("#moveSpeedSlider").val(currentSpeed - 1).trigger("input");
         }
     });
-    
+
     $(document).on("click", "#increaseSpeed", function () {
         const currentSpeed = parseInt($("#moveSpeedSlider").val());
         if (currentSpeed < 7) {
             $("#moveSpeedSlider").val(currentSpeed + 1).trigger("input");
         }
     });
-    
+
     $(document).on("change", "#timeAffectedSpeed", function () {
         myVars.timeAffectedSpeed = $(this).prop("checked");
         var speedContainer = $("#speedSliderContainer");
@@ -134,7 +134,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    
+
     $(document).on("change", "#consoleLogEnabled", function () {
         myVars.consoleLogEnabled = $(this).prop("checked");
         myFunctions.saveSettings();
@@ -147,7 +147,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
             }
         }
     });
-    
+
     $(document).on("click", "#resetDefaults", function () {
         myVars.autoMove = false;
         myVars.targetElo = 1500;

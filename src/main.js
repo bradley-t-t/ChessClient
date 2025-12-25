@@ -27,7 +27,7 @@ setInterval(() => {
     if (!document.myVars || !document.myFunctions) return;
     const myVars = document.myVars;
     const myFunctions = document.myFunctions;
-    
+
     if (myVars.loaded) {
         window.board = $("chess-board")[0] || $("wc-chess-board")[0];
         myFunctions.checkPageStatus();
@@ -56,14 +56,14 @@ setInterval(() => {
             }
             window.isThinking = false;
             window.canGo = true;
-            
+
             const barEl = document.getElementById("depthBarFill");
             if (barEl) barEl.style.width = "0%";
-            
+
             const depthEl = document.getElementById("currentDepthValue");
             if (depthEl) depthEl.textContent = "0%";
         }
-        
+
         if (!wasMyTurn && window.myTurn) {
             window.canGo = true;
             window.lastAnalyzedFen = null;
@@ -72,11 +72,11 @@ setInterval(() => {
     } else {
         myFunctions.loadEx();
     }
-    
+
     if (!document.engine.engine) {
         myFunctions.loadChessEngine();
     }
-    
+
     if (myVars.onGamePage && window.canGo === true && window.isThinking === false && window.myTurn) {
         const currentFen = window.board.game.getFEN();
         if (currentFen !== window.lastAnalyzedFen) {
@@ -87,7 +87,7 @@ setInterval(() => {
             myFunctions.autoRun(myVars.lastValue);
         }
     }
-    
+
     if (myVars.onGamePage && window.myTurn && !window.canGo) {
         window.watchdogChecks++;
         if (window.watchdogChecks > 100 && window.lastAnalysisStartTime) {
@@ -107,18 +107,18 @@ setInterval(() => {
 
 setInterval(() => {
     if (!document.myVars || !document.myFunctions || !window.board) return;
-    
+
     const myVars = document.myVars;
     const myFunctions = document.myFunctions;
-    
+
     if (!myVars.onGamePage || !window.board.game) return;
-    
+
     const actuallyMyTurn = window.board.game.getTurn() === window.board.game.getPlayingAs();
-    
+
     if (actuallyMyTurn !== window.myTurn) {
         console.log("Turn verification: Correcting turn state mismatch");
         window.myTurn = actuallyMyTurn;
-        
+
         if (!actuallyMyTurn) {
             console.log("Turn verification: Stopping engine - not our turn");
             if (window.isThinking) {
@@ -128,7 +128,7 @@ setInterval(() => {
             window.isThinking = false;
             window.lastAnalyzedFen = null;
             myFunctions.clearHighlights(true);
-            
+
             const barEl = document.getElementById("depthBarFill");
             if (barEl) barEl.style.width = "0%";
             const depthEl = document.getElementById("currentDepthValue");
@@ -140,7 +140,7 @@ setInterval(() => {
             window.isThinking = false;
         }
     }
-    
+
     if (actuallyMyTurn && !window.canGo && !window.isThinking) {
         const timeSinceStart = window.lastAnalysisStartTime ? Date.now() - window.lastAnalysisStartTime : 0;
         if (timeSinceStart > 500) {
