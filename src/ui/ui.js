@@ -252,6 +252,9 @@ function setupUI(myVars, myFunctions) {
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") {
                 e.preventDefault();
+                
+                var consoleLog = document.getElementById('notificationContainer');
+                
                 if (panel.classList.contains("minimized")) {
                     panel.classList.remove("minimized");
                     if (minimizedTab) {
@@ -260,6 +263,9 @@ function setupUI(myVars, myFunctions) {
                     if (positionMeter) {
                         positionMeter.style.display = "flex";
                     }
+                    if (consoleLog && myVars.consoleLogEnabled) {
+                        consoleLog.classList.add("visible");
+                    }
                 } else {
                     panel.classList.add("minimized");
                     if (minimizedTab) {
@@ -267,6 +273,9 @@ function setupUI(myVars, myFunctions) {
                     }
                     if (positionMeter) {
                         positionMeter.style.display = "none";
+                    }
+                    if (consoleLog) {
+                        consoleLog.classList.remove("visible");
                     }
                 }
             }
@@ -339,7 +348,7 @@ function setupUI(myVars, myFunctions) {
         if (!container) {
             container = document.createElement('div');
             container.id = 'notificationContainer';
-            container.className = 'visible';
+            container.className = '';
             container.innerHTML = `
                 <div class="console-header" id="consoleHeader">
                     <span class="console-title">Console Log</span>
@@ -395,8 +404,6 @@ function setupUI(myVars, myFunctions) {
                     container.style.transition = '';
                 }
             });
-        } else if (!container.classList.contains('visible')) {
-            container.classList.add('visible');
         }
 
         var body = document.getElementById('consoleBody');
