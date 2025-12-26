@@ -407,6 +407,12 @@ function setupUI(myVars, myFunctions) {
         }
 
         var body = document.getElementById('consoleBody');
+        
+        var allEntries = body.querySelectorAll('.console-entry');
+        allEntries.forEach(function(oldEntry) {
+            oldEntry.classList.add('faded');
+        });
+        
         var entry = document.createElement('div');
         entry.className = 'console-entry ' + type;
 

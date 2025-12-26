@@ -1046,6 +1046,21 @@ var mainStyles = `
     border-left-color: #ef4444;
 }
 
+.console-entry.faded {
+    opacity: 0.4;
+    filter: grayscale(100%);
+    transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.console-entry.faded.info,
+.console-entry.faded.success,
+.console-entry.faded.warning,
+.console-entry.faded.error {
+    color: #6b7280;
+    background: #f9fafb;
+    border-left-color: #d1d5db;
+}
+
 .console-timestamp {
     color: #9ca3af;
     font-size: 10px;

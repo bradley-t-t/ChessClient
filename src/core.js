@@ -1,4 +1,4 @@
-var currentVersion = "2.5.3";
+var currentVersion = "2.5.4";
 
 function initializeVariables() {
     const myVars = {
@@ -364,7 +364,7 @@ function setupCore(myVars, myFunctions) {
                     var scoreDiff = Math.abs((worseMove.score || 0) - (moves[0].score || 0));
                     var scoreDiffText = (scoreDiff / 100).toFixed(2);
                     myFunctions.showNotification(
-                        "Intentional inaccuracy made (-" + scoreDiffText + " evaluation) to simulate human play",
+                        "Intentional inaccuracy made (-" + scoreDiffText + " evaluation)",
                         "warning",
                         4000
                     );
