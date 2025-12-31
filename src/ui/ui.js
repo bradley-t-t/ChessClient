@@ -2,6 +2,10 @@ function setupUI(myVars, myFunctions) {
     myFunctions.loadEx = function() {
         if (myVars.loaded) return;
         
+        const styleElement = document.createElement("style");
+        styleElement.textContent = mainStyles;
+        document.head.appendChild(styleElement);
+        
         $("body").append(mainTemplate);
         
         const board = $("chess-board")[0] || $("wc-chess-board")[0];
