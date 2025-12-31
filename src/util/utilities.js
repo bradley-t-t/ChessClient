@@ -696,6 +696,55 @@ function setupUtilities(myVars) {
         }
     };
 
+    myFunctions.parseBoardFromDOM = function () {
+        try {
+            var boardElement = $("chess-board")[0] || $("wc-chess-board")[0];
+            if (!boardElement) return null;
+
+            var pieces = $(boardElement).find(".piece");
+            var boardState = [];
+            for (var i = 0; i < 8; i++) {
+                boardState[i] = [];
+                for (var j = 0; j < 8; j++) {
+                    boardState[i][j] = null;
+                }
+            }
+
+            pieces.each(function () {
+                var classes = this.className;
+                var squareMatch = classes.match(/square-(\d)(\d)/);
+                if (!squareMatch) return;
+
+                var file = parseInt(squareMatch[1]) - 1;
+                var rank = 8 - parseInt(squareMatch[2]);
+
+                var pieceType = null;
+                var pieceColor = null;
+
+                if (classes.includes('wp')) { pieceType = 'p'; pieceColor = 'w'; }
+                else if (classes.includes('wn')) { pieceType = 'n'; pieceColor = 'w'; }
+                else if (classes.includes('wb')) { pieceType = 'b'; pieceColor = 'w'; }
+                else if (classes.includes('wr')) { pieceType = 'r'; pieceColor = 'w'; }
+                else if (classes.includes('wq')) { pieceType = 'q'; pieceColor = 'w'; }
+                else if (classes.includes('wk')) { pieceType = 'k'; pieceColor = 'w'; }
+                else if (classes.includes('bp')) { pieceType = 'p'; pieceColor = 'b'; }
+                else if (classes.includes('bn')) { pieceType = 'n'; pieceColor = 'b'; }
+                else if (classes.includes('bb')) { pieceType = 'b'; pieceColor = 'b'; }
+                else if (classes.includes('br')) { pieceType = 'r'; pieceColor = 'b'; }
+                else if (classes.includes('bq')) { pieceType = 'q'; pieceColor = 'b'; }
+                else if (classes.includes('bk')) { pieceType = 'k'; pieceColor = 'b'; }
+
+                if (pieceType && pieceColor) {
+                    boardState[rank][file] = { type: pieceType, color: pieceColor };
+                }
+            });
+
+            return boardState;
+        } catch (e) {
+            return null;
+        }
+    };
+
     myFunctions.updateHangingPieces = function () {
         if (!myVars.highlightHangingPieces) return;
 
@@ -708,7 +757,7 @@ function setupUtilities(myVars) {
             var playerColor = game.getPlayingAs ? game.getPlayingAs() : 'white';
             var isPlayerWhite = playerColor === 'white';
 
-            var boardState = game.board ? game.board() : null;
+            var boardState = myFunctions.parseBoardFromDOM();
             if (!boardState) return;
 
             for (var rank = 0; rank < 8; rank++) {
