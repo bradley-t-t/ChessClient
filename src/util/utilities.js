@@ -439,11 +439,14 @@ function setupUtilities(myVars) {
 
         const board = window.board;
         if (!board || !board.game || !board.game.getLegalMoves) {
+            console.log("View Mode: Board not ready");
             return;
         }
 
         try {
             const legalMoves = board.game.getLegalMoves();
+            console.log("View Mode: Found", legalMoves.length, "legal moves");
+            
             const safeMoves = new Set();
             const checkMoves = [];
             
@@ -451,29 +454,42 @@ function setupUtilities(myVars) {
                 try {
                     board.game.move(move);
                     
-                    const inCheck = board.game.inCheck && board.game.inCheck();
-                    const isCheckmate = board.game.isCheckmate && board.game.isCheckmate();
+                    let inCheck = false;
+                    let isCheckmate = false;
+                    
+                    if (board.game.inCheck) {
+                        inCheck = board.game.inCheck();
+                    }
+                    if (board.game.isCheckmate) {
+                        isCheckmate = board.game.isCheckmate();
+                    }
                     
                     if (inCheck || isCheckmate) {
                         checkMoves.push({ from: move.from, to: move.to, isCheckmate });
+                        console.log("View Mode: Found check/checkmate move from", move.from, "to", move.to);
                     }
                     
-                    const opponentMoves = board.game.getLegalMoves();
                     let wouldLoseGame = false;
                     
-                    for (let oppMove of opponentMoves) {
-                        try {
-                            board.game.move(oppMove);
-                            const weAreInCheck = board.game.inCheck && board.game.inCheck();
-                            const weAreCheckmated = board.game.isCheckmate && board.game.isCheckmate();
-                            board.game.undo();
-                            
-                            if (weAreCheckmated) {
-                                wouldLoseGame = true;
-                                break;
+                    if (!isCheckmate) {
+                        const opponentMoves = board.game.getLegalMoves();
+                        
+                        for (let oppMove of opponentMoves) {
+                            try {
+                                board.game.move(oppMove);
+                                let weAreCheckmated = false;
+                                if (board.game.isCheckmate) {
+                                    weAreCheckmated = board.game.isCheckmate();
+                                }
+                                board.game.undo();
+                                
+                                if (weAreCheckmated) {
+                                    wouldLoseGame = true;
+                                    break;
+                                }
+                            } catch (e) {
+                                try { board.game.undo(); } catch (e2) {}
                             }
-                        } catch (e) {
-                            try { board.game.undo(); } catch (e2) {}
                         }
                     }
                     
@@ -483,9 +499,12 @@ function setupUtilities(myVars) {
                         safeMoves.add(move.to);
                     }
                 } catch (e) {
+                    console.error("View Mode: Error processing move", move, e);
                     try { board.game.undo(); } catch (e2) {}
                 }
             }
+            
+            console.log("View Mode: Highlighting", safeMoves.size, "safe moves and", checkMoves.length, "check moves");
             
             for (let square of safeMoves) {
                 myFunctions.highlightViewModeSquare(square, myVars.attackColor, 0.4);

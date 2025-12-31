@@ -91,8 +91,9 @@ setInterval(() => {
     }
 
     if (myVars.viewModeEnabled && myVars.onGamePage && window.board && window.board.game) {
-        const viewModeHighlights = document.querySelectorAll(".chess-client-view-mode-highlight");
-        if (viewModeHighlights.length === 0) {
+        const currentFen = window.board.game.getFEN();
+        if (currentFen !== window.lastViewModeFen) {
+            window.lastViewModeFen = currentFen;
             myFunctions.displayViewMode && myFunctions.displayViewMode();
         }
     }
