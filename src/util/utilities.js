@@ -446,12 +446,32 @@ function setupUtilities(myVars) {
         try {
             console.log("View Mode: Searching for forced checkmates...");
             
+            let nodesSearched = 0;
+            const maxNodes = 10000;
+            const startTime = Date.now();
+            const maxTime = 2000;
+            
             const findForcedCheckmate = (depth, maxDepth) => {
                 if (depth > maxDepth) return null;
+                if (nodesSearched > maxNodes) return null;
+                if (Date.now() - startTime > maxTime) return null;
                 
                 const legalMoves = board.game.getLegalMoves();
                 
-                for (let move of legalMoves) {
+                if (depth === 1 && legalMoves.length > 40) {
+                    console.log("View Mode: Too many moves to analyze safely, skipping");
+                    return null;
+                }
+                
+                const movesToCheck = depth === 1 ? legalMoves.slice(0, 20) : legalMoves.slice(0, 10);
+                
+                for (let move of movesToCheck) {
+                    nodesSearched++;
+                    
+                    if (nodesSearched > maxNodes || Date.now() - startTime > maxTime) {
+                        return null;
+                    }
+                    
                     try {
                         board.game.move(move);
                         
@@ -462,16 +482,34 @@ function setupUtilities(myVars) {
                             return [move];
                         }
                         
+                        if (depth >= 3) {
+                            board.game.undo();
+                            continue;
+                        }
+                        
                         const opponentMoves = board.game.getLegalMoves();
-                        let allPathsLeadToCheckmate = true;
-                        let forcedSequence = null;
                         
                         if (opponentMoves.length === 0) {
                             board.game.undo();
                             continue;
                         }
                         
-                        for (let oppMove of opponentMoves) {
+                        if (opponentMoves.length > 15) {
+                            board.game.undo();
+                            continue;
+                        }
+                        
+                        let allPathsLeadToCheckmate = true;
+                        let forcedSequence = null;
+                        
+                        for (let oppMove of opponentMoves.slice(0, 8)) {
+                            nodesSearched++;
+                            
+                            if (nodesSearched > maxNodes || Date.now() - startTime > maxTime) {
+                                board.game.undo();
+                                return null;
+                            }
+                            
                             try {
                                 board.game.move(oppMove);
                                 
@@ -505,7 +543,9 @@ function setupUtilities(myVars) {
                 return null;
             };
             
-            const checkmateSequence = findForcedCheckmate(1, 5);
+            const checkmateSequence = findForcedCheckmate(1, 3);
+            
+            console.log("View Mode: Searched", nodesSearched, "nodes in", Date.now() - startTime, "ms");
             
             if (checkmateSequence) {
                 console.log("View Mode: Found forced checkmate in", checkmateSequence.length, "moves:", checkmateSequence.map(m => m.from + m.to).join(', '));
@@ -514,7 +554,7 @@ function setupUtilities(myVars) {
                 myFunctions.highlightViewModeSquare(firstMove.from, myVars.checkCheckmateColor, 0.6);
                 myFunctions.highlightViewModeSquare(firstMove.to, myVars.checkCheckmateColor, 0.8);
             } else {
-                console.log("View Mode: No forced checkmate found within 5 moves");
+                console.log("View Mode: No forced checkmate found");
             }
             
         } catch (e) {
