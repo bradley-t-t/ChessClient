@@ -17,15 +17,9 @@ var mainTemplate = `
     </div>
 
     <div class="client-body">
-        <div class="client-tabs">
-            <button class="tab-btn active" data-tab="forks">Fork</button>
-            <button class="tab-btn" data-tab="skewers">Skewer</button>
-            <button class="tab-btn" data-tab="pins">Pin</button>
-            <button class="tab-btn" data-tab="discovered">Discover</button>
-        </div>
-
         <div class="client-content">
-            <div class="tab-panel active" id="forks">
+            <div class="tactic-section">
+                <div class="tactic-header">Fork</div>
                 <div class="tactic-info">
                     <p>Attack multiple pieces at once</p>
                 </div>
@@ -35,7 +29,8 @@ var mainTemplate = `
                 </div>
             </div>
 
-            <div class="tab-panel" id="skewers">
+            <div class="tactic-section">
+                <div class="tactic-header">Skewer</div>
                 <div class="tactic-info">
                     <p>Force a piece to move and expose another</p>
                 </div>
@@ -45,7 +40,8 @@ var mainTemplate = `
                 </div>
             </div>
 
-            <div class="tab-panel" id="pins">
+            <div class="tactic-section">
+                <div class="tactic-header">Pin</div>
                 <div class="tactic-info">
                     <p>Pin a piece to protect a valuable one</p>
                 </div>
@@ -55,7 +51,8 @@ var mainTemplate = `
                 </div>
             </div>
 
-            <div class="tab-panel" id="discovered">
+            <div class="tactic-section">
+                <div class="tactic-header">Discovered Attack</div>
                 <div class="tactic-info">
                     <p>Reveal an attack by moving a piece</p>
                 </div>

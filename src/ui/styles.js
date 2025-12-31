@@ -82,72 +82,60 @@ var mainStyles = `
     display: none;
 }
 
-.client-tabs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    background: #f8f8f8;
-    border-bottom: 1px solid #e5e5e5;
-    gap: 0;
-}
-
-.tab-btn {
-    background: transparent;
-    border: none;
-    color: #888888;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 14px 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.tab-btn:hover {
-    color: #333333;
-    background: rgba(0,0,0,0.02);
-}
-
-.tab-btn.active {
-    color: #1a1a1a;
-    background: #ffffff;
-    border-bottom-color: #1a1a1a;
-}
-
 .client-content {
     padding: 20px;
     background: #ffffff;
-    min-height: 160px;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
-.tab-panel {
-    display: none;
+.client-content::-webkit-scrollbar {
+    width: 6px;
 }
 
-.tab-panel.active {
-    display: block;
-    animation: fadeIn 0.2s ease;
+.client-content::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
+.client-content::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 3px;
+}
+
+.client-content::-webkit-scrollbar-thumb:hover {
+    background: #c0c0c0;
+}
+
+.tactic-section {
+    margin-bottom: 24px;
+}
+
+.tactic-section:last-child {
+    margin-bottom: 0;
+}
+
+.tactic-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
 }
 
 .tactic-info {
     background: linear-gradient(135deg, #f8f8f8 0%, #fafafa 100%);
     border-left: 4px solid #1a1a1a;
-    padding: 14px 16px;
-    margin-bottom: 20px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
     border-radius: 0 6px 6px 0;
 }
 
 .tactic-info p {
     margin: 0;
-    font-size: 12px;
+    font-size: 11px;
     color: #444444;
-    line-height: 1.6;
+    line-height: 1.5;
     font-weight: 500;
 }
 
@@ -156,7 +144,7 @@ var mainStyles = `
     justify-content: space-between;
     align-items: center;
     background: #fafafa;
-    padding: 14px 16px;
+    padding: 12px 14px;
     border-radius: 8px;
     transition: background 0.2s;
 }
@@ -166,15 +154,15 @@ var mainStyles = `
 }
 
 .input-row label {
-    font-size: 12px;
+    font-size: 11px;
     color: #1a1a1a;
     font-weight: 600;
     letter-spacing: 0.3px;
 }
 
 .color-picker {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: none;
     border-radius: 8px;

@@ -1,13 +1,4 @@
 function setupEventHandlers(myVars, myFunctions) {
-    $(document).on("click", ".tab-btn", function() {
-        $(".tab-btn").removeClass("active");
-        $(this).addClass("active");
-        
-        const tabName = $(this).data("tab");
-        $(".tab-panel").removeClass("active");
-        $("#" + tabName).addClass("active");
-    });
-    
     $(document).on("input", "#forkColor", function() {
         myVars.forkColor = $(this).val();
         myFunctions.saveSettings();
