@@ -427,6 +427,88 @@ function setupUtilities(myVars) {
     myFunctions.estimatePositionComplexity = function () {
         return Math.random() * 0.8 + 0.2;
     };
+    
+    myFunctions.displayViewMode = function () {
+        
+        if (!myVars.viewModeEnabled) {
+            myFunctions.clearViewModeHighlights && myFunctions.clearViewModeHighlights();
+            return;
+        }
+
+        myFunctions.clearViewModeHighlights && myFunctions.clearViewModeHighlights();
+
+        const board = window.board;
+        if (!board || !board.game || !board.game.getLegalMoves) {
+            return;
+        }
+
+        try {
+            const currentTurn = board.game.getTurn();
+            const playingAs = board.game.getPlayingAs();
+            const isOurTurn = currentTurn === playingAs;
+
+            const legalMoves = board.game.getLegalMoves();
+            const attackedSquares = new Set();
+            
+            for (let move of legalMoves) {
+                if (move.to) {
+                    attackedSquares.add(move.to);
+                }
+            }
+            
+            const color = isOurTurn ? myVars.attackColor : myVars.vulnerabilityColor;
+            
+            for (let square of attackedSquares) {
+                myFunctions.highlightViewModeSquare(square, color, 0.4);
+            }
+        } catch (e) {
+            console.error("View Mode Error:", e);
+        }
+    };
+    
+    myFunctions.highlightViewModeSquare = function (square, color, opacity) {
+        var board = $("chess-board")[0] || $("wc-chess-board")[0];
+        if (!board) return;
+
+        var squareNum = square.replace(/^a/, "1").replace(/^b/, "2").replace(/^c/, "3").replace(/^d/, "4").replace(/^e/, "5").replace(/^f/, "6").replace(/^g/, "7").replace(/^h/, "8");
+
+        var highlight = document.createElement("div");
+        highlight.className = "chess-client-view-mode-highlight";
+        highlight.setAttribute("data-square", squareNum);
+        highlight.style.cssText = "position: absolute; background: " + color + "; opacity: " + opacity + "; pointer-events: none; z-index: 99; border-radius: 4px;";
+
+        var boardRect = board.getBoundingClientRect();
+        var squareSize = boardRect.width / 8;
+
+        var isFlipped = board.classList.contains("flipped") || $(board).find(".board").hasClass("flipped") || board.getAttribute("orientation") === "black";
+
+        var file = parseInt(squareNum[0]) - 1;
+        var rank = 8 - parseInt(squareNum[1]);
+
+        if (isFlipped) {
+            file = 7 - file;
+            rank = 7 - rank;
+        }
+
+        highlight.style.width = squareSize + "px";
+        highlight.style.height = squareSize + "px";
+        highlight.style.left = (file * squareSize) + "px";
+        highlight.style.top = (rank * squareSize) + "px";
+
+        var boardElement = $(board).find(".board")[0] || board;
+        if (boardElement) {
+            boardElement.style.position = "relative";
+            boardElement.appendChild(highlight);
+        }
+    };
+    
+    myFunctions.clearViewModeHighlights = function () {
+        var highlights = document.querySelectorAll(".chess-client-view-mode-highlight");
+        highlights.forEach(function (el) {
+            el.remove();
+        });
+    };
+    
     myFunctions.saveSettings = function () {
         try {
             GM_setValue("autoMove", myVars.autoMove);
@@ -436,6 +518,10 @@ function setupUtilities(myVars) {
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
             GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
+            GM_setValue("viewModeEnabled", myVars.viewModeEnabled);
+            GM_setValue("attackColor", myVars.attackColor);
+            GM_setValue("vulnerabilityColor", myVars.vulnerabilityColor);
+            GM_setValue("checkCheckmateColor", myVars.checkCheckmateColor);
         } catch (error) {
         }
     };
@@ -446,6 +532,10 @@ function setupUtilities(myVars) {
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
+            myVars.viewModeEnabled = GM_getValue("viewModeEnabled", false);
+            myVars.attackColor = GM_getValue("attackColor", "#ff6b6b");
+            myVars.vulnerabilityColor = GM_getValue("vulnerabilityColor", "#ffd93d");
+            myVars.checkCheckmateColor = GM_getValue("checkCheckmateColor", "#9b59b6");
 
             function eloToDepthAndBlunder(elo) {
                 var depth, blunderRate;

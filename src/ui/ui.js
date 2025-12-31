@@ -25,7 +25,6 @@ function setupUI(myVars, myFunctions) {
         var blackFill = document.getElementById("meterFillBlack");
 
         if (!meterValue || !whiteFill || !blackFill) {
-            console.log("Positional meter elements not found");
             return;
         }
 
@@ -50,7 +49,6 @@ function setupUI(myVars, myFunctions) {
         whitePercentage = Math.max(0, Math.min(100, whitePercentage));
         var blackPercentage = 100 - whitePercentage;
 
-        console.log("Meter Update - Score:", score, "Playing as:", playingAs === 2 ? "Black" : "White", "Eval:", evaluation, "White:", whitePercentage + "%", "Black:", blackPercentage + "%");
 
         blackFill.style.height = blackPercentage + "%";
         whiteFill.style.height = whitePercentage + "%";

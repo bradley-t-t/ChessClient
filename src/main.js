@@ -102,7 +102,6 @@ setInterval(() => {
         if (window.watchdogChecks > 100 && window.lastAnalysisStartTime) {
             const timeSinceStart = Date.now() - window.lastAnalysisStartTime;
             if (timeSinceStart > 10000 && !window.isThinking) {
-                console.log("Watchdog: Detected hung state, resetting...");
                 myFunctions.stopEngine();
                 window.canGo = true;
                 window.lastAnalyzedFen = null;
@@ -125,11 +124,9 @@ setInterval(() => {
     const actuallyMyTurn = window.board.game.getTurn() === window.board.game.getPlayingAs();
 
     if (actuallyMyTurn !== window.myTurn) {
-        console.log("Turn verification: Correcting turn state mismatch");
         window.myTurn = actuallyMyTurn;
 
         if (!actuallyMyTurn) {
-            console.log("Turn verification: Stopping engine - not our turn");
             if (window.isThinking) {
                 myFunctions.stopEngine();
             }
@@ -143,7 +140,6 @@ setInterval(() => {
             const depthEl = document.getElementById("currentDepthValue");
             if (depthEl) depthEl.textContent = "0%";
         } else {
-            console.log("Turn verification: It's our turn - resetting for fresh analysis");
             window.canGo = true;
             window.lastAnalyzedFen = null;
             window.isThinking = false;
@@ -153,7 +149,6 @@ setInterval(() => {
     if (actuallyMyTurn && !window.canGo && !window.isThinking) {
         const timeSinceStart = window.lastAnalysisStartTime ? Date.now() - window.lastAnalysisStartTime : 0;
         if (timeSinceStart > 500) {
-            console.log("Turn verification: Stuck waiting, forcing reset");
             myFunctions.stopEngine();
             window.canGo = true;
             window.lastAnalyzedFen = null;

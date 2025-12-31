@@ -1,4 +1,4 @@
-var currentVersion = "2.5.6";
+var currentVersion = "2.5.7";
 
 function initializeVariables() {
     const myVars = {
@@ -126,7 +126,6 @@ function setupCore(myVars, myFunctions) {
         var skillLevel = Math.floor((estimatedElo - 400) / 120);
         skillLevel = Math.max(0, Math.min(20, skillLevel));
 
-        console.log("Running engine with Target ELO:", myVars.targetElo, "Depth:", myVars.lastValue, "Blunder Rate:", myVars.blunderRate.toFixed(2));
 
         if (!engine.engine) {
             myFunctions.loadChessEngine();
