@@ -522,7 +522,10 @@ function setupUtilities(myVars) {
     
     myFunctions.highlightViewModeSquare = function (square, color, opacity) {
         var board = $("chess-board")[0] || $("wc-chess-board")[0];
-        if (!board) return;
+        if (!board) {
+            console.log("View Mode: Board element not found for highlighting");
+            return;
+        }
 
         var squareNum = square.replace(/^a/, "1").replace(/^b/, "2").replace(/^c/, "3").replace(/^d/, "4").replace(/^e/, "5").replace(/^f/, "6").replace(/^g/, "7").replace(/^h/, "8");
 
@@ -553,6 +556,9 @@ function setupUtilities(myVars) {
         if (boardElement) {
             boardElement.style.position = "relative";
             boardElement.appendChild(highlight);
+            console.log("View Mode: Highlighted square", square, "at", file, rank, "color:", color);
+        } else {
+            console.log("View Mode: Could not find board element to append highlight");
         }
     };
     
