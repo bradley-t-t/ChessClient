@@ -117,6 +117,7 @@ function processFile(filePath) {
         });
 
         fs.writeFileSync(filePath, output.code, 'utf-8');
+        console.log(`Processed: ${filePath}`);
     } catch (error) {
         console.error(`Error processing ${filePath}:`, error.message);
     }
@@ -137,3 +138,4 @@ if (!fs.existsSync(directory)) {
 }
 
 processDirectory(directory);
+console.log('Done!');

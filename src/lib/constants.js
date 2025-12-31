@@ -1,13 +1,31 @@
 const CONSTANTS = {
-    COLORS: {
-        FORK: "#ff6b6b",
-        SKEWER: "#4ecdc4",
-        PIN: "#ffe66d",
-        DISCOVERED_ATTACK: "#a8dadc"
+    SELECTORS: {
+        BOARD: "chess-board, wc-chess-board",
+        AUTO_MOVE: "#autoMove",
+        DEPTH_TEXT: "#depthText",
+        DEPTH_BAR: "#depthBarFill",
+        DEPTH_VALUE: "#currentDepthValue",
+        TIME_DELAY_MIN: "#timeDelayMin",
+        TIME_DELAY_MAX: "#timeDelayMax"
     },
-    PIECE_VALUES: {
-        'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 100,
-        'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9, 'K': 100
+
+    TIMING: {
+        MAIN_LOOP_INTERVAL: 100,
+        WATCHDOG_TIMEOUT: 30000,
+        WATCHDOG_CHECK_THRESHOLD: 300,
+        MOVE_ANIMATION_DELAY: 2000
+    },
+
+    COLORS: {
+        BEST_MOVE: "#5b8c5a",
+        INTERMEDIATE_MOVE: "#ffa500"
+    },
+
+    DEFAULTS: {
+        DEPTH: 7,
+        BLUNDER_RATE: 0.1,
+        MIN_DELAY: 0.1,
+        MAX_DELAY: 1.0
     }
 };
 
