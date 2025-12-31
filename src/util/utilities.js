@@ -331,6 +331,11 @@ function setupUtilities(myVars) {
         }
         setTimeout(() => {
             window.moveInProgress = false;
+            if (myVars.viewModeEnabled && myFunctions.displayViewMode) {
+                setTimeout(() => {
+                    myFunctions.displayViewMode();
+                }, 500);
+            }
         }, 2000);
     };
     myFunctions.getAdjustedDepth = function () {

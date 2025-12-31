@@ -12,7 +12,11 @@ function initializeVariables() {
         intermediateMoveColor: "#ffa500",
         moveSpeedTier: 4,
         timeAffectedSpeed: false,
-        consoleLogEnabled: true
+        consoleLogEnabled: true,
+        viewModeEnabled: false,
+        attackColor: "#ff6b6b",
+        vulnerabilityColor: "#ffd93d",
+        checkCheckmateColor: "#9b59b6"
     };
     return myVars;
 }

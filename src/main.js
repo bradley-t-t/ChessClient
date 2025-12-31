@@ -88,6 +88,13 @@ setInterval(() => {
         }
     }
 
+    if (myVars.viewModeEnabled && myVars.onGamePage && window.board && window.board.game) {
+        const viewModeHighlights = document.querySelectorAll(".chess-client-view-mode-highlight");
+        if (viewModeHighlights.length === 0 && !window.isThinking) {
+            myFunctions.displayViewMode && myFunctions.displayViewMode();
+        }
+    }
+
     if (myVars.onGamePage && window.myTurn && !window.canGo) {
         window.watchdogChecks++;
         if (window.watchdogChecks > 100 && window.lastAnalysisStartTime) {

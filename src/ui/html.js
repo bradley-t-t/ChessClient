@@ -81,6 +81,27 @@ var mainTemplate = `
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
                 <div class="toggle-row">
+                    <span class="toggle-label">View Mode Only</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="viewModeEnabled" class="toggle-input">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div id="viewModeColors" class="setting-group" style="display: none;">
+                    <div class="input-row">
+                        <label for="attackColor">Attack Color (Enemy)</label>
+                        <input type="color" id="attackColor" value="#ff6b6b" class="color-picker">
+                    </div>
+                    <div class="input-row">
+                        <label for="vulnerabilityColor">Vulnerability Color (Us)</label>
+                        <input type="color" id="vulnerabilityColor" value="#ffd93d" class="color-picker">
+                    </div>
+                    <div class="input-row">
+                        <label for="checkCheckmateColor">Check/Checkmate Color</label>
+                        <input type="color" id="checkCheckmateColor" value="#9b59b6" class="color-picker">
+                    </div>
+                </div>
+                <div class="toggle-row">
                     <span class="toggle-label">Console Log</span>
                     <label class="toggle">
                         <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>

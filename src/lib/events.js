@@ -96,6 +96,38 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myVars.intermediateMoveColor = $(this).val();
         myFunctions.saveSettings();
     });
+    $(document).on("change", "#viewModeEnabled", function () {
+        myVars.viewModeEnabled = $(this).prop("checked");
+        if (myVars.viewModeEnabled) {
+            $("#viewModeColors").slideDown(200);
+            myFunctions.displayViewMode && myFunctions.displayViewMode();
+        } else {
+            $("#viewModeColors").slideUp(200);
+            myFunctions.clearViewModeHighlights && myFunctions.clearViewModeHighlights();
+        }
+        myFunctions.saveSettings();
+    });
+    $(document).on("input", "#attackColor", function () {
+        myVars.attackColor = $(this).val();
+        myFunctions.saveSettings();
+        if (myVars.viewModeEnabled) {
+            myFunctions.displayViewMode && myFunctions.displayViewMode();
+        }
+    });
+    $(document).on("input", "#vulnerabilityColor", function () {
+        myVars.vulnerabilityColor = $(this).val();
+        myFunctions.saveSettings();
+        if (myVars.viewModeEnabled) {
+            myFunctions.displayViewMode && myFunctions.displayViewMode();
+        }
+    });
+    $(document).on("input", "#checkCheckmateColor", function () {
+        myVars.checkCheckmateColor = $(this).val();
+        myFunctions.saveSettings();
+        if (myVars.viewModeEnabled) {
+            myFunctions.displayViewMode && myFunctions.displayViewMode();
+        }
+    });
 }
 
 function setupAdvancedEventHandlers(myVars, myFunctions) {

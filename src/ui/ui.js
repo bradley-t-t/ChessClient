@@ -191,6 +191,12 @@ function setupUI(myVars, myFunctions) {
                 versionEl.textContent = "v" + currentVersion;
             }
 
+            if (myVars.viewModeEnabled && myFunctions.displayViewMode) {
+                setTimeout(() => {
+                    myFunctions.displayViewMode();
+                }, 500);
+            }
+
             myVars.loaded = true;
         } catch (error) {
         }
