@@ -2,36 +2,36 @@ var mainTemplate = `
 <div class="chess-client">
     <div class="client-header">
         <div class="header-left">
-            <span class="client-title">Chess Tactics</span>
+            <span class="client-title">Tactics</span>
         </div>
         <div class="header-right">
-            <span id="minimizeHint" class="minimize-hint">(Esc to hide)</span>
+            <span id="minimizeHint" class="minimize-hint">ESC</span>
         </div>
     </div>
 
     <div id="pageStatus" class="page-status">
         <div class="status-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" y1="8" x2="12" y2="12"/>
                 <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
         </div>
-        <span class="status-text">Navigate to a chess game to enable</span>
+        <span class="status-text">Start a game to analyze tactics</span>
     </div>
 
     <div class="client-body">
         <div class="client-tabs">
-            <button class="tab-btn active" data-tab="forks">Forks</button>
-            <button class="tab-btn" data-tab="skewers">Skewers</button>
-            <button class="tab-btn" data-tab="pins">Pins</button>
-            <button class="tab-btn" data-tab="discovered">Discovered</button>
+            <button class="tab-btn active" data-tab="forks">Fork</button>
+            <button class="tab-btn" data-tab="skewers">Skewer</button>
+            <button class="tab-btn" data-tab="pins">Pin</button>
+            <button class="tab-btn" data-tab="discovered">Discover</button>
         </div>
 
         <div class="client-content">
             <div class="tab-panel active" id="forks">
                 <div class="tactic-info">
-                    <p>Attacking two or more pieces simultaneously</p>
+                    <p>Attack two or more pieces at once</p>
                 </div>
                 <div class="input-row">
                     <label for="forkColor">Color</label>
@@ -41,7 +41,7 @@ var mainTemplate = `
 
             <div class="tab-panel" id="skewers">
                 <div class="tactic-info">
-                    <p>Forcing a valuable piece to move, exposing a less valuable piece behind it</p>
+                    <p>Force a piece to move and expose another</p>
                 </div>
                 <div class="input-row">
                     <label for="skewerColor">Color</label>
@@ -51,7 +51,7 @@ var mainTemplate = `
 
             <div class="tab-panel" id="pins">
                 <div class="tactic-info">
-                    <p>Restricting a piece from moving because it would expose a more valuable piece</p>
+                    <p>Restrict a piece to protect a valuable one</p>
                 </div>
                 <div class="input-row">
                     <label for="pinColor">Color</label>
@@ -61,7 +61,7 @@ var mainTemplate = `
 
             <div class="tab-panel" id="discovered">
                 <div class="tactic-info">
-                    <p>Moving a piece reveals an attack from another piece behind it</p>
+                    <p>Move a piece to reveal an attack behind it</p>
                 </div>
                 <div class="input-row">
                     <label for="discoveredAttackColor">Color</label>
