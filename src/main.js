@@ -1,5 +1,6 @@
 window.board = null;
 window.lastAnalyzedFen = null;
+window.wasOurTurn = false;
 
 function main() {
     const myVars = initializeVariables();
@@ -30,20 +31,19 @@ setInterval(() => {
         if (board && board.game) {
             const currentTurn = board.game.getTurn();
             const playingAs = board.game.getPlayingAs();
+            const isOurTurn = currentTurn === playingAs;
             
-            if (currentTurn === playingAs) {
+            if (isOurTurn && !window.wasOurTurn) {
                 const currentFen = board.game.getFEN();
-                if (currentFen !== window.lastAnalyzedFen) {
-                    console.log("Main Loop: FEN changed, triggering analysis");
-                    window.lastAnalyzedFen = currentFen;
-                    myFunctions.analyzeTactics();
-                }
-            } else {
-                if (window.lastAnalyzedFen !== null) {
-                    console.log("Main Loop: Not our turn, clearing highlights");
-                    myFunctions.clearHighlights();
-                    window.lastAnalyzedFen = null;
-                }
+                console.log("Main Loop: Opponent moved, our turn now - analyzing tactics");
+                window.lastAnalyzedFen = currentFen;
+                window.wasOurTurn = true;
+                myFunctions.analyzeTactics();
+            } else if (!isOurTurn && window.wasOurTurn) {
+                console.log("Main Loop: We moved, clearing highlights");
+                myFunctions.clearHighlights();
+                window.lastAnalyzedFen = null;
+                window.wasOurTurn = false;
             }
         }
     } else {

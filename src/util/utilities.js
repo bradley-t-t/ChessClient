@@ -93,47 +93,22 @@ function setupUtilities(myVars) {
         const legalMoves = board.game.getLegalMoves();
         const playingAs = board.game.getPlayingAs();
         
-        console.log("Tactics: Found", legalMoves.length, "legal moves to check");
+        console.log("Tactics: Found", legalMoves.length, "legal moves to check, playing as:", playingAs);
         
         for (let move of legalMoves) {
             try {
                 board.game.move(move);
                 
                 const attackedPieces = [];
-                const movesFromNewPos = board.game.getLegalMoves().filter(m => m.from === move.to);
+                const allMovesAfter = board.game.getLegalMoves();
+                const movesFromNewPos = allMovesAfter.filter(m => m.from === move.to);
+                
+                console.log("Tactics: Checking move", move.from, "->", move.to, "- can make", movesFromNewPos.length, "moves from new position");
                 
                 for (let attackMove of movesFromNewPos) {
-                    const board = window.board;
-                    if (!board || !board.game) continue;
-                    
-                    const fen = board.game.getFEN();
-                    const fenParts = fen.split(' ');
-                    const boardState = fenParts[0];
-                    
-                    const file = attackMove.to.charCodeAt(0) - 97;
-                    const rank = parseInt(attackMove.to[1]) - 1;
-                    
-                    const rows = boardState.split('/').reverse();
-                    let currentFile = 0;
-                    let targetPiece = null;
-                    
-                    for (let char of rows[rank]) {
-                        if (char >= '1' && char <= '8') {
-                            currentFile += parseInt(char);
-                        } else {
-                            if (currentFile === file) {
-                                targetPiece = char;
-                                break;
-                            }
-                            currentFile++;
-                        }
-                    }
-                    
-                    if (targetPiece) {
-                        const isWhitePiece = targetPiece === targetPiece.toUpperCase();
-                        const isEnemyPiece = (playingAs === 1 && !isWhitePiece) || (playingAs === 2 && isWhitePiece);
-                        
-                        if (isEnemyPiece) {
+                    if (attackMove.captured) {
+                        console.log("Tactics:   - Can capture", attackMove.captured, "at", attackMove.to);
+                        if (!attackedPieces.includes(attackMove.to)) {
                             attackedPieces.push(attackMove.to);
                         }
                     }
@@ -142,8 +117,10 @@ function setupUtilities(myVars) {
                 board.game.undo();
                 
                 if (attackedPieces.length >= 2) {
-                    console.log("Tactics: Found fork!", move.from, "->", move.to, "attacking", attackedPieces);
+                    console.log("Tactics: *** FORK FOUND! ***", move.from, "->", move.to, "attacking", attackedPieces.length, "pieces at", attackedPieces);
                     forks.push({ from: move.from, to: move.to, targets: attackedPieces });
+                } else if (attackedPieces.length === 1) {
+                    console.log("Tactics: Only 1 attack found, not a fork");
                 }
             } catch (e) {
                 console.error("Tactics: Error checking move", move, e);
