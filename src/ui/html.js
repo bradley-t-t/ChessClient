@@ -94,11 +94,7 @@ var mainTemplate = `
 
                     <div id="viewModeColors" style="display: none;">
                         <div class="input-row">
-                            <label for="attackColor">Safe Moves Color</label>
-                            <input type="color" id="attackColor" value="#ff6b6b" class="color-picker">
-                        </div>
-                        <div class="input-row">
-                            <label for="checkCheckmateColor">Check/Checkmate Color</label>
+                            <label for="checkCheckmateColor">Forced Checkmate Color</label>
                             <input type="color" id="checkCheckmateColor" value="#9b59b6" class="color-picker">
                         </div>
                     </div>

@@ -19,8 +19,7 @@ const CONSTANTS = {
     COLORS: {
         BEST_MOVE: "#5b8c5a",
         INTERMEDIATE_MOVE: "#ffa500",
-        SAFE_MOVE: "#ff6b6b",
-        CHECK_CHECKMATE: "#9b59b6"
+        FORCED_CHECKMATE: "#9b59b6"
     },
 
     DEFAULTS: {

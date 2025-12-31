@@ -122,13 +122,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         
         myFunctions.saveSettings();
     });
-    $(document).on("input", "#attackColor", function () {
-        myVars.attackColor = $(this).val();
-        myFunctions.saveSettings();
-        if (myVars.viewModeEnabled) {
-            myFunctions.displayViewMode && myFunctions.displayViewMode();
-        }
-    });
     $(document).on("input", "#checkCheckmateColor", function () {
         myVars.checkCheckmateColor = $(this).val();
         myFunctions.saveSettings();

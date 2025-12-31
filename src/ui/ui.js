@@ -527,9 +527,6 @@ function setupUI(myVars, myFunctions) {
         }
 
         $("#viewModeEnabled").prop("checked", myVars2.viewModeEnabled);
-        if (myVars2.attackColor) {
-            $("#attackColor").val(myVars2.attackColor);
-        }
         if (myVars2.checkCheckmateColor) {
             $("#checkCheckmateColor").val(myVars2.checkCheckmateColor);
         }

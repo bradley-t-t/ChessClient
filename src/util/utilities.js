@@ -444,75 +444,77 @@ function setupUtilities(myVars) {
         }
 
         try {
-            const legalMoves = board.game.getLegalMoves();
-            console.log("View Mode: Found", legalMoves.length, "legal moves");
+            console.log("View Mode: Searching for forced checkmates...");
             
-            const safeMoves = new Set();
-            const checkMoves = [];
-            
-            for (let move of legalMoves) {
-                try {
-                    board.game.move(move);
-                    
-                    let inCheck = false;
-                    let isCheckmate = false;
-                    
-                    if (board.game.inCheck) {
-                        inCheck = board.game.inCheck();
-                    }
-                    if (board.game.isCheckmate) {
-                        isCheckmate = board.game.isCheckmate();
-                    }
-                    
-                    if (inCheck || isCheckmate) {
-                        checkMoves.push({ from: move.from, to: move.to, isCheckmate });
-                        console.log("View Mode: Found check/checkmate move from", move.from, "to", move.to);
-                    }
-                    
-                    let wouldLoseGame = false;
-                    
-                    if (!isCheckmate) {
+            const findForcedCheckmate = (depth, maxDepth) => {
+                if (depth > maxDepth) return null;
+                
+                const legalMoves = board.game.getLegalMoves();
+                
+                for (let move of legalMoves) {
+                    try {
+                        board.game.move(move);
+                        
+                        const isCheckmate = board.game.isCheckmate && board.game.isCheckmate();
+                        
+                        if (isCheckmate) {
+                            board.game.undo();
+                            return [move];
+                        }
+                        
                         const opponentMoves = board.game.getLegalMoves();
+                        let allPathsLeadToCheckmate = true;
+                        let forcedSequence = null;
+                        
+                        if (opponentMoves.length === 0) {
+                            board.game.undo();
+                            continue;
+                        }
                         
                         for (let oppMove of opponentMoves) {
                             try {
                                 board.game.move(oppMove);
-                                let weAreCheckmated = false;
-                                if (board.game.isCheckmate) {
-                                    weAreCheckmated = board.game.isCheckmate();
-                                }
+                                
+                                const continuation = findForcedCheckmate(depth + 1, maxDepth);
+                                
                                 board.game.undo();
                                 
-                                if (weAreCheckmated) {
-                                    wouldLoseGame = true;
+                                if (!continuation) {
+                                    allPathsLeadToCheckmate = false;
                                     break;
+                                } else if (!forcedSequence) {
+                                    forcedSequence = continuation;
                                 }
                             } catch (e) {
                                 try { board.game.undo(); } catch (e2) {}
+                                allPathsLeadToCheckmate = false;
+                                break;
                             }
                         }
+                        
+                        board.game.undo();
+                        
+                        if (allPathsLeadToCheckmate && forcedSequence) {
+                            return [move, ...forcedSequence];
+                        }
+                    } catch (e) {
+                        try { board.game.undo(); } catch (e2) {}
                     }
-                    
-                    board.game.undo();
-                    
-                    if (!wouldLoseGame && !inCheck && !isCheckmate) {
-                        safeMoves.add(move.to);
-                    }
-                } catch (e) {
-                    console.error("View Mode: Error processing move", move, e);
-                    try { board.game.undo(); } catch (e2) {}
                 }
-            }
+                
+                return null;
+            };
             
-            console.log("View Mode: Highlighting", safeMoves.size, "safe moves and", checkMoves.length, "check moves");
+            const checkmateSequence = findForcedCheckmate(1, 5);
             
-            for (let square of safeMoves) {
-                myFunctions.highlightViewModeSquare(square, myVars.attackColor, 0.4);
-            }
-            
-            for (let checkMove of checkMoves) {
-                myFunctions.highlightViewModeSquare(checkMove.from, myVars.checkCheckmateColor, 0.5);
-                myFunctions.highlightViewModeSquare(checkMove.to, myVars.checkCheckmateColor, 0.7);
+            if (checkmateSequence) {
+                console.log("View Mode: Found forced checkmate in", checkmateSequence.length, "moves:", checkmateSequence.map(m => m.from + m.to).join(', '));
+                
+                const firstMove = checkmateSequence[0];
+                myFunctions.highlightViewModeSquare(firstMove.from, myVars.checkCheckmateColor, 0.6);
+                myFunctions.highlightViewModeSquare(firstMove.to, myVars.checkCheckmateColor, 0.8);
+            } else {
+                console.log("View Mode: No forced checkmate found within 5 moves");
             }
             
         } catch (e) {
@@ -532,7 +534,7 @@ function setupUtilities(myVars) {
         var highlight = document.createElement("div");
         highlight.className = "chess-client-view-mode-highlight";
         highlight.setAttribute("data-square", squareNum);
-        highlight.style.cssText = "position: absolute; background: " + color + "; opacity: " + opacity + "; pointer-events: none; z-index: 99; border-radius: 4px;";
+        highlight.style.cssText = "position: absolute; background: " + color + " !important; opacity: " + opacity + " !important; pointer-events: none; z-index: 999999 !important; border-radius: 4px;";
 
         var boardRect = board.getBoundingClientRect();
         var squareSize = boardRect.width / 8;
@@ -552,11 +554,17 @@ function setupUtilities(myVars) {
         highlight.style.left = (file * squareSize) + "px";
         highlight.style.top = (rank * squareSize) + "px";
 
-        var boardElement = $(board).find(".board")[0] || board;
-        if (boardElement) {
-            boardElement.style.position = "relative";
-            boardElement.appendChild(highlight);
-            console.log("View Mode: Highlighted square", square, "at", file, rank, "color:", color);
+        var boardContainer = board.querySelector('.board-container') || 
+                             board.querySelector('.board') || 
+                             board.querySelector('[class*="board"]') ||
+                             board;
+        
+        if (boardContainer) {
+            if (boardContainer.style.position !== 'relative' && boardContainer.style.position !== 'absolute') {
+                boardContainer.style.position = "relative";
+            }
+            boardContainer.appendChild(highlight);
+            console.log("View Mode: Highlighted square", square, "at", file, rank, "color:", color, "appended to:", boardContainer.className || boardContainer.tagName);
         } else {
             console.log("View Mode: Could not find board element to append highlight");
         }
@@ -579,7 +587,6 @@ function setupUtilities(myVars) {
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
             GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
             GM_setValue("viewModeEnabled", myVars.viewModeEnabled);
-            GM_setValue("attackColor", myVars.attackColor);
             GM_setValue("checkCheckmateColor", myVars.checkCheckmateColor);
         } catch (error) {
         }
@@ -592,7 +599,6 @@ function setupUtilities(myVars) {
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
             myVars.viewModeEnabled = GM_getValue("viewModeEnabled", false);
-            myVars.attackColor = GM_getValue("attackColor", "#ff6b6b");
             myVars.checkCheckmateColor = GM_getValue("checkCheckmateColor", "#9b59b6");
 
             function eloToDepthAndBlunder(elo) {
