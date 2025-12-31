@@ -74,10 +74,12 @@ setInterval(() => {
     }
 
     if (!document.engine.engine) {
-        myFunctions.loadChessEngine();
+        if (!myVars.viewModeEnabled) {
+            myFunctions.loadChessEngine();
+        }
     }
 
-    if (myVars.onGamePage && window.canGo === true && window.isThinking === false && window.myTurn) {
+    if (!myVars.viewModeEnabled && myVars.onGamePage && window.canGo === true && window.isThinking === false && window.myTurn) {
         const currentFen = window.board.game.getFEN();
         if (currentFen !== window.lastAnalyzedFen) {
             window.canGo = false;
@@ -90,7 +92,7 @@ setInterval(() => {
 
     if (myVars.viewModeEnabled && myVars.onGamePage && window.board && window.board.game) {
         const viewModeHighlights = document.querySelectorAll(".chess-client-view-mode-highlight");
-        if (viewModeHighlights.length === 0 && !window.isThinking) {
+        if (viewModeHighlights.length === 0) {
             myFunctions.displayViewMode && myFunctions.displayViewMode();
         }
     }

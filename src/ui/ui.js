@@ -528,6 +528,27 @@ function setupUI(myVars, myFunctions) {
             $("#intermediateMoveColor").val(myVars2.intermediateMoveColor);
         }
 
+        $("#viewModeEnabled").prop("checked", myVars2.viewModeEnabled);
+        if (myVars2.attackColor) {
+            $("#attackColor").val(myVars2.attackColor);
+        }
+        if (myVars2.vulnerabilityColor) {
+            $("#vulnerabilityColor").val(myVars2.vulnerabilityColor);
+        }
+        if (myVars2.checkCheckmateColor) {
+            $("#checkCheckmateColor").val(myVars2.checkCheckmateColor);
+        }
+
+        if (myVars2.viewModeEnabled) {
+            $("#engineSettings").hide();
+            $("#engineAdvancedSettings").hide();
+            $("#viewModeColors").show();
+        } else {
+            $("#engineSettings").show();
+            $("#engineAdvancedSettings").show();
+            $("#viewModeColors").hide();
+        }
+
         myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
         $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
     }

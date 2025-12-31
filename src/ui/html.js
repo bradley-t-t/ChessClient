@@ -45,89 +45,98 @@ var mainTemplate = `
         </div>
 
         <div class="client-content">
-        <div class="tab-panel active" id="main-settings">
-            <div class="setting-group">
-                <div class="setting-row">
-                    <span class="setting-label">Target ELO</span>
-                    <span id="targetEloValue" class="setting-value">1500</span>
+            <div class="tab-panel active" id="main-settings">
+                <div class="setting-group">
+                    <div class="toggle-row">
+                        <span class="toggle-label">View Mode Only</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="viewModeEnabled" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
-                <div class="slider-row">
-                    <button class="slider-btn" id="decreaseElo">-</button>
-                    <input type="range" id="targetEloSlider" min="400" max="3400" step="50" value="1500" class="slider">
-                    <button class="slider-btn" id="increaseElo">+</button>
+
+                <div id="engineSettings">
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <span class="setting-label">Target ELO</span>
+                            <span id="targetEloValue" class="setting-value">1500</span>
+                        </div>
+                        <div class="slider-row">
+                            <button class="slider-btn" id="decreaseElo">-</button>
+                            <input type="range" id="targetEloSlider" min="400" max="3400" step="50" value="1500" class="slider">
+                            <button class="slider-btn" id="increaseElo">+</button>
+                        </div>
+                        <div class="setting-description" id="eloDescription">Intermediate</div>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="toggle-row">
+                            <span class="toggle-label">Auto Move</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="autoMove" name="autoMove" class="toggle-input" value="false">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <div class="setting-description" id="eloDescription">Intermediate</div>
             </div>
 
-            <div class="setting-group">
-                <div class="toggle-row">
-                    <span class="toggle-label">Auto Move</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="autoMove" name="autoMove" class="toggle-input" value="false">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
+            <div class="tab-panel" id="advanced-settings">
+                <div class="setting-group advanced-controls">
+                    <div class="toggle-row">
+                        <span class="toggle-label">Console Log</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
 
-        <div class="tab-panel" id="advanced-settings">
-            <div class="setting-group advanced-controls">
-                <div class="input-row">
-                    <label for="intermediateMoveColor">Intermediate Move</label>
-                    <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
-                </div>
-                <div class="input-row">
-                    <label for="bestMoveColor">Recommended Move</label>
-                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
-                </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">View Mode Only</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="viewModeEnabled" class="toggle-input">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div id="viewModeColors" class="setting-group" style="display: none;">
-                    <div class="input-row">
-                        <label for="attackColor">Attack Color (Enemy)</label>
-                        <input type="color" id="attackColor" value="#ff6b6b" class="color-picker">
+                    <div id="viewModeColors" style="display: none;">
+                        <div class="input-row">
+                            <label for="attackColor">Attack Color (Enemy)</label>
+                            <input type="color" id="attackColor" value="#ff6b6b" class="color-picker">
+                        </div>
+                        <div class="input-row">
+                            <label for="vulnerabilityColor">Vulnerability Color (Us)</label>
+                            <input type="color" id="vulnerabilityColor" value="#ffd93d" class="color-picker">
+                        </div>
+                        <div class="input-row">
+                            <label for="checkCheckmateColor">Check/Checkmate Color</label>
+                            <input type="color" id="checkCheckmateColor" value="#9b59b6" class="color-picker">
+                        </div>
                     </div>
-                    <div class="input-row">
-                        <label for="vulnerabilityColor">Vulnerability Color (Us)</label>
-                        <input type="color" id="vulnerabilityColor" value="#ffd93d" class="color-picker">
-                    </div>
-                    <div class="input-row">
-                        <label for="checkCheckmateColor">Check/Checkmate Color</label>
-                        <input type="color" id="checkCheckmateColor" value="#9b59b6" class="color-picker">
-                    </div>
-                </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">Console Log</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">Time Affected Speed</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="timeAffectedSpeed" class="toggle-input" value="false">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div id="speedSliderContainer" class="setting-group">
-                    <div class="setting-row">
-                        <span class="setting-label">Move Speed</span>
-                        <span id="moveSpeedValue" class="setting-value">Medium</span>
-                    </div>
-                    <div class="slider-row">
-                        <button class="slider-btn" id="decreaseSpeed">-</button>
-                        <input type="range" id="moveSpeedSlider" min="1" max="7" value="4" class="slider">
-                        <button class="slider-btn" id="increaseSpeed">+</button>
+
+                    <div id="engineAdvancedSettings">
+                        <div class="input-row">
+                            <label for="intermediateMoveColor">Intermediate Move</label>
+                            <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
+                        </div>
+                        <div class="input-row">
+                            <label for="bestMoveColor">Recommended Move</label>
+                            <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Time Affected Speed</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="timeAffectedSpeed" class="toggle-input" value="false">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div id="speedSliderContainer" class="setting-group">
+                            <div class="setting-row">
+                                <span class="setting-label">Move Speed</span>
+                                <span id="moveSpeedValue" class="setting-value">Medium</span>
+                            </div>
+                            <div class="slider-row">
+                                <button class="slider-btn" id="decreaseSpeed">-</button>
+                                <input type="range" id="moveSpeedSlider" min="1" max="7" value="4" class="slider">
+                                <button class="slider-btn" id="increaseSpeed">+</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <div class="detection-score">
@@ -148,13 +157,12 @@ var mainTemplate = `
             </div>
             <span id="currentDepthValue" class="depth-value">0%</span>
         </div>
-        </div>
+    </div>
 
-        <div class="client-footer">
-            <button type="button" id="relEngBut" class="btn-primary" onclick="document.myFunctions.reloadChessEngine()">
-                Reload Engine
-            </button>
-        </div>
+    <div class="client-footer">
+        <button type="button" id="relEngBut" class="btn-primary" onclick="document.myFunctions.reloadChessEngine()">
+            Reload Engine
+        </button>
     </div>
     
     <div class="version-display">

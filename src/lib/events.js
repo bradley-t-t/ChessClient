@@ -98,13 +98,28 @@ function setupStyleEventHandlers(myVars, myFunctions) {
     });
     $(document).on("change", "#viewModeEnabled", function () {
         myVars.viewModeEnabled = $(this).prop("checked");
+        
         if (myVars.viewModeEnabled) {
-            $("#viewModeColors").slideDown(200);
-            myFunctions.displayViewMode && myFunctions.displayViewMode();
+            $("#engineSettings").hide();
+            $("#engineAdvancedSettings").hide();
+            $("#viewModeColors").show();
+            
+            if (myFunctions.stopEngine) {
+                myFunctions.stopEngine();
+            }
+            myFunctions.clearHighlights && myFunctions.clearHighlights();
+            
+            setTimeout(() => {
+                myFunctions.displayViewMode && myFunctions.displayViewMode();
+            }, 200);
         } else {
-            $("#viewModeColors").slideUp(200);
+            $("#engineSettings").show();
+            $("#engineAdvancedSettings").show();
+            $("#viewModeColors").hide();
+            
             myFunctions.clearViewModeHighlights && myFunctions.clearViewModeHighlights();
         }
+        
         myFunctions.saveSettings();
     });
     $(document).on("input", "#attackColor", function () {

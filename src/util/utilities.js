@@ -133,6 +133,9 @@ function setupUtilities(myVars) {
     };
     myFunctions.displayRecommendedMove = function (move, isIntermediate) {
         myFunctions.clearHighlights();
+        if (!myVars.viewModeEnabled) {
+            myFunctions.clearViewModeHighlights && myFunctions.clearViewModeHighlights();
+        }
 
         var fromSquare = move.substring(0, 2);
         var toSquare = move.substring(2, 4);
