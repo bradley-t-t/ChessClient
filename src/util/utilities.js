@@ -443,111 +443,59 @@ function setupUtilities(myVars) {
         }
 
         try {
-            const currentTurn = board.game.getTurn();
-            const playingAs = board.game.getPlayingAs();
-            const isOurTurn = currentTurn === playingAs;
             const legalMoves = board.game.getLegalMoves();
+            const safeMoves = new Set();
+            const checkMoves = [];
             
-            const pieceValues = {
-                'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 100,
-                'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9, 'K': 100
-            };
-            
-            const getPieceValue = (square) => {
+            for (let move of legalMoves) {
                 try {
-                    const fen = board.game.getFEN();
-                    const fenParts = fen.split(' ');
-                    const boardState = fenParts[0];
+                    board.game.move(move);
                     
-                    const file = square.charCodeAt(0) - 97;
-                    const rank = parseInt(square[1]) - 1;
+                    const inCheck = board.game.inCheck && board.game.inCheck();
+                    const isCheckmate = board.game.isCheckmate && board.game.isCheckmate();
                     
-                    const rows = boardState.split('/').reverse();
-                    let currentFile = 0;
-                    
-                    for (let char of rows[rank]) {
-                        if (char >= '1' && char <= '8') {
-                            currentFile += parseInt(char);
-                        } else {
-                            if (currentFile === file) {
-                                return pieceValues[char] || 0;
-                            }
-                            currentFile++;
-                        }
+                    if (inCheck || isCheckmate) {
+                        checkMoves.push({ from: move.from, to: move.to, isCheckmate });
                     }
-                } catch (e) {
-                }
-                return 0;
-            };
-            
-            if (isOurTurn) {
-                const attackSquares = new Set();
-                
-                for (let move of legalMoves) {
-                    const targetPieceValue = getPieceValue(move.to);
-                    const movingPieceValue = getPieceValue(move.from);
                     
-                    if (targetPieceValue > 0) {
-                        attackSquares.add(move.to);
-                    } else {
+                    const opponentMoves = board.game.getLegalMoves();
+                    let wouldLoseGame = false;
+                    
+                    for (let oppMove of opponentMoves) {
                         try {
-                            board.game.move(move);
-                            const enemyResponses = board.game.getLegalMoves();
-                            let canBeCaptured = false;
-                            let wouldExposeHigherValue = false;
-                            
-                            for (let response of enemyResponses) {
-                                if (response.to === move.to) {
-                                    canBeCaptured = true;
-                                    break;
-                                }
-                            }
-                            
-                            if (!canBeCaptured) {
-                                attackSquares.add(move.to);
-                            } else {
-                                for (let response of enemyResponses) {
-                                    if (response.to !== move.to) {
-                                        const exposedValue = getPieceValue(response.to);
-                                        if (exposedValue > movingPieceValue) {
-                                            wouldExposeHigherValue = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                if (wouldExposeHigherValue) {
-                                    attackSquares.add(move.to);
-                                }
-                            }
-                            
+                            board.game.move(oppMove);
+                            const weAreInCheck = board.game.inCheck && board.game.inCheck();
+                            const weAreCheckmated = board.game.isCheckmate && board.game.isCheckmate();
                             board.game.undo();
+                            
+                            if (weAreCheckmated) {
+                                wouldLoseGame = true;
+                                break;
+                            }
                         } catch (e) {
                             try { board.game.undo(); } catch (e2) {}
                         }
                     }
-                }
-                
-                const color = myVars.attackColor;
-                
-                for (let square of attackSquares) {
-                    myFunctions.highlightViewModeSquare(square, color, 0.4);
-                }
-            } else {
-                const vulnerableSquares = new Set();
-                
-                for (let move of legalMoves) {
-                    if (getPieceValue(move.to) > 0) {
-                        vulnerableSquares.add(move.to);
+                    
+                    board.game.undo();
+                    
+                    if (!wouldLoseGame && !inCheck && !isCheckmate) {
+                        safeMoves.add(move.to);
                     }
-                }
-                
-                const color = myVars.vulnerabilityColor;
-                
-                for (let square of vulnerableSquares) {
-                    myFunctions.highlightViewModeSquare(square, color, 0.4);
+                } catch (e) {
+                    try { board.game.undo(); } catch (e2) {}
                 }
             }
+            
+            for (let square of safeMoves) {
+                myFunctions.highlightViewModeSquare(square, myVars.attackColor, 0.4);
+            }
+            
+            for (let checkMove of checkMoves) {
+                myFunctions.highlightViewModeSquare(checkMove.from, myVars.checkCheckmateColor, 0.5);
+                myFunctions.highlightViewModeSquare(checkMove.to, myVars.checkCheckmateColor, 0.7);
+            }
+            
         } catch (e) {
             console.error("View Mode Error:", e);
         }
@@ -607,7 +555,6 @@ function setupUtilities(myVars) {
             GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
             GM_setValue("viewModeEnabled", myVars.viewModeEnabled);
             GM_setValue("attackColor", myVars.attackColor);
-            GM_setValue("vulnerabilityColor", myVars.vulnerabilityColor);
             GM_setValue("checkCheckmateColor", myVars.checkCheckmateColor);
         } catch (error) {
         }
@@ -621,7 +568,6 @@ function setupUtilities(myVars) {
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
             myVars.viewModeEnabled = GM_getValue("viewModeEnabled", false);
             myVars.attackColor = GM_getValue("attackColor", "#ff6b6b");
-            myVars.vulnerabilityColor = GM_getValue("vulnerabilityColor", "#ffd93d");
             myVars.checkCheckmateColor = GM_getValue("checkCheckmateColor", "#9b59b6");
 
             function eloToDepthAndBlunder(elo) {

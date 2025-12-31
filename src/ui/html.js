@@ -94,12 +94,8 @@ var mainTemplate = `
 
                     <div id="viewModeColors" style="display: none;">
                         <div class="input-row">
-                            <label for="attackColor">Attack Color (Enemy)</label>
+                            <label for="attackColor">Safe Moves Color</label>
                             <input type="color" id="attackColor" value="#ff6b6b" class="color-picker">
-                        </div>
-                        <div class="input-row">
-                            <label for="vulnerabilityColor">Vulnerability Color (Us)</label>
-                            <input type="color" id="vulnerabilityColor" value="#ffd93d" class="color-picker">
                         </div>
                         <div class="input-row">
                             <label for="checkCheckmateColor">Check/Checkmate Color</label>

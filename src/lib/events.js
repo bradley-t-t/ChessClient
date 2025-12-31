@@ -129,13 +129,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
             myFunctions.displayViewMode && myFunctions.displayViewMode();
         }
     });
-    $(document).on("input", "#vulnerabilityColor", function () {
-        myVars.vulnerabilityColor = $(this).val();
-        myFunctions.saveSettings();
-        if (myVars.viewModeEnabled) {
-            myFunctions.displayViewMode && myFunctions.displayViewMode();
-        }
-    });
     $(document).on("input", "#checkCheckmateColor", function () {
         myVars.checkCheckmateColor = $(this).val();
         myFunctions.saveSettings();

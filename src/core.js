@@ -1,4 +1,4 @@
-var currentVersion = "2.5.8";
+var currentVersion = "2.5.9";
 
 function initializeVariables() {
     const myVars = {
@@ -15,7 +15,6 @@ function initializeVariables() {
         consoleLogEnabled: true,
         viewModeEnabled: false,
         attackColor: "#ff6b6b",
-        vulnerabilityColor: "#ffd93d",
         checkCheckmateColor: "#9b59b6"
     };
     return myVars;

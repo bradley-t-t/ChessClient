@@ -530,9 +530,6 @@ function setupUI(myVars, myFunctions) {
         if (myVars2.attackColor) {
             $("#attackColor").val(myVars2.attackColor);
         }
-        if (myVars2.vulnerabilityColor) {
-            $("#vulnerabilityColor").val(myVars2.vulnerabilityColor);
-        }
         if (myVars2.checkCheckmateColor) {
             $("#checkCheckmateColor").val(myVars2.checkCheckmateColor);
         }
