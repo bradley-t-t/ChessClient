@@ -101,6 +101,39 @@ function setupStyleEventHandlers(myVars, myFunctions) {
 function setupAdvancedEventHandlers(myVars, myFunctions) {
     const speedLabels = ["", "Slowest", "Very Slow", "Slow", "Medium", "Fast", "Very Fast", "Fastest"];
 
+    $(document).on("change", "#highlightHangingPieces", function () {
+        myVars.highlightHangingPieces = $(this).prop("checked");
+        var colorContainer = $("#hangingPiecesColors");
+        if (myVars.highlightHangingPieces) {
+            colorContainer.show();
+            if (myFunctions.updateHangingPieces) {
+                myFunctions.updateHangingPieces();
+            }
+        } else {
+            colorContainer.hide();
+            if (myFunctions.clearHangingHighlights) {
+                myFunctions.clearHangingHighlights();
+            }
+        }
+        myFunctions.saveSettings();
+    });
+
+    $(document).on("input", "#ownHangingColor", function () {
+        myVars.ownHangingColor = $(this).val();
+        myFunctions.saveSettings();
+        if (myVars.highlightHangingPieces && myFunctions.updateHangingPieces) {
+            myFunctions.updateHangingPieces();
+        }
+    });
+
+    $(document).on("input", "#enemyHangingColor", function () {
+        myVars.enemyHangingColor = $(this).val();
+        myFunctions.saveSettings();
+        if (myVars.highlightHangingPieces && myFunctions.updateHangingPieces) {
+            myFunctions.updateHangingPieces();
+        }
+    });
+
     $(document).on("input", "#moveSpeedSlider", function () {
         const speed = parseInt($(this).val());
         $("#moveSpeedValue").text(speedLabels[speed]);
@@ -155,6 +188,9 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myVars.intermediateMoveColor = "#ffdab9";
         myVars.moveSpeedTier = 4;
         myVars.timeAffectedSpeed = false;
+        myVars.highlightHangingPieces = false;
+        myVars.ownHangingColor = "#ff4444";
+        myVars.enemyHangingColor = "#44ff44";
 
         $("#autoMove").prop("checked", myVars.autoMove);
         $("#targetEloSlider").val(myVars.targetElo).trigger("input");
@@ -162,6 +198,9 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         $("#intermediateMoveColor").val(myVars.intermediateMoveColor);
         $("#moveSpeedSlider").val(myVars.moveSpeedTier).trigger("input");
         $("#timeAffectedSpeed").prop("checked", myVars.timeAffectedSpeed).trigger("change");
+        $("#highlightHangingPieces").prop("checked", myVars.highlightHangingPieces).trigger("change");
+        $("#ownHangingColor").val(myVars.ownHangingColor);
+        $("#enemyHangingColor").val(myVars.enemyHangingColor);
 
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();

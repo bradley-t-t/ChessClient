@@ -62,12 +62,20 @@ setInterval(() => {
 
             const depthEl = document.getElementById("currentDepthValue");
             if (depthEl) depthEl.textContent = "0%";
+
+            if (myFunctions.updateHangingPieces) {
+                setTimeout(() => myFunctions.updateHangingPieces(), 200);
+            }
         }
 
         if (!wasMyTurn && window.myTurn) {
             window.canGo = true;
             window.lastAnalyzedFen = null;
             window.isThinking = false;
+
+            if (myFunctions.updateHangingPieces) {
+                setTimeout(() => myFunctions.updateHangingPieces(), 200);
+            }
         }
     } else {
         myFunctions.loadEx();

@@ -524,6 +524,19 @@ function setupUI(myVars, myFunctions) {
 
         myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
         $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
+
+        $("#highlightHangingPieces").prop("checked", myVars2.highlightHangingPieces);
+        if (myVars2.ownHangingColor) {
+            $("#ownHangingColor").val(myVars2.ownHangingColor);
+        }
+        if (myVars2.enemyHangingColor) {
+            $("#enemyHangingColor").val(myVars2.enemyHangingColor);
+        }
+        if (myVars2.highlightHangingPieces) {
+            $("#hangingPiecesColors").show();
+        } else {
+            $("#hangingPiecesColors").hide();
+        }
     }
 
     return myFunctions;

@@ -1,4 +1,4 @@
-var currentVersion = "5.0.0";
+var currentVersion = "5.0.1";
 
 function initializeVariables() {
     const myVars = {
@@ -12,7 +12,10 @@ function initializeVariables() {
         intermediateMoveColor: "#ffa500",
         moveSpeedTier: 4,
         timeAffectedSpeed: false,
-        consoleLogEnabled: true
+        consoleLogEnabled: true,
+        highlightHangingPieces: false,
+        ownHangingColor: "#ff4444",
+        enemyHangingColor: "#44ff44"
     };
     return myVars;
 }

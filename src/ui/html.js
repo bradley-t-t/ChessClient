@@ -81,6 +81,23 @@ var mainTemplate = `
                     <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
                 <div class="toggle-row">
+                    <span class="toggle-label">Highlight Hanging Pieces</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="highlightHangingPieces" class="toggle-input" value="false">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div id="hangingPiecesColors" style="display: none;">
+                    <div class="input-row">
+                        <label for="ownHangingColor">Your Hanging Pieces</label>
+                        <input type="color" id="ownHangingColor" value="#ff4444" class="color-picker">
+                    </div>
+                    <div class="input-row">
+                        <label for="enemyHangingColor">Enemy Hanging Pieces</label>
+                        <input type="color" id="enemyHangingColor" value="#44ff44" class="color-picker">
+                    </div>
+                </div>
+                <div class="toggle-row">
                     <span class="toggle-label">Console Log</span>
                     <label class="toggle">
                         <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
