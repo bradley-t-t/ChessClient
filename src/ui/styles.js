@@ -9,19 +9,15 @@ var mainStyles = `
 
 .chess-client {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: 20px;
+    right: 20px;
     background: #ffffff;
-    color: #000000;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    width: 280px;
-    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    width: 320px;
+    border: 1px solid #e5e5e5;
     z-index: 999999;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
 }
 
@@ -30,66 +26,51 @@ var mainStyles = `
 }
 
 .client-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
-    background: #fafafa;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-}
-
-.header-right {
-    display: flex;
     align-items: center;
 }
 
 .client-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #000000;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .minimize-hint {
-    font-size: 10px;
-    color: #999999;
-    font-weight: 400;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
     cursor: pointer;
     transition: color 0.2s;
+    font-weight: 500;
 }
 
 .minimize-hint:hover {
-    color: #000000;
+    color: rgba(255,255,255,0.9);
 }
 
 .page-status {
     display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
+    padding: 48px 24px;
     text-align: center;
 }
 
 .page-status.visible {
-    display: flex;
+    display: block;
 }
 
 .status-icon {
-    color: #999999;
-    margin-bottom: 8px;
+    color: #a0a0a0;
+    margin-bottom: 12px;
 }
 
 .status-text {
-    font-size: 11px;
+    font-size: 13px;
     color: #666666;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .client-body {
@@ -102,40 +83,42 @@ var mainStyles = `
 }
 
 .client-tabs {
-    display: flex;
-    background: #ffffff;
-    border-bottom: 1px solid #e0e0e0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
+    gap: 0;
 }
 
 .tab-btn {
-    flex: 1;
     background: transparent;
     border: none;
-    color: #999999;
-    font-size: 10px;
+    color: #888888;
+    font-size: 11px;
     font-weight: 600;
-    padding: 10px 6px;
+    padding: 14px 8px;
     cursor: pointer;
     transition: all 0.2s;
-    border-bottom: 2px solid transparent;
-    font-family: inherit;
+    border-bottom: 3px solid transparent;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .tab-btn:hover {
-    color: #000000;
+    color: #333333;
+    background: rgba(0,0,0,0.02);
 }
 
 .tab-btn.active {
-    color: #000000;
-    border-bottom-color: #000000;
+    color: #1a1a1a;
+    background: #ffffff;
+    border-bottom-color: #1a1a1a;
 }
 
 .client-content {
-    padding: 16px;
+    padding: 20px;
     background: #ffffff;
-    min-height: 140px;
+    min-height: 160px;
 }
 
 .tab-panel {
@@ -144,50 +127,65 @@ var mainStyles = `
 
 .tab-panel.active {
     display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .tactic-info {
-    background: #f9f9f9;
-    border-left: 3px solid #000000;
-    padding: 10px 12px;
-    margin-bottom: 16px;
+    background: linear-gradient(135deg, #f8f8f8 0%, #fafafa 100%);
+    border-left: 4px solid #1a1a1a;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: 0 6px 6px 0;
 }
 
 .tactic-info p {
     margin: 0;
-    font-size: 11px;
-    color: #333333;
-    line-height: 1.5;
+    font-size: 12px;
+    color: #444444;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
 .input-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0;
+    background: #fafafa;
+    padding: 14px 16px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.input-row:hover {
+    background: #f5f5f5;
 }
 
 .input-row label {
-    font-size: 11px;
-    color: #000000;
+    font-size: 12px;
+    color: #1a1a1a;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .color-picker {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    background: none;
     transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .color-picker:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .color-picker::-webkit-color-swatch-wrapper {
@@ -195,22 +193,18 @@ var mainStyles = `
 }
 
 .color-picker::-webkit-color-swatch {
-    border: 2px solid #e0e0e0;
-    border-radius: 4px;
-    transition: border-color 0.2s;
-}
-
-.color-picker:hover::-webkit-color-swatch {
-    border-color: #000000;
+    border: 3px solid #ffffff;
+    border-radius: 8px;
 }
 
 .version-display {
     text-align: center;
-    padding: 6px;
-    font-size: 9px;
-    color: #cccccc;
+    padding: 10px;
+    font-size: 10px;
+    color: #aaaaaa;
     background: #fafafa;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #e5e5e5;
+    font-weight: 500;
 }
 
 .chess-tactics-highlight {

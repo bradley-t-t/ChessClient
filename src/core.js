@@ -1,4 +1,4 @@
-var currentVersion = "3.1.2";
+var currentVersion = "3.2.0";
 
 function initializeVariables() {
     const myVars = {
