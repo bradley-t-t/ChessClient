@@ -446,20 +446,107 @@ function setupUtilities(myVars) {
             const currentTurn = board.game.getTurn();
             const playingAs = board.game.getPlayingAs();
             const isOurTurn = currentTurn === playingAs;
-
             const legalMoves = board.game.getLegalMoves();
-            const attackedSquares = new Set();
             
-            for (let move of legalMoves) {
-                if (move.to) {
-                    attackedSquares.add(move.to);
+            const pieceValues = {
+                'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 100,
+                'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9, 'K': 100
+            };
+            
+            const getPieceValue = (square) => {
+                try {
+                    const fen = board.game.getFEN();
+                    const fenParts = fen.split(' ');
+                    const boardState = fenParts[0];
+                    
+                    const file = square.charCodeAt(0) - 97;
+                    const rank = parseInt(square[1]) - 1;
+                    
+                    const rows = boardState.split('/').reverse();
+                    let currentFile = 0;
+                    
+                    for (let char of rows[rank]) {
+                        if (char >= '1' && char <= '8') {
+                            currentFile += parseInt(char);
+                        } else {
+                            if (currentFile === file) {
+                                return pieceValues[char] || 0;
+                            }
+                            currentFile++;
+                        }
+                    }
+                } catch (e) {
                 }
-            }
+                return 0;
+            };
             
-            const color = isOurTurn ? myVars.attackColor : myVars.vulnerabilityColor;
-            
-            for (let square of attackedSquares) {
-                myFunctions.highlightViewModeSquare(square, color, 0.4);
+            if (isOurTurn) {
+                const attackSquares = new Set();
+                
+                for (let move of legalMoves) {
+                    const targetPieceValue = getPieceValue(move.to);
+                    const movingPieceValue = getPieceValue(move.from);
+                    
+                    if (targetPieceValue > 0) {
+                        attackSquares.add(move.to);
+                    } else {
+                        try {
+                            board.game.move(move);
+                            const enemyResponses = board.game.getLegalMoves();
+                            let canBeCaptured = false;
+                            let wouldExposeHigherValue = false;
+                            
+                            for (let response of enemyResponses) {
+                                if (response.to === move.to) {
+                                    canBeCaptured = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!canBeCaptured) {
+                                attackSquares.add(move.to);
+                            } else {
+                                for (let response of enemyResponses) {
+                                    if (response.to !== move.to) {
+                                        const exposedValue = getPieceValue(response.to);
+                                        if (exposedValue > movingPieceValue) {
+                                            wouldExposeHigherValue = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                if (wouldExposeHigherValue) {
+                                    attackSquares.add(move.to);
+                                }
+                            }
+                            
+                            board.game.undo();
+                        } catch (e) {
+                            try { board.game.undo(); } catch (e2) {}
+                        }
+                    }
+                }
+                
+                const color = myVars.attackColor;
+                
+                for (let square of attackSquares) {
+                    myFunctions.highlightViewModeSquare(square, color, 0.4);
+                }
+            } else {
+                const vulnerableSquares = new Set();
+                
+                for (let move of legalMoves) {
+                    if (getPieceValue(move.to) > 0) {
+                        vulnerableSquares.add(move.to);
+                    }
+                }
+                
+                const color = myVars.vulnerabilityColor;
+                
+                for (let square of vulnerableSquares) {
+                    myFunctions.highlightViewModeSquare(square, color, 0.4);
+                }
             }
         } catch (e) {
             console.error("View Mode Error:", e);
