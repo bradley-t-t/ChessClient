@@ -34,12 +34,16 @@ setInterval(() => {
             if (currentTurn === playingAs) {
                 const currentFen = board.game.getFEN();
                 if (currentFen !== window.lastAnalyzedFen) {
+                    console.log("Main Loop: FEN changed, triggering analysis");
                     window.lastAnalyzedFen = currentFen;
                     myFunctions.analyzeTactics();
                 }
             } else {
-                myFunctions.clearHighlights();
-                window.lastAnalyzedFen = null;
+                if (window.lastAnalyzedFen !== null) {
+                    console.log("Main Loop: Not our turn, clearing highlights");
+                    myFunctions.clearHighlights();
+                    window.lastAnalyzedFen = null;
+                }
             }
         }
     } else {

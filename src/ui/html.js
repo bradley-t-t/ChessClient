@@ -1,15 +1,11 @@
 var mainTemplate = `
-<div class="minimized-tab" id="minimizedTab">
-    <span class="tab-label">Chess Tactics</span>
-</div>
-
 <div class="chess-client">
     <div class="client-header">
         <div class="header-left">
-            <span class="client-title">Chess Tactics Analyzer</span>
+            <span class="client-title">Chess Tactics</span>
         </div>
         <div class="header-right">
-            <span id="minimizeHint" class="minimize-hint">(Esc)</span>
+            <span id="minimizeHint" class="minimize-hint">(Esc to hide)</span>
         </div>
     </div>
 
@@ -21,7 +17,7 @@ var mainTemplate = `
                 <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
         </div>
-        <span class="status-text">Navigate to a chess game to enable features</span>
+        <span class="status-text">Navigate to a chess game to enable</span>
     </div>
 
     <div class="client-body">
@@ -38,7 +34,7 @@ var mainTemplate = `
                     <p>Attacking two or more pieces simultaneously</p>
                 </div>
                 <div class="input-row">
-                    <label for="forkColor">Highlight Color</label>
+                    <label for="forkColor">Color</label>
                     <input type="color" id="forkColor" value="#ff6b6b" class="color-picker">
                 </div>
             </div>
@@ -48,7 +44,7 @@ var mainTemplate = `
                     <p>Forcing a valuable piece to move, exposing a less valuable piece behind it</p>
                 </div>
                 <div class="input-row">
-                    <label for="skewerColor">Highlight Color</label>
+                    <label for="skewerColor">Color</label>
                     <input type="color" id="skewerColor" value="#4ecdc4" class="color-picker">
                 </div>
             </div>
@@ -58,7 +54,7 @@ var mainTemplate = `
                     <p>Restricting a piece from moving because it would expose a more valuable piece</p>
                 </div>
                 <div class="input-row">
-                    <label for="pinColor">Highlight Color</label>
+                    <label for="pinColor">Color</label>
                     <input type="color" id="pinColor" value="#ffe66d" class="color-picker">
                 </div>
             </div>
@@ -68,7 +64,7 @@ var mainTemplate = `
                     <p>Moving a piece reveals an attack from another piece behind it</p>
                 </div>
                 <div class="input-row">
-                    <label for="discoveredAttackColor">Highlight Color</label>
+                    <label for="discoveredAttackColor">Color</label>
                     <input type="color" id="discoveredAttackColor" value="#a8dadc" class="color-picker">
                 </div>
             </div>

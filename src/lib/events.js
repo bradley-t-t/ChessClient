@@ -35,20 +35,12 @@ function setupEventHandlers(myVars, myFunctions) {
     $(document).on("keydown", function(e) {
         if (e.key === "Escape") {
             const chessClient = $(".chess-client");
-            const minimizedTab = $("#minimizedTab");
             
             if (chessClient.hasClass("minimized")) {
                 chessClient.removeClass("minimized");
-                minimizedTab.removeClass("visible");
             } else {
                 chessClient.addClass("minimized");
-                minimizedTab.addClass("visible");
             }
         }
-    });
-    
-    $("#minimizedTab").on("click", function() {
-        $(".chess-client").removeClass("minimized");
-        $(this).removeClass("visible");
     });
 }

@@ -2,36 +2,7 @@ var mainStyles = `
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 .minimized-tab {
-    position: fixed;
-    top: 20px;
-    right: 0;
-    background: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-right: none;
-    border-radius: 8px 0 0 8px;
-    padding: 14px 16px 14px 8px;
-    cursor: pointer;
-    z-index: 999999;
-    box-shadow: -2px 2px 8px rgba(0,0,0,0.1);
-    display: none;
-    transition: transform 0.2s;
-}
-
-.minimized-tab:hover {
-    transform: translateX(-4px);
-}
-
-.minimized-tab.visible {
-    display: block;
-}
-
-.tab-label {
-    font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a1a1a;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
+    display: none !important;
 }
 
 .chess-client {
@@ -39,58 +10,31 @@ var mainStyles = `
     top: 20px;
     right: 20px;
     background: #ffffff;
-    color: #1a1a1a;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
+    color: #000000;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     font-family: 'Inter', -apple-system, sans-serif;
-    width: 320px;
+    width: 300px;
     max-height: calc(100vh - 40px);
-    border: 1px solid #e5e5e5;
+    border: 1px solid #d0d0d0;
     z-index: 999999;
     user-select: none;
-    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
 .chess-client.minimized {
-    animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateX(100%);
-    opacity: 0;
-    pointer-events: none;
-}
-
-@keyframes slideOut {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
+    display: none;
 }
 
 .client-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px 16px 0 0;
-    cursor: move;
+    padding: 12px 16px;
+    background: #000000;
+    border-bottom: 1px solid #d0d0d0;
 }
 
 .header-left {
@@ -106,16 +50,15 @@ var mainStyles = `
 }
 
 .client-title {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
     color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .minimize-hint {
-    font-size: 11px;
-    color: rgba(255,255,255,0.8);
-    font-weight: 500;
+    font-size: 10px;
+    color: #999999;
+    font-weight: 400;
     cursor: pointer;
     user-select: none;
     transition: color 0.15s;
@@ -140,12 +83,12 @@ var mainStyles = `
 }
 
 .status-icon {
-    color: #9ca3af;
+    color: #666666;
 }
 
 .status-text {
-    font-size: 13px;
-    color: #6b7280;
+    font-size: 12px;
+    color: #666666;
     line-height: 1.5;
 }
 
@@ -162,8 +105,8 @@ var mainStyles = `
 
 .client-tabs {
     display: flex;
-    background: #fafafa;
-    border-bottom: 2px solid #ebebeb;
+    background: #f5f5f5;
+    border-bottom: 1px solid #d0d0d0;
     overflow-x: auto;
 }
 
@@ -175,30 +118,30 @@ var mainStyles = `
     flex: 1;
     background: transparent;
     border: none;
-    color: #888888;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 14px 12px;
+    color: #666666;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 10px 8px;
     cursor: pointer;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+    border-bottom: 2px solid transparent;
     font-family: inherit;
     white-space: nowrap;
 }
 
 .tab-btn:hover {
-    color: #555555;
-    background: rgba(102, 126, 234, 0.05);
+    color: #000000;
+    background: #ebebeb;
 }
 
 .tab-btn.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
-    background: rgba(102, 126, 234, 0.08);
+    color: #000000;
+    border-bottom-color: #000000;
+    background: #ffffff;
 }
 
 .client-content {
-    padding: 20px;
+    padding: 16px;
     background: #ffffff;
     overflow-y: auto;
     flex: 1;
@@ -213,76 +156,65 @@ var mainStyles = `
 }
 
 .client-content::-webkit-scrollbar-thumb {
-    background: #d4d4d4;
+    background: #d0d0d0;
     border-radius: 3px;
 }
 
 .client-content::-webkit-scrollbar-thumb:hover {
-    background: #a3a3a3;
+    background: #a0a0a0;
 }
 
 .tab-panel {
     display: none;
-    animation: fadeIn 0.3s ease;
 }
 
 .tab-panel.active {
     display: block;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .tactic-info {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border: 1px solid rgba(102, 126, 234, 0.2);
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 20px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 16px;
 }
 
 .tactic-info p {
     margin: 0;
-    font-size: 13px;
-    color: #555555;
-    line-height: 1.6;
+    font-size: 12px;
+    color: #333333;
+    line-height: 1.5;
 }
 
 .input-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
 }
 
 .input-row:last-child {
     border-bottom: none;
+    padding-bottom: 0;
 }
 
 .input-row label {
-    font-size: 13px;
-    color: #333333;
+    font-size: 12px;
+    color: #000000;
     font-weight: 500;
 }
 
 .color-picker {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: none;
-    border-radius: 10px;
+    border-radius: 4px;
     cursor: pointer;
     background: none;
-    transition: transform 0.2s;
+    transition: transform 0.15s;
 }
 
 .color-picker:hover {
@@ -294,23 +226,22 @@ var mainStyles = `
 }
 
 .color-picker::-webkit-color-swatch {
-    border: 3px solid #e0e0e0;
-    border-radius: 10px;
-    transition: border-color 0.2s;
+    border: 2px solid #d0d0d0;
+    border-radius: 4px;
+    transition: border-color 0.15s;
 }
 
 .color-picker:hover::-webkit-color-swatch {
-    border-color: #667eea;
+    border-color: #000000;
 }
 
 .version-display {
     text-align: center;
-    padding: 12px;
-    font-size: 10px;
+    padding: 8px;
+    font-size: 9px;
     color: #999999;
     background: #fafafa;
-    border-top: 1px solid #ebebeb;
-    border-radius: 0 0 16px 16px;
+    border-top: 1px solid #e0e0e0;
 }
 
 .chess-tactics-highlight {

@@ -33,7 +33,10 @@ function setupUtilities(myVars) {
     
     myFunctions.highlightSquare = function(square, color, opacity) {
         const board = $("chess-board")[0] || $("wc-chess-board")[0];
-        if (!board) return;
+        if (!board) {
+            console.log("Tactics: No board element found");
+            return;
+        }
 
         const squareNum = square.replace(/^a/, "1").replace(/^b/, "2").replace(/^c/, "3").replace(/^d/, "4").replace(/^e/, "5").replace(/^f/, "6").replace(/^g/, "7").replace(/^h/, "8");
 
@@ -70,6 +73,9 @@ function setupUtilities(myVars) {
                 boardContainer.style.position = "relative";
             }
             boardContainer.appendChild(highlight);
+            console.log("Tactics: Highlighted", square, "with color", color);
+        } else {
+            console.log("Tactics: No board container found");
         }
     };
     
@@ -82,38 +88,47 @@ function setupUtilities(myVars) {
         const board = window.board;
         if (!board || !board.game) return [];
         
+        console.log("Tactics: Searching for forks...");
         const forks = [];
         const legalMoves = board.game.getLegalMoves();
         const playingAs = board.game.getPlayingAs();
+        
+        console.log("Tactics: Found", legalMoves.length, "legal moves to check");
         
         for (let move of legalMoves) {
             try {
                 board.game.move(move);
                 
-                const enemyPieces = [];
-                const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-                const ranks = ['1', '2', '3', '4', '5', '6', '7', '8'];
-                
-                for (let file of files) {
-                    for (let rank of ranks) {
-                        const square = file + rank;
-                        const piece = myFunctions.getPieceAt(square);
-                        if (!piece) continue;
-                        
-                        const isWhitePiece = piece === piece.toUpperCase();
-                        const isEnemyPiece = (playingAs === 1 && !isWhitePiece) || (playingAs === 2 && isWhitePiece);
-                        
-                        if (isEnemyPiece) {
-                            enemyPieces.push({ square, piece });
-                        }
-                    }
-                }
-                
-                const movesFromNewPos = board.game.getLegalMoves().filter(m => m.from === move.to);
                 const attackedPieces = [];
+                const movesFromNewPos = board.game.getLegalMoves().filter(m => m.from === move.to);
                 
                 for (let attackMove of movesFromNewPos) {
-                    const targetPiece = myFunctions.getPieceAt(attackMove.to);
+                    const board = window.board;
+                    if (!board || !board.game) continue;
+                    
+                    const fen = board.game.getFEN();
+                    const fenParts = fen.split(' ');
+                    const boardState = fenParts[0];
+                    
+                    const file = attackMove.to.charCodeAt(0) - 97;
+                    const rank = parseInt(attackMove.to[1]) - 1;
+                    
+                    const rows = boardState.split('/').reverse();
+                    let currentFile = 0;
+                    let targetPiece = null;
+                    
+                    for (let char of rows[rank]) {
+                        if (char >= '1' && char <= '8') {
+                            currentFile += parseInt(char);
+                        } else {
+                            if (currentFile === file) {
+                                targetPiece = char;
+                                break;
+                            }
+                            currentFile++;
+                        }
+                    }
+                    
                     if (targetPiece) {
                         const isWhitePiece = targetPiece === targetPiece.toUpperCase();
                         const isEnemyPiece = (playingAs === 1 && !isWhitePiece) || (playingAs === 2 && isWhitePiece);
@@ -127,13 +142,16 @@ function setupUtilities(myVars) {
                 board.game.undo();
                 
                 if (attackedPieces.length >= 2) {
+                    console.log("Tactics: Found fork!", move.from, "->", move.to, "attacking", attackedPieces);
                     forks.push({ from: move.from, to: move.to, targets: attackedPieces });
                 }
             } catch (e) {
+                console.error("Tactics: Error checking move", move, e);
                 try { board.game.undo(); } catch (e2) {}
             }
         }
         
+        console.log("Tactics: Total forks found:", forks.length);
         return forks;
     };
     
@@ -150,20 +168,31 @@ function setupUtilities(myVars) {
     };
     
     myFunctions.analyzeTactics = function() {
+        console.log("Tactics: Starting analysis...");
         myFunctions.clearHighlights();
         
         const board = window.board;
-        if (!board || !board.game) return;
+        if (!board || !board.game) {
+            console.log("Tactics: No board or game available");
+            return;
+        }
         
         const currentTurn = board.game.getTurn();
         const playingAs = board.game.getPlayingAs();
         
-        if (currentTurn !== playingAs) return;
+        console.log("Tactics: Current turn:", currentTurn, "Playing as:", playingAs);
+        
+        if (currentTurn !== playingAs) {
+            console.log("Tactics: Not our turn, skipping");
+            return;
+        }
         
         const forks = myFunctions.findForks();
         const skewers = myFunctions.findSkewers();
         const pins = myFunctions.findPins();
         const discoveredAttacks = myFunctions.findDiscoveredAttacks();
+        
+        console.log("Tactics: Found -", forks.length, "forks,", skewers.length, "skewers,", pins.length, "pins,", discoveredAttacks.length, "discovered attacks");
         
         for (let fork of forks) {
             myFunctions.highlightSquare(fork.from, myVars.forkColor, 0.6);
@@ -184,6 +213,8 @@ function setupUtilities(myVars) {
             myFunctions.highlightSquare(discovered.from, myVars.discoveredAttackColor, 0.6);
             myFunctions.highlightSquare(discovered.to, myVars.discoveredAttackColor, 0.8);
         }
+        
+        console.log("Tactics: Analysis complete");
     };
     
     myFunctions.checkPageStatus = function() {
