@@ -444,117 +444,154 @@ function setupUtilities(myVars) {
         }
 
         try {
-            console.log("View Mode: Searching for forced checkmates...");
+            console.log("View Mode: Finding hanging pieces...");
             
-            let nodesSearched = 0;
-            const maxNodes = 10000;
-            const startTime = Date.now();
-            const maxTime = 2000;
+            const pieceValues = {
+                'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 0,
+                'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9, 'K': 0
+            };
             
-            const findForcedCheckmate = (depth, maxDepth) => {
-                if (depth > maxDepth) return null;
-                if (nodesSearched > maxNodes) return null;
-                if (Date.now() - startTime > maxTime) return null;
-                
-                const legalMoves = board.game.getLegalMoves();
-                
-                if (depth === 1 && legalMoves.length > 40) {
-                    console.log("View Mode: Too many moves to analyze safely, skipping");
-                    return null;
-                }
-                
-                const movesToCheck = depth === 1 ? legalMoves.slice(0, 20) : legalMoves.slice(0, 10);
-                
-                for (let move of movesToCheck) {
-                    nodesSearched++;
+            const getPieceAt = (square) => {
+                try {
+                    const fen = board.game.getFEN();
+                    const fenParts = fen.split(' ');
+                    const boardState = fenParts[0];
                     
-                    if (nodesSearched > maxNodes || Date.now() - startTime > maxTime) {
-                        return null;
-                    }
+                    const file = square.charCodeAt(0) - 97;
+                    const rank = parseInt(square[1]) - 1;
                     
-                    try {
-                        board.game.move(move);
-                        
-                        const isCheckmate = board.game.isCheckmate && board.game.isCheckmate();
-                        
-                        if (isCheckmate) {
-                            board.game.undo();
-                            return [move];
-                        }
-                        
-                        if (depth >= 3) {
-                            board.game.undo();
-                            continue;
-                        }
-                        
-                        const opponentMoves = board.game.getLegalMoves();
-                        
-                        if (opponentMoves.length === 0) {
-                            board.game.undo();
-                            continue;
-                        }
-                        
-                        if (opponentMoves.length > 15) {
-                            board.game.undo();
-                            continue;
-                        }
-                        
-                        let allPathsLeadToCheckmate = true;
-                        let forcedSequence = null;
-                        
-                        for (let oppMove of opponentMoves.slice(0, 8)) {
-                            nodesSearched++;
-                            
-                            if (nodesSearched > maxNodes || Date.now() - startTime > maxTime) {
-                                board.game.undo();
-                                return null;
+                    const rows = boardState.split('/').reverse();
+                    let currentFile = 0;
+                    
+                    for (let char of rows[rank]) {
+                        if (char >= '1' && char <= '8') {
+                            currentFile += parseInt(char);
+                        } else {
+                            if (currentFile === file) {
+                                return char;
                             }
-                            
-                            try {
-                                board.game.move(oppMove);
-                                
-                                const continuation = findForcedCheckmate(depth + 1, maxDepth);
-                                
-                                board.game.undo();
-                                
-                                if (!continuation) {
-                                    allPathsLeadToCheckmate = false;
-                                    break;
-                                } else if (!forcedSequence) {
-                                    forcedSequence = continuation;
-                                }
-                            } catch (e) {
-                                try { board.game.undo(); } catch (e2) {}
-                                allPathsLeadToCheckmate = false;
-                                break;
-                            }
+                            currentFile++;
                         }
-                        
-                        board.game.undo();
-                        
-                        if (allPathsLeadToCheckmate && forcedSequence) {
-                            return [move, ...forcedSequence];
-                        }
-                    } catch (e) {
-                        try { board.game.undo(); } catch (e2) {}
                     }
+                } catch (e) {
                 }
-                
                 return null;
             };
             
-            const checkmateSequence = findForcedCheckmate(1, 3);
-            
-            console.log("View Mode: Searched", nodesSearched, "nodes in", Date.now() - startTime, "ms");
-            
-            if (checkmateSequence) {
-                console.log("View Mode: Found forced checkmate in", checkmateSequence.length, "moves:", checkmateSequence.map(m => m.from + m.to).join(', '));
+            const getAttackersAndDefenders = (square) => {
+                const attackers = [];
+                const defenders = [];
+                const piece = getPieceAt(square);
                 
-                const firstMove = checkmateSequence[0];
-                myFunctions.highlightViewModeSquare(firstMove.from, myVars.checkCheckmateColor, 0.6);
-                myFunctions.highlightViewModeSquare(firstMove.to, myVars.checkCheckmateColor, 0.8);
-            } else {
-                console.log("View Mode: No forced checkmate found");
+                if (!piece) return { attackers: [], defenders: [] };
+                
+                const isWhitePiece = piece === piece.toUpperCase();
+                const legalMoves = board.game.getLegalMoves();
+                
+                for (let move of legalMoves) {
+                    if (move.to === square) {
+                        const movingPiece = getPieceAt(move.from);
+                        if (movingPiece) {
+                            const isWhiteAttacker = movingPiece === movingPiece.toUpperCase();
+                            if (isWhiteAttacker !== isWhitePiece) {
+                                attackers.push({ square: move.from, piece: movingPiece, value: pieceValues[movingPiece.toLowerCase()] });
+                            } else {
+                                defenders.push({ square: move.from, piece: movingPiece, value: pieceValues[movingPiece.toLowerCase()] });
+                            }
+                        }
+                    }
+                }
+                
+                return { attackers, defenders };
+            };
+            
+            const hangingPieces = [];
+            const conditionallyHanging = [];
+            
+            const currentTurn = board.game.getTurn();
+            const playingAs = board.game.getPlayingAs();
+            const isOurTurn = currentTurn === playingAs;
+            
+            const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+            const ranks = ['1', '2', '3', '4', '5', '6', '7', '8'];
+            
+            for (let file of files) {
+                for (let rank of ranks) {
+                    const square = file + rank;
+                    const piece = getPieceAt(square);
+                    
+                    if (!piece) continue;
+                    
+                    const isWhitePiece = piece === piece.toUpperCase();
+                    const isOurPiece = (playingAs === 1 && isWhitePiece) || (playingAs === 2 && !isWhitePiece);
+                    
+                    if (isOurPiece) continue;
+                    
+                    const { attackers, defenders } = getAttackersAndDefenders(square);
+                    
+                    if (attackers.length > 0 && defenders.length === 0) {
+                        hangingPieces.push({ square, piece, value: pieceValues[piece.toLowerCase()] });
+                    }
+                    else if (attackers.length > 0 && defenders.length > 0) {
+                        const lowestAttacker = Math.min(...attackers.map(a => a.value));
+                        const pieceValue = pieceValues[piece.toLowerCase()];
+                        
+                        if (lowestAttacker < pieceValue) {
+                            hangingPieces.push({ square, piece, value: pieceValue });
+                        }
+                    }
+                }
+            }
+            
+            const legalMoves = board.game.getLegalMoves();
+            for (let move of legalMoves) {
+                try {
+                    board.game.move(move);
+                    
+                    for (let file of files) {
+                        for (let rank of ranks) {
+                            const square = file + rank;
+                            const piece = getPieceAt(square);
+                            
+                            if (!piece) continue;
+                            
+                            const isWhitePiece = piece === piece.toUpperCase();
+                            const isOurPiece = (playingAs === 1 && isWhitePiece) || (playingAs === 2 && !isWhitePiece);
+                            
+                            if (isOurPiece) continue;
+                            
+                            const { attackers, defenders } = getAttackersAndDefenders(square);
+                            
+                            if (attackers.length > 0 && defenders.length === 0) {
+                                const alreadyHanging = hangingPieces.some(h => h.square === square);
+                                const alreadyConditional = conditionallyHanging.some(c => c.square === square);
+                                
+                                if (!alreadyHanging && !alreadyConditional) {
+                                    conditionallyHanging.push({
+                                        square,
+                                        piece,
+                                        value: pieceValues[piece.toLowerCase()],
+                                        afterMove: move.from + move.to
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    
+                    board.game.undo();
+                } catch (e) {
+                    try { board.game.undo(); } catch (e2) {}
+                }
+            }
+            
+            console.log("View Mode: Found", hangingPieces.length, "hanging pieces and", conditionallyHanging.length, "conditionally hanging");
+            
+            for (let hanging of hangingPieces) {
+                myFunctions.highlightViewModeSquare(hanging.square, myVars.hangingPieceColor || "#ff0000", 0.5);
+            }
+            
+            for (let conditional of conditionallyHanging) {
+                myFunctions.highlightViewModeSquare(conditional.square, myVars.checkCheckmateColor || "#9b59b6", 0.4);
             }
             
         } catch (e) {
@@ -627,6 +664,7 @@ function setupUtilities(myVars) {
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
             GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
             GM_setValue("viewModeEnabled", myVars.viewModeEnabled);
+            GM_setValue("hangingPieceColor", myVars.hangingPieceColor);
             GM_setValue("checkCheckmateColor", myVars.checkCheckmateColor);
         } catch (error) {
         }
@@ -639,6 +677,7 @@ function setupUtilities(myVars) {
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
             myVars.viewModeEnabled = GM_getValue("viewModeEnabled", false);
+            myVars.hangingPieceColor = GM_getValue("hangingPieceColor", "#ff0000");
             myVars.checkCheckmateColor = GM_getValue("checkCheckmateColor", "#9b59b6");
 
             function eloToDepthAndBlunder(elo) {

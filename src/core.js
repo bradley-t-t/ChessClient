@@ -1,4 +1,4 @@
-var currentVersion = "2.7.1";
+var currentVersion = "2.8.0";
 
 function initializeVariables() {
     const myVars = {
@@ -14,6 +14,7 @@ function initializeVariables() {
         timeAffectedSpeed: false,
         consoleLogEnabled: true,
         viewModeEnabled: false,
+        hangingPieceColor: "#ff0000",
         checkCheckmateColor: "#9b59b6"
     };
     return myVars;

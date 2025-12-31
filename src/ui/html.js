@@ -94,7 +94,11 @@ var mainTemplate = `
 
                     <div id="viewModeColors" style="display: none;">
                         <div class="input-row">
-                            <label for="checkCheckmateColor">Forced Checkmate Color</label>
+                            <label for="hangingPieceColor">Hanging Pieces</label>
+                            <input type="color" id="hangingPieceColor" value="#ff0000" class="color-picker">
+                        </div>
+                        <div class="input-row">
+                            <label for="checkCheckmateColor">Conditionally Hanging</label>
                             <input type="color" id="checkCheckmateColor" value="#9b59b6" class="color-picker">
                         </div>
                     </div>
