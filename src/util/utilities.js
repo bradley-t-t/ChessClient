@@ -500,251 +500,6 @@ function setupUtilities(myVars) {
         return values[piece] || 0;
     };
 
-    myFunctions.isSquareAttackedBy = function (square, color, boardState) {
-        if (!boardState) return false;
-
-        try {
-            var file = square.charCodeAt(0) - 97;
-            var rank = parseInt(square[1]) - 1;
-
-            var directions = {
-                pawn: color === 'w' ? [[1, 1], [-1, 1]] : [[1, -1], [-1, -1]],
-                knight: [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]],
-                bishop: [[1, 1], [1, -1], [-1, 1], [-1, -1]],
-                rook: [[1, 0], [-1, 0], [0, 1], [0, -1]],
-                queen: [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]],
-                king: [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]]
-            };
-
-            for (var r = 0; r < 8; r++) {
-                for (var f = 0; f < 8; f++) {
-                    var piece = boardState[7 - r][f];
-                    if (!piece || piece.color !== color) continue;
-
-                    var dx = f - file;
-                    var dy = r - rank;
-
-                    if (piece.type === 'p') {
-                        var pawnMoves = directions.pawn;
-                        for (var i = 0; i < pawnMoves.length; i++) {
-                            if (dx === pawnMoves[i][0] && dy === pawnMoves[i][1]) {
-                                return true;
-                            }
-                        }
-                    } else if (piece.type === 'n') {
-                        var knightMoves = directions.knight;
-                        for (var i = 0; i < knightMoves.length; i++) {
-                            if (dx === knightMoves[i][0] && dy === knightMoves[i][1]) {
-                                return true;
-                            }
-                        }
-                    } else if (piece.type === 'b' || piece.type === 'r' || piece.type === 'q') {
-                        var moveDirs = piece.type === 'b' ? directions.bishop : 
-                                      piece.type === 'r' ? directions.rook : directions.queen;
-                        
-                        for (var i = 0; i < moveDirs.length; i++) {
-                            var dir = moveDirs[i];
-                            var step = 1;
-                            while (true) {
-                                var checkFile = f + dir[0] * step;
-                                var checkRank = r + dir[1] * step;
-                                
-                                if (checkFile < 0 || checkFile > 7 || checkRank < 0 || checkRank > 7) break;
-                                
-                                if (checkFile === file && checkRank === rank) {
-                                    return true;
-                                }
-                                
-                                var blockPiece = boardState[7 - checkRank][checkFile];
-                                if (blockPiece) break;
-                                
-                                step++;
-                            }
-                        }
-                    } else if (piece.type === 'k') {
-                        var kingMoves = directions.king;
-                        for (var i = 0; i < kingMoves.length; i++) {
-                            if (dx === kingMoves[i][0] && dy === kingMoves[i][1]) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
-        } catch (e) {
-            return false;
-        }
-    };
-
-    myFunctions.getAttackers = function (square, color, boardState) {
-        if (!boardState) return [];
-
-        try {
-            var attackers = [];
-            var file = square.charCodeAt(0) - 97;
-            var rank = parseInt(square[1]) - 1;
-
-            var directions = {
-                pawn: color === 'w' ? [[1, 1], [-1, 1]] : [[1, -1], [-1, -1]],
-                knight: [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]],
-                bishop: [[1, 1], [1, -1], [-1, 1], [-1, -1]],
-                rook: [[1, 0], [-1, 0], [0, 1], [0, -1]],
-                queen: [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]],
-                king: [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]]
-            };
-
-            for (var r = 0; r < 8; r++) {
-                for (var f = 0; f < 8; f++) {
-                    var piece = boardState[7 - r][f];
-                    if (!piece || piece.color !== color) continue;
-
-                    var dx = f - file;
-                    var dy = r - rank;
-                    var canAttack = false;
-
-                    if (piece.type === 'p') {
-                        var pawnMoves = directions.pawn;
-                        for (var i = 0; i < pawnMoves.length; i++) {
-                            if (dx === pawnMoves[i][0] && dy === pawnMoves[i][1]) {
-                                canAttack = true;
-                                break;
-                            }
-                        }
-                    } else if (piece.type === 'n') {
-                        var knightMoves = directions.knight;
-                        for (var i = 0; i < knightMoves.length; i++) {
-                            if (dx === knightMoves[i][0] && dy === knightMoves[i][1]) {
-                                canAttack = true;
-                                break;
-                            }
-                        }
-                    } else if (piece.type === 'b' || piece.type === 'r' || piece.type === 'q') {
-                        var moveDirs = piece.type === 'b' ? directions.bishop : 
-                                      piece.type === 'r' ? directions.rook : directions.queen;
-                        
-                        for (var i = 0; i < moveDirs.length; i++) {
-                            var dir = moveDirs[i];
-                            var step = 1;
-                            while (true) {
-                                var checkFile = f + dir[0] * step;
-                                var checkRank = r + dir[1] * step;
-                                
-                                if (checkFile < 0 || checkFile > 7 || checkRank < 0 || checkRank > 7) break;
-                                
-                                if (checkFile === file && checkRank === rank) {
-                                    canAttack = true;
-                                    break;
-                                }
-                                
-                                var blockPiece = boardState[7 - checkRank][checkFile];
-                                if (blockPiece) break;
-                                
-                                step++;
-                            }
-                            if (canAttack) break;
-                        }
-                    } else if (piece.type === 'k') {
-                        var kingMoves = directions.king;
-                        for (var i = 0; i < kingMoves.length; i++) {
-                            if (dx === kingMoves[i][0] && dy === kingMoves[i][1]) {
-                                canAttack = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (canAttack) {
-                        attackers.push({square: String.fromCharCode(97 + f) + (r + 1), piece: piece.type});
-                    }
-                }
-            }
-            return attackers;
-        } catch (e) {
-            return [];
-        }
-    };
-
-    myFunctions.isHanging = function (square, piece, boardState) {
-        var pieceColor = piece.color;
-        var enemyColor = pieceColor === 'w' ? 'b' : 'w';
-
-        var isAttacked = myFunctions.isSquareAttackedBy(square, enemyColor, boardState);
-        if (!isAttacked) return false;
-
-        try {
-            var attackers = myFunctions.getAttackers(square, enemyColor, boardState);
-            var defenders = myFunctions.getAttackers(square, pieceColor, boardState);
-
-            var pieceValue = myFunctions.getPieceValue(piece.type);
-
-            if (defenders.length === 0) {
-                return true;
-            }
-
-            if (attackers.length > 0) {
-                var lowestAttackerValue = Math.min(...attackers.map(a => myFunctions.getPieceValue(a.piece)));
-                
-                if (lowestAttackerValue < pieceValue) {
-                    return true;
-                }
-            }
-
-            return false;
-        } catch (e) {
-            return false;
-        }
-    };
-
-    myFunctions.parseBoardFromDOM = function () {
-        try {
-            var boardElement = $("chess-board")[0] || $("wc-chess-board")[0];
-            if (!boardElement) return null;
-
-            var pieces = $(boardElement).find(".piece");
-            var boardState = [];
-            for (var i = 0; i < 8; i++) {
-                boardState[i] = [];
-                for (var j = 0; j < 8; j++) {
-                    boardState[i][j] = null;
-                }
-            }
-
-            pieces.each(function () {
-                var classes = this.className;
-                var squareMatch = classes.match(/square-(\d)(\d)/);
-                if (!squareMatch) return;
-
-                var file = parseInt(squareMatch[1]) - 1;
-                var rank = 8 - parseInt(squareMatch[2]);
-
-                var pieceType = null;
-                var pieceColor = null;
-
-                if (classes.includes('wp')) { pieceType = 'p'; pieceColor = 'w'; }
-                else if (classes.includes('wn')) { pieceType = 'n'; pieceColor = 'w'; }
-                else if (classes.includes('wb')) { pieceType = 'b'; pieceColor = 'w'; }
-                else if (classes.includes('wr')) { pieceType = 'r'; pieceColor = 'w'; }
-                else if (classes.includes('wq')) { pieceType = 'q'; pieceColor = 'w'; }
-                else if (classes.includes('wk')) { pieceType = 'k'; pieceColor = 'w'; }
-                else if (classes.includes('bp')) { pieceType = 'p'; pieceColor = 'b'; }
-                else if (classes.includes('bn')) { pieceType = 'n'; pieceColor = 'b'; }
-                else if (classes.includes('bb')) { pieceType = 'b'; pieceColor = 'b'; }
-                else if (classes.includes('br')) { pieceType = 'r'; pieceColor = 'b'; }
-                else if (classes.includes('bq')) { pieceType = 'q'; pieceColor = 'b'; }
-                else if (classes.includes('bk')) { pieceType = 'k'; pieceColor = 'b'; }
-
-                if (pieceType && pieceColor) {
-                    boardState[rank][file] = { type: pieceType, color: pieceColor };
-                }
-            });
-
-            return boardState;
-        } catch (e) {
-            return null;
-        }
-    };
-
     myFunctions.updateHangingPieces = function () {
         if (!myVars.highlightHangingPieces) return;
 
@@ -753,31 +508,70 @@ function setupUtilities(myVars) {
         if (!window.board || !window.board.game) return;
 
         try {
-            var game = window.board.game;
-            var playerColor = game.getPlayingAs ? game.getPlayingAs() : 'white';
+            var fen = window.board.game.getFEN();
+            if (!fen) return;
+
+            var playerColor = window.board.game.getPlayingAs ? window.board.game.getPlayingAs() : 'white';
             var isPlayerWhite = playerColor === 'white';
 
-            var boardState = myFunctions.parseBoardFromDOM();
-            if (!boardState) return;
+            var chess = new Chess(fen);
+            var board = chess.board();
 
             for (var rank = 0; rank < 8; rank++) {
                 for (var file = 0; file < 8; file++) {
-                    var square = boardState[rank][file];
-                    if (!square) continue;
+                    var piece = board[rank][file];
+                    if (!piece) continue;
 
                     var squareNotation = String.fromCharCode(97 + file) + (8 - rank);
-                    var piece = square;
                     var pieceColor = piece.color;
-
+                    
                     var isPlayerPiece = (isPlayerWhite && pieceColor === 'w') || (!isPlayerWhite && pieceColor === 'b');
 
-                    if (myFunctions.isHanging(squareNotation, piece, boardState)) {
+                    if (myFunctions.isPieceHanging(chess, squareNotation, piece)) {
                         var color = isPlayerPiece ? myVars.ownHangingColor : myVars.enemyHangingColor;
                         myFunctions.highlightHangingSquare(squareNotation, color);
                     }
                 }
             }
         } catch (e) {
+        }
+    };
+
+    myFunctions.isPieceHanging = function (chess, square, piece) {
+        try {
+            var pieceColor = piece.color;
+            var enemyColor = pieceColor === 'w' ? 'b' : 'w';
+
+            var attackers = chess.attackers(square, enemyColor);
+            if (!attackers || attackers.length === 0) return false;
+
+            var defenders = chess.attackers(square, pieceColor);
+            
+            var pieceValue = myFunctions.getPieceValue(piece.type);
+
+            if (!defenders || defenders.length === 0) {
+                return true;
+            }
+
+            var lowestAttackerValue = 100;
+            for (var i = 0; i < attackers.length; i++) {
+                var attackerSquare = attackers[i];
+                var attackerPiece = chess.get(attackerSquare);
+                if (attackerPiece) {
+                    var val = myFunctions.getPieceValue(attackerPiece.type);
+                    if (val < lowestAttackerValue) {
+                        lowestAttackerValue = val;
+                    }
+                }
+            }
+
+            if (lowestAttackerValue < pieceValue) {
+                return true;
+            }
+
+            return false;
+        } catch (e) {
+            return false;
         }
     };
 
