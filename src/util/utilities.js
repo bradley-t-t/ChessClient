@@ -654,48 +654,33 @@ function setupUtilities(myVars) {
             }
             defenderValues.sort(function(a, b) { return a - b; });
 
-            var materialGain = pieceValue;
-            var materialLoss = 0;
+            var captureSequence = [pieceValue];
             var attackerIndex = 0;
             var defenderIndex = 0;
-            var currentAttacker = true;
 
-            while (attackerIndex < attackerValues.length || defenderIndex < defenderValues.length) {
-                if (currentAttacker) {
-                    if (attackerIndex >= attackerValues.length) break;
-                    
-                    var netGain = materialGain - materialLoss;
-                    if (netGain > 0) {
-                        if (myVars.consoleLogEnabled) {
-                            console.log("Checking " + piece.type + " on " + square + ": HANGING (net gain after exchange: " + netGain + ")");
-                        }
-                        return true;
-                    }
-                    
-                    if (defenderIndex < defenderValues.length) {
-                        materialLoss += defenderValues[defenderIndex];
-                        defenderIndex++;
-                        currentAttacker = false;
-                    } else {
-                        break;
-                    }
+            while (attackerIndex < attackerValues.length && defenderIndex < defenderValues.length) {
+                captureSequence.push(defenderValues[defenderIndex]);
+                defenderIndex++;
+                
+                if (attackerIndex + 1 < attackerValues.length) {
+                    captureSequence.push(attackerValues[attackerIndex + 1]);
+                    attackerIndex++;
+                }
+                attackerIndex++;
+            }
+
+            var netGain = 0;
+            for (var i = 0; i < captureSequence.length; i++) {
+                if (i % 2 === 0) {
+                    netGain += captureSequence[i];
                 } else {
-                    if (defenderIndex >= defenderValues.length) break;
-                    
-                    if (attackerIndex + 1 < attackerValues.length) {
-                        materialGain += attackerValues[attackerIndex];
-                        attackerIndex++;
-                        currentAttacker = true;
-                    } else {
-                        break;
-                    }
+                    netGain -= captureSequence[i];
                 }
             }
 
-            var finalNetGain = materialGain - materialLoss;
-            if (finalNetGain > 0) {
+            if (netGain > 0) {
                 if (myVars.consoleLogEnabled) {
-                    console.log("Checking " + piece.type + " on " + square + ": HANGING (final net gain: " + finalNetGain + ")");
+                    console.log("Checking " + piece.type + " on " + square + ": HANGING (net gain: " + netGain + ", sequence: " + captureSequence.join(",") + ")");
                 }
                 return true;
             }
