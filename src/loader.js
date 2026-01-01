@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chess Client
 // @namespace    chess-client-trent
-// @version      5.0.6
+// @version      5.0.7
 // @description  Chess.com assistant with local Stockfish engine
 // @author       Trent
 // @match       https://www.chess.com/play/*

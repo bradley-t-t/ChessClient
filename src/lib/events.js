@@ -83,6 +83,19 @@ function setupUIEventHandlers(myVars, myFunctions) {
 }
 
 function setupStyleEventHandlers(myVars, myFunctions) {
+    $(document).on("change", "#recommendMoves", function () {
+        myVars.recommendMoves = $(this).prop("checked");
+        myFunctions.saveSettings();
+        myFunctions.updateDetectionScore();
+        if (!myVars.recommendMoves) {
+            myFunctions.clearHighlights();
+            if (myFunctions.stopEngine) {
+                myFunctions.stopEngine();
+            }
+            window.canGo = true;
+            window.isThinking = false;
+        }
+    });
     $(document).on("change", "#autoMove", function () {
         myVars.autoMove = $(this).prop("checked");
         myFunctions.saveSettings();

@@ -63,16 +63,6 @@ var mainTemplate = `
 
             <div class="setting-group">
                 <div class="toggle-row">
-                    <span class="toggle-label">Recommend Moves</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="recommendMoves" class="toggle-input" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="setting-group">
-                <div class="toggle-row">
                     <span class="toggle-label">Auto Move</span>
                     <label class="toggle">
                         <input type="checkbox" id="autoMove" name="autoMove" class="toggle-input" value="false">
@@ -85,11 +75,22 @@ var mainTemplate = `
         <div class="tab-panel" id="display-settings">
             <div class="setting-group">
                 <div class="toggle-row">
-                    <span class="toggle-label">Show Score Meter</span>
+                    <span class="toggle-label">Recommend Moves</span>
                     <label class="toggle">
-                        <input type="checkbox" id="showScoreMeter" class="toggle-input" checked>
+                        <input type="checkbox" id="recommendMoves" class="toggle-input" checked>
                         <span class="toggle-slider"></span>
                     </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <div class="input-row">
+                    <label for="intermediateMoveColor">Intermediate Move</label>
+                    <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
+                </div>
+                <div class="input-row">
+                    <label for="bestMoveColor">Recommended Move</label>
+                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
             </div>
 
@@ -110,17 +111,6 @@ var mainTemplate = `
                         <label for="enemyHangingColor">Your Hanging Pieces</label>
                         <input type="color" id="enemyHangingColor" value="#44ff44" class="color-picker">
                     </div>
-                </div>
-            </div>
-
-            <div class="setting-group">
-                <div class="input-row">
-                    <label for="intermediateMoveColor">Intermediate Move</label>
-                    <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
-                </div>
-                <div class="input-row">
-                    <label for="bestMoveColor">Recommended Move</label>
-                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
                 </div>
             </div>
         </div>
@@ -150,6 +140,16 @@ var mainTemplate = `
         </div>
 
         <div class="tab-panel" id="system-settings">
+            <div class="setting-group">
+                <div class="toggle-row">
+                    <span class="toggle-label">Show Score Meter</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="showScoreMeter" class="toggle-input" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
             <div class="setting-group">
                 <div class="toggle-row">
                     <span class="toggle-label">Console Log</span>
