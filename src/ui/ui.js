@@ -177,7 +177,6 @@ function setupUI(myVars, myFunctions) {
             }`);
             }
 
-            $("#advanced-settings .advanced-controls").append(advancedSettingsTemplate);
             myFunctions.loadSettings();
             applySettingsToUI(myVars);
 
@@ -480,6 +479,7 @@ function setupUI(myVars, myFunctions) {
     };
 
     function applySettingsToUI(myVars2) {
+        $("#recommendMoves").prop("checked", myVars2.recommendMoves);
         $("#autoMove").prop("checked", myVars2.autoMove);
 
         $("#targetEloSlider").val(myVars2.targetElo);
@@ -524,6 +524,13 @@ function setupUI(myVars, myFunctions) {
 
         myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
         $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
+
+        $("#showScoreMeter").prop("checked", myVars2.showScoreMeter);
+        if (myVars2.showScoreMeter) {
+            $("#positionalMeter").show();
+        } else {
+            $("#positionalMeter").hide();
+        }
 
         $("#highlightHangingPieces").prop("checked", myVars2.highlightHangingPieces);
         if (myVars2.ownHangingColor) {

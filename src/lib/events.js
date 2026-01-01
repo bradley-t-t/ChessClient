@@ -88,6 +88,16 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
+    $(document).on("change", "#showScoreMeter", function () {
+        myVars.showScoreMeter = $(this).prop("checked");
+        myFunctions.saveSettings();
+        var meter = $("#positionalMeter");
+        if (myVars.showScoreMeter) {
+            meter.show();
+        } else {
+            meter.hide();
+        }
+    });
     $(document).on("input", "#bestMoveColor", function () {
         myVars.bestMoveColor = $(this).val();
         myFunctions.saveSettings();
@@ -188,16 +198,20 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myVars.intermediateMoveColor = "#ffdab9";
         myVars.moveSpeedTier = 4;
         myVars.timeAffectedSpeed = false;
+        myVars.recommendMoves = true;
+        myVars.showScoreMeter = true;
         myVars.highlightHangingPieces = false;
         myVars.ownHangingColor = "#ff4444";
         myVars.enemyHangingColor = "#44ff44";
 
+        $("#recommendMoves").prop("checked", myVars.recommendMoves);
         $("#autoMove").prop("checked", myVars.autoMove);
         $("#targetEloSlider").val(myVars.targetElo).trigger("input");
         $("#bestMoveColor").val(myVars.bestMoveColor);
         $("#intermediateMoveColor").val(myVars.intermediateMoveColor);
         $("#moveSpeedSlider").val(myVars.moveSpeedTier).trigger("input");
         $("#timeAffectedSpeed").prop("checked", myVars.timeAffectedSpeed).trigger("change");
+        $("#showScoreMeter").prop("checked", myVars.showScoreMeter).trigger("change");
         $("#highlightHangingPieces").prop("checked", myVars.highlightHangingPieces).trigger("change");
         $("#ownHangingColor").val(myVars.ownHangingColor);
         $("#enemyHangingColor").val(myVars.enemyHangingColor);

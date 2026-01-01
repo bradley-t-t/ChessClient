@@ -132,6 +132,8 @@ function setupUtilities(myVars) {
         return str2;
     };
     myFunctions.displayRecommendedMove = function (move, isIntermediate) {
+        if (!myVars.recommendMoves) return;
+        
         myFunctions.clearHighlights();
 
         var fromSquare = move.substring(0, 2);
@@ -435,6 +437,8 @@ function setupUtilities(myVars) {
             GM_setValue("bestMoveColor", myVars.bestMoveColor);
             GM_setValue("intermediateMoveColor", myVars.intermediateMoveColor);
             GM_setValue("consoleLogEnabled", myVars.consoleLogEnabled);
+            GM_setValue("recommendMoves", myVars.recommendMoves);
+            GM_setValue("showScoreMeter", myVars.showScoreMeter);
             GM_setValue("highlightHangingPieces", myVars.highlightHangingPieces);
             GM_setValue("ownHangingColor", myVars.ownHangingColor);
             GM_setValue("enemyHangingColor", myVars.enemyHangingColor);
@@ -448,6 +452,8 @@ function setupUtilities(myVars) {
             myVars.bestMoveColor = GM_getValue("bestMoveColor", "#5b8c5a");
             myVars.intermediateMoveColor = GM_getValue("intermediateMoveColor", "#ffa500");
             myVars.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
+            myVars.recommendMoves = GM_getValue("recommendMoves", true);
+            myVars.showScoreMeter = GM_getValue("showScoreMeter", true);
             myVars.highlightHangingPieces = GM_getValue("highlightHangingPieces", false);
             myVars.ownHangingColor = GM_getValue("ownHangingColor", "#ff4444");
             myVars.enemyHangingColor = GM_getValue("enemyHangingColor", "#44ff44");

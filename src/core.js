@@ -1,4 +1,4 @@
-var currentVersion = "5.0.5";
+var currentVersion = "5.0.6";
 
 function initializeVariables() {
     const myVars = {
@@ -13,6 +13,8 @@ function initializeVariables() {
         moveSpeedTier: 4,
         timeAffectedSpeed: false,
         consoleLogEnabled: true,
+        recommendMoves: true,
+        showScoreMeter: true,
         highlightHangingPieces: false,
         ownHangingColor: "#ff4444",
         enemyHangingColor: "#44ff44"
@@ -181,6 +183,7 @@ function setupCore(myVars, myFunctions) {
     };
 
     myFunctions.autoRun = function (lstValue) {
+        if (!myVars.recommendMoves) return;
         if (window.moveInProgress) return;
         if (window.board.game.getTurn() == window.board.game.getPlayingAs()) {
             myFunctions.runChessEngine(lstValue);

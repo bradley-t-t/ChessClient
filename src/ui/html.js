@@ -40,12 +40,14 @@ var mainTemplate = `
 
     <div class="client-body">
         <div class="client-tabs">
-            <button class="tab-btn active" data-tab="main-settings">Main</button>
-            <button class="tab-btn" data-tab="advanced-settings">Advanced</button>
+            <button class="tab-btn active" data-tab="engine-settings">Engine</button>
+            <button class="tab-btn" data-tab="display-settings">Display</button>
+            <button class="tab-btn" data-tab="speed-settings">Speed</button>
+            <button class="tab-btn" data-tab="system-settings">System</button>
         </div>
 
         <div class="client-content">
-        <div class="tab-panel active" id="main-settings">
+        <div class="tab-panel active" id="engine-settings">
             <div class="setting-group">
                 <div class="setting-row">
                     <span class="setting-label">Target ELO</span>
@@ -61,6 +63,16 @@ var mainTemplate = `
 
             <div class="setting-group">
                 <div class="toggle-row">
+                    <span class="toggle-label">Recommend Moves</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="recommendMoves" class="toggle-input" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <div class="toggle-row">
                     <span class="toggle-label">Auto Move</span>
                     <label class="toggle">
                         <input type="checkbox" id="autoMove" name="autoMove" class="toggle-input" value="false">
@@ -70,18 +82,20 @@ var mainTemplate = `
             </div>
         </div>
 
-        <div class="tab-panel" id="advanced-settings">
-            <div class="setting-group advanced-controls">
-                <div class="input-row">
-                    <label for="intermediateMoveColor">Intermediate Move</label>
-                    <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
-                </div>
-                <div class="input-row">
-                    <label for="bestMoveColor">Recommended Move</label>
-                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
-                </div>
+        <div class="tab-panel" id="display-settings">
+            <div class="setting-group">
                 <div class="toggle-row">
-                    <span class="toggle-label">Highlight Hanging Pieces</span>
+                    <span class="toggle-label">Show Score Meter</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="showScoreMeter" class="toggle-input" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <div class="toggle-row">
+                    <span class="toggle-label">Highlight Attackable Pieces</span>
                     <label class="toggle">
                         <input type="checkbox" id="highlightHangingPieces" class="toggle-input" value="false">
                         <span class="toggle-slider"></span>
@@ -97,13 +111,22 @@ var mainTemplate = `
                         <input type="color" id="enemyHangingColor" value="#44ff44" class="color-picker">
                     </div>
                 </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">Console Log</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
+            </div>
+
+            <div class="setting-group">
+                <div class="input-row">
+                    <label for="intermediateMoveColor">Intermediate Move</label>
+                    <input type="color" id="intermediateMoveColor" value="#ffa500" class="color-picker">
                 </div>
+                <div class="input-row">
+                    <label for="bestMoveColor">Recommended Move</label>
+                    <input type="color" id="bestMoveColor" value="#5b8c5a" class="color-picker">
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="speed-settings">
+            <div class="setting-group">
                 <div class="toggle-row">
                     <span class="toggle-label">Time Affected Speed</span>
                     <label class="toggle">
@@ -111,17 +134,34 @@ var mainTemplate = `
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-                <div id="speedSliderContainer" class="setting-group">
-                    <div class="setting-row">
-                        <span class="setting-label">Move Speed</span>
-                        <span id="moveSpeedValue" class="setting-value">Medium</span>
-                    </div>
-                    <div class="slider-row">
-                        <button class="slider-btn" id="decreaseSpeed">-</button>
-                        <input type="range" id="moveSpeedSlider" min="1" max="7" value="4" class="slider">
-                        <button class="slider-btn" id="increaseSpeed">+</button>
-                    </div>
+            </div>
+
+            <div id="speedSliderContainer" class="setting-group">
+                <div class="setting-row">
+                    <span class="setting-label">Move Speed</span>
+                    <span id="moveSpeedValue" class="setting-value">Medium</span>
                 </div>
+                <div class="slider-row">
+                    <button class="slider-btn" id="decreaseSpeed">-</button>
+                    <input type="range" id="moveSpeedSlider" min="1" max="7" value="4" class="slider">
+                    <button class="slider-btn" id="increaseSpeed">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="system-settings">
+            <div class="setting-group">
+                <div class="toggle-row">
+                    <span class="toggle-label">Console Log</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <button type="button" id="resetDefaults" class="btn-reset">Reset to Defaults</button>
             </div>
         </div>
         </div>
@@ -157,12 +197,6 @@ var mainTemplate = `
         <span id="versionText"></span>
     </div>
 </div>`;
-
-var advancedSettingsTemplate = `
-<div class="advanced-section">
-    <button type="button" id="resetDefaults" class="btn-reset">Reset to Defaults</button>
-</div>
-`;
 
 var spinnerTemplate = `
 <div style="display:none;" id="overlay">
