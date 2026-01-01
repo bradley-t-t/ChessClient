@@ -1,13 +1,3 @@
-var positionalMeterTemplate = `
-<div class="positional-meter" id="positionalMeter">
-    <div class="meter-bar">
-        <div class="meter-fill white-advantage" id="meterFillWhite"></div>
-        <div class="meter-fill black-advantage" id="meterFillBlack"></div>
-    </div>
-    <div class="meter-value" id="meterValue">0.0</div>
-</div>
-`;
-
 var mainTemplate = `
 <div class="minimized-tab" id="minimizedTab">
     <span class="tab-label">Chess Client</span>
@@ -140,26 +130,6 @@ var mainTemplate = `
         </div>
 
         <div class="tab-panel" id="system-settings">
-            <div class="setting-group">
-                <div class="toggle-row">
-                    <span class="toggle-label">Show Score Meter</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="showScoreMeter" class="toggle-input" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="setting-group">
-                <div class="toggle-row">
-                    <span class="toggle-label">Console Log</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="consoleLogEnabled" class="toggle-input" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-
             <div class="setting-group">
                 <button type="button" id="resetDefaults" class="btn-reset">Reset to Defaults</button>
             </div>

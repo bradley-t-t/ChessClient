@@ -156,10 +156,6 @@ function setupUI(myVars, myFunctions) {
             window.board = $("chess-board")[0] || $("wc-chess-board")[0];
             myVars.board = window.board;
 
-            var meterDiv = document.createElement("div");
-            meterDiv.innerHTML = positionalMeterTemplate;
-            document.body.appendChild(meterDiv.firstElementChild);
-
             var div = document.createElement("div");
             div.setAttribute("id", "settingsContainer");
             div.innerHTML = mainTemplate;
@@ -213,14 +209,10 @@ function setupUI(myVars, myFunctions) {
         var panel = document.getElementById("settingsContainer");
         var minimizeHint = document.getElementById("minimizeHint");
         var minimizedTab = document.getElementById("minimizedTab");
-        var positionMeter = document.getElementById("positionalMeter");
 
         panel.classList.add("minimized", "initial-load");
         if (minimizedTab) {
             minimizedTab.classList.add("visible");
-        }
-        if (positionMeter) {
-            positionMeter.style.display = "none";
         }
 
         setTimeout(function () {
@@ -233,18 +225,12 @@ function setupUI(myVars, myFunctions) {
             if (minimizedTab) {
                 minimizedTab.classList.add("visible");
             }
-            if (positionMeter) {
-                positionMeter.style.display = "none";
-            }
         });
 
         if (minimizedTab) {
             minimizedTab.addEventListener("click", function () {
                 panel.classList.remove("minimized");
                 minimizedTab.classList.remove("visible");
-                if (positionMeter) {
-                    positionMeter.style.display = "flex";
-                }
             });
         }
 
@@ -520,16 +506,6 @@ function setupUI(myVars, myFunctions) {
         }
         if (myVars2.intermediateMoveColor) {
             $("#intermediateMoveColor").val(myVars2.intermediateMoveColor);
-        }
-
-        myVars2.consoleLogEnabled = GM_getValue("consoleLogEnabled", true);
-        $("#consoleLogEnabled").prop("checked", myVars2.consoleLogEnabled);
-
-        $("#showScoreMeter").prop("checked", myVars2.showScoreMeter);
-        if (myVars2.showScoreMeter) {
-            $("#positionalMeter").show();
-        } else {
-            $("#positionalMeter").hide();
         }
 
         $("#highlightHangingPieces").prop("checked", myVars2.highlightHangingPieces);

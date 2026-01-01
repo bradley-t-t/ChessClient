@@ -679,17 +679,11 @@ function setupUtilities(myVars) {
             }
 
             if (netGain > 0) {
-                if (myVars.consoleLogEnabled) {
-                    console.log("Checking " + piece.type + " on " + square + ": HANGING (net gain: " + netGain + ", sequence: " + captureSequence.join(",") + ")");
-                }
                 return true;
             }
 
             return false;
         } catch (e) {
-            if (myVars.consoleLogEnabled) {
-                console.log("Error in isPieceHanging:", e);
-            }
             return false;
         }
     };

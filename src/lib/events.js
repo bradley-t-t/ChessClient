@@ -101,16 +101,6 @@ function setupStyleEventHandlers(myVars, myFunctions) {
         myFunctions.saveSettings();
         myFunctions.updateDetectionScore();
     });
-    $(document).on("change", "#showScoreMeter", function () {
-        myVars.showScoreMeter = $(this).prop("checked");
-        myFunctions.saveSettings();
-        var meter = $("#positionalMeter");
-        if (myVars.showScoreMeter) {
-            meter.show();
-        } else {
-            meter.hide();
-        }
-    });
     $(document).on("input", "#bestMoveColor", function () {
         myVars.bestMoveColor = $(this).val();
         myFunctions.saveSettings();
@@ -191,20 +181,7 @@ function setupAdvancedEventHandlers(myVars, myFunctions) {
         myFunctions.updateDetectionScore();
     });
 
-    $(document).on("change", "#consoleLogEnabled", function () {
-        myVars.consoleLogEnabled = $(this).prop("checked");
-        myFunctions.saveSettings();
-        var container = document.getElementById('notificationContainer');
-        if (container) {
-            if (myVars.consoleLogEnabled) {
-                container.classList.add('visible');
-            } else {
-                container.classList.remove('visible');
-            }
-        }
-    });
-
-    $(document).on("click", "#resetDefaults", function () {
+    $(document).on("input", "#moveSpeedSlider", function () {
         myVars.autoMove = false;
         myVars.targetElo = 1500;
         myVars.bestMoveColor = "#87ceeb";
