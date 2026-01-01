@@ -500,22 +500,94 @@ function setupUtilities(myVars) {
         return values[piece] || 0;
     };
 
+    myFunctions.getAttackersOfSquare = function (chess, square, attackerColor) {
+        var attackers = [];
+        
+        var board = chess.board();
+        
+        for (var rank = 0; rank < 8; rank++) {
+            for (var file = 0; file < 8; file++) {
+                var piece = board[rank][file];
+                if (!piece || piece.color !== attackerColor) continue;
+                
+                var fromSquare = String.fromCharCode(97 + file) + (8 - rank);
+                
+                var currentTurn = chess.turn();
+                var needsFlip = attackerColor !== currentTurn;
+                
+                var canAttack = false;
+                
+                if (needsFlip) {
+                    var fen = chess.fen();
+                    var parts = fen.split(' ');
+                    parts[1] = attackerColor;
+                    var flippedFen = parts.join(' ');
+                    
+                    try {
+                        var tempChess = new Chess(flippedFen);
+                        var move = tempChess.move({ from: fromSquare, to: square, promotion: 'q' });
+                        if (move) {
+                            canAttack = true;
+                            tempChess.undo();
+                        }
+                    } catch (e) {
+                    }
+                } else {
+                    try {
+                        var move = chess.move({ from: fromSquare, to: square, promotion: 'q' });
+                        if (move) {
+                            canAttack = true;
+                            chess.undo();
+                        }
+                    } catch (e) {
+                    }
+                }
+                
+                if (canAttack) {
+                    attackers.push({ square: fromSquare, piece: piece.type });
+                }
+            }
+        }
+        
+        return attackers;
+    };
+
     myFunctions.updateHangingPieces = function () {
+        if (myVars.consoleLogEnabled) {
+            console.log("updateHangingPieces called, enabled=" + myVars.highlightHangingPieces);
+        }
+        
         if (!myVars.highlightHangingPieces) return;
 
         myFunctions.clearHangingHighlights();
 
-        if (!window.board || !window.board.game) return;
+        if (!window.board || !window.board.game) {
+            if (myVars.consoleLogEnabled) {
+                console.log("No board or game found");
+            }
+            return;
+        }
 
         try {
             var fen = window.board.game.getFEN();
-            if (!fen) return;
+            if (!fen) {
+                if (myVars.consoleLogEnabled) {
+                    console.log("No FEN available");
+                }
+                return;
+            }
+            
+            if (myVars.consoleLogEnabled) {
+                console.log("Analyzing position: " + fen);
+            }
 
             var playerColor = window.board.game.getPlayingAs ? window.board.game.getPlayingAs() : 'white';
             var isPlayerWhite = playerColor === 'white';
 
             var chess = new Chess(fen);
             var board = chess.board();
+            
+            var hangingCount = 0;
 
             for (var rank = 0; rank < 8; rank++) {
                 for (var file = 0; file < 8; file++) {
@@ -528,12 +600,20 @@ function setupUtilities(myVars) {
                     var isPlayerPiece = (isPlayerWhite && pieceColor === 'w') || (!isPlayerWhite && pieceColor === 'b');
 
                     if (myFunctions.isPieceHanging(chess, squareNotation, piece)) {
+                        hangingCount++;
                         var color = isPlayerPiece ? myVars.ownHangingColor : myVars.enemyHangingColor;
                         myFunctions.highlightHangingSquare(squareNotation, color);
                     }
                 }
             }
+            
+            if (myVars.consoleLogEnabled) {
+                console.log("Hanging pieces found: " + hangingCount);
+            }
         } catch (e) {
+            if (myVars.consoleLogEnabled) {
+                console.log("Error in updateHangingPieces:", e);
+            }
         }
     };
 
@@ -542,35 +622,44 @@ function setupUtilities(myVars) {
             var pieceColor = piece.color;
             var enemyColor = pieceColor === 'w' ? 'b' : 'w';
 
-            var attackers = chess.attackers(square, enemyColor);
-            if (!attackers || attackers.length === 0) return false;
+            var enemyAttackers = myFunctions.getAttackersOfSquare(chess, square, enemyColor);
+            if (enemyAttackers.length === 0) return false;
 
-            var defenders = chess.attackers(square, pieceColor);
+            var friendlyDefenders = myFunctions.getAttackersOfSquare(chess, square, pieceColor);
             
             var pieceValue = myFunctions.getPieceValue(piece.type);
 
-            if (!defenders || defenders.length === 0) {
+            if (myVars.consoleLogEnabled) {
+                console.log("Checking " + piece.type + " on " + square + ": attackers=" + enemyAttackers.length + ", defenders=" + friendlyDefenders.length + ", value=" + pieceValue);
+            }
+
+            if (friendlyDefenders.length === 0) {
+                if (myVars.consoleLogEnabled) {
+                    console.log("  -> HANGING (no defenders)");
+                }
                 return true;
             }
 
             var lowestAttackerValue = 100;
-            for (var i = 0; i < attackers.length; i++) {
-                var attackerSquare = attackers[i];
-                var attackerPiece = chess.get(attackerSquare);
-                if (attackerPiece) {
-                    var val = myFunctions.getPieceValue(attackerPiece.type);
-                    if (val < lowestAttackerValue) {
-                        lowestAttackerValue = val;
-                    }
+            for (var i = 0; i < enemyAttackers.length; i++) {
+                var val = myFunctions.getPieceValue(enemyAttackers[i].piece);
+                if (val < lowestAttackerValue) {
+                    lowestAttackerValue = val;
                 }
             }
 
             if (lowestAttackerValue < pieceValue) {
+                if (myVars.consoleLogEnabled) {
+                    console.log("  -> HANGING (lowest attacker " + lowestAttackerValue + " < piece value " + pieceValue + ")");
+                }
                 return true;
             }
 
             return false;
         } catch (e) {
+            if (myVars.consoleLogEnabled) {
+                console.log("Error in isPieceHanging:", e);
+            }
             return false;
         }
     };
