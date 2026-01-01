@@ -629,13 +629,9 @@ function setupUtilities(myVars) {
             
             var pieceValue = myFunctions.getPieceValue(piece.type);
 
-            if (myVars.consoleLogEnabled) {
-                console.log("Checking " + piece.type + " on " + square + ": attackers=" + enemyAttackers.length + ", defenders=" + friendlyDefenders.length + ", value=" + pieceValue);
-            }
-
             if (friendlyDefenders.length === 0) {
                 if (myVars.consoleLogEnabled) {
-                    console.log("  -> HANGING (no defenders)");
+                    console.log("Checking " + piece.type + " on " + square + ": HANGING (no defenders)");
                 }
                 return true;
             }
@@ -648,11 +644,21 @@ function setupUtilities(myVars) {
                 }
             }
 
-            if (lowestAttackerValue < pieceValue) {
-                if (myVars.consoleLogEnabled) {
-                    console.log("  -> HANGING (lowest attacker " + lowestAttackerValue + " < piece value " + pieceValue + ")");
+            var lowestDefenderValue = 100;
+            for (var i = 0; i < friendlyDefenders.length; i++) {
+                var val = myFunctions.getPieceValue(friendlyDefenders[i].piece);
+                if (val < lowestDefenderValue) {
+                    lowestDefenderValue = val;
                 }
-                return true;
+            }
+
+            if (lowestAttackerValue < pieceValue) {
+                if (lowestAttackerValue < lowestDefenderValue) {
+                    if (myVars.consoleLogEnabled) {
+                        console.log("Checking " + piece.type + " on " + square + ": HANGING (attacker=" + lowestAttackerValue + " < piece=" + pieceValue + " and attacker < defender=" + lowestDefenderValue + ")");
+                    }
+                    return true;
+                }
             }
 
             return false;
