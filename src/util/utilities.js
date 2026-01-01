@@ -642,29 +642,62 @@ function setupUtilities(myVars) {
                 return true;
             }
 
-            var lowestAttackerValue = 100;
+            var attackerValues = [];
             for (var i = 0; i < enemyAttackers.length; i++) {
-                var val = myFunctions.getPieceValue(enemyAttackers[i].piece);
-                if (val < lowestAttackerValue) {
-                    lowestAttackerValue = val;
-                }
+                attackerValues.push(myFunctions.getPieceValue(enemyAttackers[i].piece));
             }
+            attackerValues.sort(function(a, b) { return a - b; });
 
-            var lowestDefenderValue = 100;
+            var defenderValues = [];
             for (var i = 0; i < friendlyDefenders.length; i++) {
-                var val = myFunctions.getPieceValue(friendlyDefenders[i].piece);
-                if (val < lowestDefenderValue) {
-                    lowestDefenderValue = val;
+                defenderValues.push(myFunctions.getPieceValue(friendlyDefenders[i].piece));
+            }
+            defenderValues.sort(function(a, b) { return a - b; });
+
+            var materialGain = pieceValue;
+            var materialLoss = 0;
+            var attackerIndex = 0;
+            var defenderIndex = 0;
+            var currentAttacker = true;
+
+            while (attackerIndex < attackerValues.length || defenderIndex < defenderValues.length) {
+                if (currentAttacker) {
+                    if (attackerIndex >= attackerValues.length) break;
+                    
+                    var netGain = materialGain - materialLoss;
+                    if (netGain > 0) {
+                        if (myVars.consoleLogEnabled) {
+                            console.log("Checking " + piece.type + " on " + square + ": HANGING (net gain after exchange: " + netGain + ")");
+                        }
+                        return true;
+                    }
+                    
+                    if (defenderIndex < defenderValues.length) {
+                        materialLoss += defenderValues[defenderIndex];
+                        defenderIndex++;
+                        currentAttacker = false;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (defenderIndex >= defenderValues.length) break;
+                    
+                    if (attackerIndex + 1 < attackerValues.length) {
+                        materialGain += attackerValues[attackerIndex];
+                        attackerIndex++;
+                        currentAttacker = true;
+                    } else {
+                        break;
+                    }
                 }
             }
 
-            if (lowestAttackerValue < pieceValue) {
-                if (lowestAttackerValue < lowestDefenderValue) {
-                    if (myVars.consoleLogEnabled) {
-                        console.log("Checking " + piece.type + " on " + square + ": HANGING (attacker=" + lowestAttackerValue + " < piece=" + pieceValue + " and attacker < defender=" + lowestDefenderValue + ")");
-                    }
-                    return true;
+            var finalNetGain = materialGain - materialLoss;
+            if (finalNetGain > 0) {
+                if (myVars.consoleLogEnabled) {
+                    console.log("Checking " + piece.type + " on " + square + ": HANGING (final net gain: " + finalNetGain + ")");
                 }
+                return true;
             }
 
             return false;
